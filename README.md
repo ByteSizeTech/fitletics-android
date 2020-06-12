@@ -1,4 +1,4 @@
 # fitletics-android
 Android app for Fitletics
 
-Vishal and Aadi are working on this Android app
+Vishal and Aadi are working on this
