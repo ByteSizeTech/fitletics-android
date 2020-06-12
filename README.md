@@ -1,4 +1,4 @@
 # fitletics-android
 Android app for Fitletics
 
-Vishal and Aadi are working on this
+Vishal and Aadi are working on this from V-branch
