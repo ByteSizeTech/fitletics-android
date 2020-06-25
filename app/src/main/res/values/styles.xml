@@ -7,6 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Sign up TextView for title bar with Black border on top style. -->
     <style name="signup_titleText">
         <item name="android:textSize">36sp</item>
         <item name="android:textColor">@color/fontWhite</item>
