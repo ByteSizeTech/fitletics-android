@@ -2,6 +2,7 @@ package com.example.fitletics
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.SurfaceHolder
@@ -33,6 +34,18 @@ class BTestQRActivity : AppCompatActivity() {
         {
             setupControls()     //sets up camera, QR detector and surface view
         }
+
+        /*===========TEMPORARY CODE FOR TESTING===========*/
+
+        //changes the activity from by tapping the preview (for now)
+
+        camera_view.setOnClickListener()
+        {
+            val intent = Intent(this, BTestOngoingActivity::class.java)
+            startActivity(intent)
+        }
+
+        /*===============================================*/
     }
 
     //function that sets up the activity provided the permissions were granted
