@@ -39,7 +39,7 @@ class BTestQRActivity : AppCompatActivity() {
     private fun setupControls()
     {
         detector = BarcodeDetector.Builder(this@BTestQRActivity).build()
-        cameraSource = CameraSource.Builder(this@BTestQRActivity, detector).setAutoFocusEnabled(true).build()
+        cameraSource = CameraSource.Builder(this@BTestQRActivity, detector).setAutoFocusEnabled(true).setRequestedPreviewSize(2246,1080).build()    //TODO get dimension of screen dynamically
         camera_view.holder.addCallback(surfaceCallBack)
     }
 
