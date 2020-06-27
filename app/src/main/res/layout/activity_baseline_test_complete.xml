@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".BTestCompleteActivity">
 
+<!--    "BASELINE TEST" Header-->
     <TextView
         android:id="@+id/textView2"
         style="@style/signup_titleText"
@@ -16,6 +17,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<!--    "Baseline Test Complete" -->
     <TextView
         android:id="@+id/scanText"
         android:layout_width="0dp"
@@ -31,6 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
+<!--    Lottie done button animation-->
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,6 +45,7 @@
         app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/done_anim" />
 
+<!--    "LET'S GO!" Button-->
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
