@@ -41,7 +41,7 @@ class ConnectPCQRActivity : AppCompatActivity() {
 
         camera_view.setOnClickListener()
         {
-            val intent = Intent(this, BAnalysisOngoing::class.java)
+            val intent = Intent(this, BAnalysisOngoingActivity::class.java)
             startActivity(intent)
         }
 
