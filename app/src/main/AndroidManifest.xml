@@ -12,9 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BTestCompleteActivity"></activity>
+        <activity android:name=".BAnalysisOngoing"></activity>
+        <activity android:name=".BTestCompleteActivity" />
         <activity android:name=".BTestOngoingActivity" />
-        <activity android:name=".BTestQRActivity">
+        <activity android:name=".ConnectPCQRActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

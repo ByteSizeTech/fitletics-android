@@ -12,11 +12,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.barcode.BarcodeDetector
-import kotlinx.android.synthetic.main.activity_baseline_test_qr_scanner.*
+import kotlinx.android.synthetic.main.activity_connect_pc_qr_scanner.*
 import java.lang.Exception
 
 
-class BTestQRActivity : AppCompatActivity() {
+class ConnectPCQRActivity : AppCompatActivity() {
 
     private val requestCodeCameraPermission = 1001
     private lateinit var cameraSource: CameraSource
@@ -24,7 +24,7 @@ class BTestQRActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_baseline_test_qr_scanner)
+        setContentView(R.layout.activity_connect_pc_qr_scanner)
 
         //confirms camera permissions if it were granted in advance
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
@@ -41,7 +41,7 @@ class BTestQRActivity : AppCompatActivity() {
 
         camera_view.setOnClickListener()
         {
-            val intent = Intent(this, BTestOngoingActivity::class.java)
+            val intent = Intent(this, BAnalysisOngoing::class.java)
             startActivity(intent)
         }
 
@@ -51,8 +51,8 @@ class BTestQRActivity : AppCompatActivity() {
     //function that sets up the activity provided the permissions were granted
     private fun setupControls()
     {
-        detector = BarcodeDetector.Builder(this@BTestQRActivity).build()
-        cameraSource = CameraSource.Builder(this@BTestQRActivity, detector).setAutoFocusEnabled(true).setRequestedPreviewSize(2246,1080).build()    //TODO get dimension of screen dynamically
+        detector = BarcodeDetector.Builder(this@ConnectPCQRActivity).build()
+        cameraSource = CameraSource.Builder(this@ConnectPCQRActivity, detector).setAutoFocusEnabled(true).setRequestedPreviewSize(2246,1080).build()    //TODO get dimension of screen dynamically
         camera_view.holder.addCallback(surfaceCallBack)
     }
 
