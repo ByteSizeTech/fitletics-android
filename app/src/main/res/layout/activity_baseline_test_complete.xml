@@ -28,20 +28,22 @@
         android:text="Baseline Test Complete"
         android:textColor="@color/colorSecondary"
         android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.50" />
 
 <!--    Lottie done button animation-->
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/scanText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scanText"
-        app:layout_constraintVertical_bias="0.25"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.75"
         app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/done_anim" />
 
@@ -53,11 +55,11 @@
         android:layout_marginBottom="250dp"
         android:background="@drawable/action_button"
         android:padding="15dp"
-        android:paddingStart="35dp"
-        android:paddingEnd="35dp"
+        android:paddingStart="55dp"
+        android:paddingEnd="55dp"
         android:text="LET'S GO!"
         android:textColor="@color/fontWhite"
-        android:textSize="45sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
