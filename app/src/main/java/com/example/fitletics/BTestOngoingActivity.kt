@@ -12,13 +12,6 @@ class BTestOngoingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_baseline_test_ongoing)
 
-
-        //boiler plate code for progress bar below
-        //btest_ongoing_pb.max = 10
-        val currentProgress = 10
-
-        //ObjectAnimator.ofInt(btest_ongoing_pb, "progress", currentProgress).setDuration(3500).start()
-
         /*===========TEMPORARY CODE FOR TESTING===========*/
 
         //changes the activity from by tapping the progress bar (for now)
