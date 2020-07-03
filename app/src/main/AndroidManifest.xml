@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BAnalysisOngoing"></activity>
+        <activity android:name=".BAnalysisCompleteActivity"></activity>
+        <activity android:name=".BAnalysisOngoingActivity" />
         <activity android:name=".BTestCompleteActivity" />
         <activity android:name=".BTestOngoingActivity" />
         <activity android:name=".ConnectPCQRActivity">

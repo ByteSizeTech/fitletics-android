@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_baseline_test_ongoing.*
 import kotlinx.android.synthetic.main.activity_body_analysis_ongoing.*
 import kotlinx.android.synthetic.main.activity_connect_pc_qr_scanner.*
 
-class BAnalysisOngoing : AppCompatActivity() {
+class BAnalysisOngoingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_body_analysis_ongoing)
