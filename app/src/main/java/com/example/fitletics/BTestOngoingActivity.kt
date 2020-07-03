@@ -14,10 +14,10 @@ class BTestOngoingActivity : AppCompatActivity() {
 
 
         //boiler plate code for progress bar below
-        btest_ongoing_pb.max = 10
+        //btest_ongoing_pb.max = 10
         val currentProgress = 10
 
-        ObjectAnimator.ofInt(btest_ongoing_pb, "progress", currentProgress).setDuration(3500).start()
+        //ObjectAnimator.ofInt(btest_ongoing_pb, "progress", currentProgress).setDuration(3500).start()
 
         /*===========TEMPORARY CODE FOR TESTING===========*/
 

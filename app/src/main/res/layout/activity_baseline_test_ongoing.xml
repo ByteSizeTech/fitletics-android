@@ -22,16 +22,17 @@
         android:id="@+id/scanText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:text="Baseline Test Ongoing.."
         android:textColor="@color/colorSecondary"
         android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.25" />
 
 <!--    "Please follow the instructions..."-->
     <TextView
@@ -48,16 +49,28 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 <!--    Progress bar-->
-    <ProgressBar
+<!--    <ProgressBar-->
+<!--        android:id="@+id/btest_ongoing_pb"-->
+<!--        style="?android:attr/progressBarStyleHorizontal"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="75dp"-->
+<!--        android:layout_marginTop="25dp"-->
+<!--        android:layout_marginEnd="75dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/scanText" />-->
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/btest_ongoing_pb"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="75dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scanText" />
+        app:layout_constraintTop_toBottomOf="@+id/scanText"
+        app:layout_constraintVertical_bias="0.10"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/infinte_progress_bar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
