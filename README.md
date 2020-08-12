@@ -21,6 +21,7 @@ More code and more stuff and stuffs
 function def()
 {
     test()
+    test2()
 }
 
 function abc(){
@@ -28,3 +29,4 @@ function abc(){
     page2.function()
     page3.func()
 }
+
