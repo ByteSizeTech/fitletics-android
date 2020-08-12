@@ -1,5 +1,7 @@
-# fitletics-android
+# fitletics-android updated
 Android app for Fitletics
+lol
+i am just adding this one line more
 
 We are trying out merging branches
 We are so freaking confused
