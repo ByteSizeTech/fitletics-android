@@ -16,4 +16,5 @@ More code and more stuff and stuffs
 
 function abc(){
     page1.function()
+    page2.function()
 }
