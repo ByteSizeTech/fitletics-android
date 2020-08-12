@@ -13,3 +13,7 @@ Aaditya
 Vishal
 
 More code and more stuff and stuffs
+
+function abc(){
+    page1.function()
+}
