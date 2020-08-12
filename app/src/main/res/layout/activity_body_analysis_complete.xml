@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BAnalysisCompleteActivity">
+
+    <!--    "BODY ANALYSIS" Header-->
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/signup_titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Body Analysis"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--    Lottie done button animation-->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/banalysis_complete_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/scanText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.75"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/done_anim" />
+
+    <!--    "Body Analysis Complete" -->
+    <TextView
+        android:id="@+id/scanText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="Body Analysis Complete"
+        android:textColor="@color/colorSecondary"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.35" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
