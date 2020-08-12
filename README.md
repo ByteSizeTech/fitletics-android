@@ -18,6 +18,11 @@ Vishal
 
 More code and more stuff and stuffs
 
+function def()
+{
+    test()
+}
+
 function abc(){
     page1.function()
     page2.function()
