@@ -23,7 +23,7 @@ function def()
     test()
     test2()
 }
-
+im writing anywhere
 function abc(){
     page1.function()
     page2.function()
