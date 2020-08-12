@@ -18,7 +18,7 @@ class BAnalysisOngoingActivity : AppCompatActivity() {
 
         banalysis_ongoing_pb.setOnClickListener()
         {
-            val intent = Intent(this, BTestOngoingActivity::class.java)
+            val intent = Intent(this, BAnalysisCompleteActivity::class.java)
             startActivity(intent)
         }
 
