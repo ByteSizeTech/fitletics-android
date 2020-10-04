@@ -1,4 +1,4 @@
-package com.example.fitletics
+package com.example.fitletics.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.fitletics.R
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import kotlinx.android.synthetic.main.activity_connect_pc_qr_scanner.*

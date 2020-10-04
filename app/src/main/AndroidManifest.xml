@@ -12,17 +12,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DashboardActivity"></activity>
-        <activity android:name=".BAnalysisCompleteActivity" />
-        <activity android:name=".BAnalysisOngoingActivity" />
-        <activity android:name=".BTestCompleteActivity" />
-        <activity android:name=".BTestOngoingActivity" />
-        <activity android:name=".ConnectPCQRActivity">
+        <activity android:name=".activities.SharedWorkoutActivity"></activity>
+        <activity android:name=".activities.DetailedAnalyticsActivity" />
+        <activity android:name=".activities.SignUpActivity" />
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".activities.StartWorkoutActivity" />
+        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.BAnalysisCompleteActivity" />
+        <activity android:name=".activities.BAnalysisOngoingActivity" />
+        <activity android:name=".activities.BTestCompleteActivity" />
+        <activity android:name=".activities.BTestOngoingActivity" />
+        <activity android:name=".activities.ConnectPCQRActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
 

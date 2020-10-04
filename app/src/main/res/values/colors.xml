@@ -5,4 +5,17 @@
     <color name="colorSecondary">#000000</color>
     <color name="fontWhite">#FFF</color>
     <color name="colorAccent">#ff850d</color>
+    <color name="tabColor">#323232</color>
+
+
+    <color name="color1">#CD4B4B</color>
+    <color name="color2">#566F83</color>
+    <color name="color3">#8BC34A</color>
+    <color name="color4">#91619C</color>
+    <color name="color5">#8A886A</color>
+    <color name="color6">#92C114</color>
+    <color name="color7">#FF9A04</color>
+    <color name="color8">#513E4F</color>
+    <color name="color9">#CD4B4B</color>
+
 </resources>

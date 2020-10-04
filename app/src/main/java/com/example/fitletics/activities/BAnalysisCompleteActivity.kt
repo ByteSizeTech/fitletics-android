@@ -1,10 +1,10 @@
-package com.example.fitletics
+package com.example.fitletics.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.fitletics.R
 import kotlinx.android.synthetic.main.activity_body_analysis_complete.*
-import kotlinx.android.synthetic.main.activity_body_analysis_ongoing.*
 
 class BAnalysisCompleteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
