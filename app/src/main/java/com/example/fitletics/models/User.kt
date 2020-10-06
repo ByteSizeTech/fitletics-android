@@ -10,7 +10,7 @@ class User {
 
     var name: String? = null
     var email: String? = null
-    var DOB: Date? = null
+    var DOB: Calendar? = null
     var gender: String? = null
     var xp: Int? = null
     var weight: Int? = null
@@ -21,20 +21,16 @@ class User {
     constructor(
         name: String?,
         email: String?,
-        DOB: Date?,
+        DOB: Calendar?,
         gender: String?,
-        xp: Int?,
         weight: Int?,
-        height: Int?,
-        bodyType: BodyType?
+        height: Int?
     ) {
         this.name = name
         this.email = email
         this.DOB = DOB
         this.gender = gender
-        this.xp = xp
         this.weight = weight
         this.height = height
-        this.bodyType = bodyType
     }
 }

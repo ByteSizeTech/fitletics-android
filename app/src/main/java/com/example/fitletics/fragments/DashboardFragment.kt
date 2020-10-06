@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
+import android.widget.ProgressBar
+import android.widget.TextView
 import com.example.fitletics.R
 import com.example.fitletics.adapters.DashboardAnalyticsAdapter
 import com.example.fitletics.models.DashboardAnalyticsItem
@@ -17,6 +19,12 @@ class DashboardFragment : Fragment() {
     private var arrayList: ArrayList<DashboardAnalyticsItem>? = null
     private var gridView: GridView? = null
     private var dashboardAnalyticsAdapter: DashboardAnalyticsAdapter? = null
+
+    private var userNameText: TextView? = null
+    private var userXpText: TextView? = null
+    private var userProgressBar: ProgressBar? = null
+    private var userProgressText: TextView? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +44,13 @@ class DashboardFragment : Fragment() {
         dashboardAnalyticsAdapter = DashboardAnalyticsAdapter(this.activity!!.applicationContext, arrayList!!)
         gridView?.adapter = dashboardAnalyticsAdapter
 
+        setupUserDetails(rootView)
+
         return rootView
+    }
+
+    private fun setupUserDetails(view : View){
+
     }
 
     private fun setDataList() : ArrayList<DashboardAnalyticsItem>{

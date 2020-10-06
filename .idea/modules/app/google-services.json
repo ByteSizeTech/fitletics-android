@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "596945590001",
+    "firebase_url": "https://fitletics-120620.firebaseio.com",
+    "project_id": "fitletics-120620",
+    "storage_bucket": "fitletics-120620.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596945590001:android:a2485869a456c704ab3b50",
+        "android_client_info": {
+          "package_name": "com.example.fitletics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596945590001-ituui5q69bol0f9623sg68lstc8tqrib.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fitletics",
+            "certificate_hash": "22b817644d169819078343dad28d047d504093d2"
+          }
+        },
+        {
+          "client_id": "596945590001-jpmasr8k2vkb58m1qdueddgequvidap9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAFuIFmM7A7YUpLjy28-nIk1INm8opmic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596945590001-jpmasr8k2vkb58m1qdueddgequvidap9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

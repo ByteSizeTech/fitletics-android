@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@android:style/TextAppearance.Widget.EditText"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,12 +10,12 @@
 
     <!--    "BASELINE TEST" Header-->
     <TextView
-        android:layout_gravity="center"
         android:id="@+id/textView2"
         style="@style/signup_titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign Up"/>
+        android:layout_gravity="center"
+        android:text="Sign Up" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -127,23 +128,26 @@
         android:textSize="20sp" />
 
     <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="40dp"
-    android:layout_marginTop="12dp"
-    android:text="Gender"
-    android:textColor="@color/colorSecondary"
-    android:textSize="20sp"
-    android:textStyle="bold" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="12dp"
+        android:text="Gender"
+        android:textColor="@color/colorSecondary"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/gender_text_signup"
+    <Spinner
+        android:id="@+id/gender_spinner_signup"
+        style="@style/Platform.Widget.AppCompat.Spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginEnd="36dp"
         android:ems="10"
+        android:entries="@array/gender_list"
         android:hint="Enter gender"
+        android:spinnerMode="dialog"
         android:textColorHint="#FFBFBEBE"
         android:textSize="20sp" />
 
@@ -176,8 +180,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp"
             android:layout_weight="1"
+            android:paddingStart="10dp"
             android:text="KGS" />
 
     </LinearLayout>
@@ -213,12 +217,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp"
             android:layout_weight="1"
+            android:paddingStart="10dp"
             android:text="CMS" />
 
     </LinearLayout>
-
 
 
     <Button

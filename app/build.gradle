@@ -52,6 +52,7 @@ dependencies {
 
     //firebase
     implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.google.firebase:firebase-database:16.0.4'
     testImplementation 'junit:junit:4.12'
 
     //graph-view

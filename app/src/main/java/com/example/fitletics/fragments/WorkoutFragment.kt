@@ -8,14 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Button
 import android.widget.ExpandableListView
 import android.widget.Toast
 import com.example.fitletics.adapters.CustomExpandableListAdapter
 import com.example.fitletics.R
-import com.example.fitletics.activities.SharedWorkoutActivity
-import com.example.fitletics.activities.StartWorkoutActivity
+import com.example.fitletics.activities.*
 import com.example.fitletics.models.Exercise
 import com.example.fitletics.models.Workout
+import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.fragment_workout.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -74,6 +76,9 @@ class WorkoutFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
     }
 
     override fun onCreateView(
@@ -81,6 +86,15 @@ class WorkoutFragment : Fragment() {
         // Inflate the layout for this fragment
 
         val rootView: View = inflater.inflate(R.layout.fragment_workout, container, false)
+
+        /*Changes intent to create workout*/
+        rootView.findViewById<Button>(R.id.create_workout_button).setOnClickListener()
+        {
+            val intent2 = Intent(this.activity!!, CreateWorkoutActivity::class.java)
+            startActivity(intent2)
+        }
+        /*===============================================*/
+
 
         Log.d("DEBUG", "Reached here!")
         expandableListViewCode = rootView.findViewById(R.id.expandableListViewFragmentWorkouts)

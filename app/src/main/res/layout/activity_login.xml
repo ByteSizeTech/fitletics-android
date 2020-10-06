@@ -75,7 +75,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/passowrd_edit_text"
+            android:id="@+id/password_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
