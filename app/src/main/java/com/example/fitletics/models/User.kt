@@ -10,18 +10,26 @@ class User {
 
     var name: String? = null
     var email: String? = null
-    var DOB: Calendar? = null
+    var DOB: String? = null
     var gender: String? = null
     var xp: Int? = null
     var weight: Int? = null
     var height: Int? = null
     var bodyType: BodyType? = null
 
+    constructor(){
+        name = "NO NAME"
+        email = "NO EMAIL"
+        DOB = "NO DOB"
+        gender = "NO GENDER"
+        weight = -1
+        height = -1
+    }
 
     constructor(
         name: String?,
         email: String?,
-        DOB: Calendar?,
+        DOB: String?,
         gender: String?,
         weight: Int?,
         height: Int?

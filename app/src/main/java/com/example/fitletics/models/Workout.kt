@@ -17,4 +17,8 @@ class Workout : Serializable {
         this.difficulty = difficulty
         this.time = time
     }
+
+    constructor(){
+
+    }
 }

@@ -14,16 +14,17 @@ import com.example.fitletics.models.Constants
 import com.example.fitletics.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import java.text.DateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private val c = Calendar.getInstance()
 
-    private var userDOB: Calendar? = null
+    private var userDOB: String = ""
     private var gender: String? = null
 
 
@@ -34,18 +35,10 @@ class SignUpActivity : AppCompatActivity() {
         calendarSetup()
         spinnerSetup()
 
-        /*===========TEMPORARY CODE FOR TESTING===========*/
-
         sign_up_button.setOnClickListener()
         {
-//            val intent = Intent(this, ConnectPCQRActivity::class.java)
-//            startActivity(intent)
-            //signUpUser()
-            startActivity(Intent(this, ConnectPCQRActivity::class.java))
-
+            signUpUser()
         }
-
-        /*===============================================*/
 
         auth = FirebaseAuth.getInstance()
     }
@@ -71,8 +64,9 @@ class SignUpActivity : AppCompatActivity() {
             val datePicker = DatePickerDialog(this,
                 DatePickerDialog.OnDateSetListener{
                         view, mYear, mMonth, mDay ->
-                    DOB_text_signup.setText(" $mDay / ${mMonth+1} / $mYear ")
-                    userDOB!!.set(mYear, mMonth+1, mDay)
+                    DOB_text_signup.setText(" $mDay / ${mMonth+1} / $mYear")
+                    //userDOB?.set(mYear, mMonth+1, mDay)
+                    userDOB = " $mDay / ${mMonth+1} / $mYear"
             }, year, month, day)
             datePicker.show()
         }
@@ -80,6 +74,8 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun signUpUser(){
+
+        //Data Validation
         if (name_edit_text.text.toString().isEmpty()) {
             name_edit_text.error = "Please enter a name!"
             name_edit_text.requestFocus()
@@ -122,43 +118,66 @@ class SignUpActivity : AppCompatActivity() {
             return
         }
 
+        if (gender == "Error"){
+            gender_spinner_signup.requestFocus()
+            return
+        }
 
+        /*==========================END OF DATA VALIDATION=================================*/
 
-
+        //User Sign up
         auth.createUserWithEmailAndPassword(email_edit_text_signup.text.toString(), re_enter_passowrd_edit_text_signup.text.toString())
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
 
-                    if (gender == "Error"){
-                        gender_spinner_signup.requestFocus()
-                    }
-
-                    val newUser: User = User(name_edit_text.text.toString(),
-                        email_edit_text_signup.text.toString(),
-                        userDOB,
-                        this.gender,
-                        Integer.parseInt(weight_text_signup.text.toString()),
-                        Integer.parseInt(height_text_signup.text.toString())
+                    val newUser: User = User(
+                        name = name_edit_text.text.toString(),
+                        email = email_edit_text_signup.text.toString(),
+                        DOB = userDOB,
+                        gender = gender,
+                        weight = Integer.parseInt(weight_text_signup.text.toString()),
+                        height = Integer.parseInt(height_text_signup.text.toString())
                     )
 
-                    FirebaseDatabase.getInstance().getReference("Users")
-                        .child(Constants.CURRENT_USER!!.uid)
-                        .setValue(newUser).addOnCompleteListener {
-                            Toast.makeText(baseContext, "User Details Added!",
-                                Toast.LENGTH_SHORT).show()
-                        }
+                    Log.d("DOB", userDOB.toString())
 
-                    Log.d("FB_SIGNUP", "createUserWithEmail:success")
                     val user = auth.currentUser
-                    startActivity(Intent(this, ConnectPCQRActivity::class.java))
-                } else {
+                    Constants.CURRENT_FIREBASE_USER = user
+
+
+                    //firebase code
+//                    FirebaseDatabase.getInstance().getReference("Users")
+//                        .child(Constants.CURRENT_FIREBASE_USER!!.uid)
+//                        .child("Details")
+//                        .setValue(newUser)
+//                        .addOnCompleteListener {
+////                            Toast.makeText(baseContext, "User Details Added!",
+////                                Toast.LENGTH_SHORT).show()
+//                            Log.d("FB_SIGNUP", "createUserWithEmail:success")
+//                            startActivity(Intent(this, ConnectPCQRActivity::class.java))
+//                        }
+
+                    //firestore code
+
+                    FirebaseFirestore.getInstance()
+                        .collection("Users")
+                        .document(Constants.CURRENT_FIREBASE_USER!!.uid)
+                        .collection("Details")
+                        .document("details")
+                        .set(newUser)
+                        .addOnSuccessListener {
+                            Log.d("FB_SIGNUP", "createUserWithEmail:success")
+                            startActivity(Intent(this, ConnectPCQRActivity::class.java))
+                        }
+                }
+
+                else {
                     // If sign in fails, display a message to the user.
                     Log.w("FB_SIGNUP", "createUserWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
                 }
             }
-
     }
 }

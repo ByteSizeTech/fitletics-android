@@ -14,8 +14,10 @@ import android.widget.Toast
 import com.example.fitletics.adapters.CustomExpandableListAdapter
 import com.example.fitletics.R
 import com.example.fitletics.activities.*
+import com.example.fitletics.models.Constants
 import com.example.fitletics.models.Exercise
 import com.example.fitletics.models.Workout
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_workout.*
 import java.util.*
@@ -31,53 +33,101 @@ class WorkoutFragment : Fragment() {
     internal var titleList: List<String> ? = null
 
 
+    val customWorkouts = ArrayList<Workout>()
+
+    val tempList2: ArrayList<Exercise> = ArrayList()
+
     val data: HashMap<String, List<Workout>>
         get() {
             val listData = HashMap<String, List<Workout>>()
 
             val tempList: ArrayList<Exercise> = ArrayList()
 
-            val customWorkouts = ArrayList<Workout>()
-            customWorkouts.add(Workout("Please work", tempList, "Easy", "20 mins"))
+            tempList2.add(Exercise(name="Squats", value="7x"))
+            tempList2.add(Exercise(name="Lunges", value="14x"))
+            tempList2.add(Exercise(name="Push ups", value="20x"))
+            tempList2.add(Exercise(name="Stretches", value="40s"))
 
 
-            val tempList2: ArrayList<Exercise> = ArrayList()
-            tempList2.add(Exercise("BLEH", "5x564"))
-            tempList2.add(Exercise("Sit BLEH", "8x"))
-            tempList2.add(Exercise("BLEH", "1000x"))
-//            tempList2.add(Exercise("BLEH", "3x"))
-//            tempList2.add(Exercise("Pullups", "7x"))
-//            tempList2.add(Exercise("BLEH", "5x"))
-//            tempList2.add(Exercise("Sit BLEH", "8x"))
-//            tempList2.add(Exercise("BLEH", "10x"))
-//            tempList2.add(Exercise("BLEH", "3000x"))
-//            tempList2.add(Exercise("Pullups", "7x"))
-            customWorkouts.add(Workout("Help", tempList, "Easy", "26 mins"))
-            //Log.d("T_TEST", "ARRAY: ${customWorkouts[1].exerciseList!![0]}")
-            customWorkouts.add(Workout("Last try", tempList, "Medium", "82 mins"))
-
-
-
-            customWorkouts.add(Workout("Last last try", tempList, "Hard", "39 mins"))
+            getCustomWorkouts()
+//            customWorkouts.add(Workout("First", tempList, "Easy", "20 mins"))
+//            customWorkouts.add(Workout("Deux", tempList, "Easy", "26 mins"))
+//            //Log.d("T_TEST", "ARRAY: ${customWorkouts[1].exerciseList!![0]}")
+//            customWorkouts.add(Workout("Theesra", tempList, "Medium", "82 mins"))
+//            customWorkouts.add(Workout("Last one", tempList, "Hard", "39 mins"))
             listData["Custom"] = customWorkouts
 
             val pendingWorkouts = ArrayList<Workout>()
-            pendingWorkouts.add(Workout("Hercules", tempList2, "Easy", "40 mins"))
-            pendingWorkouts.add(Workout("Percy Jackson", tempList, "Medium", "80 mins"))
+            pendingWorkouts.add(Workout("Beginner run", tempList2, "Easy", "40 mins"))
+            pendingWorkouts.add(Workout("Try this", tempList, "Medium", "80 mins"))
             listData["Pending"] = pendingWorkouts
 
             val savedWorkouts = ArrayList<Workout>()
-            savedWorkouts.add(Workout("Poseidon", tempList, "Hard", "120 mins"))
-            savedWorkouts.add(Workout("Willy Wonka", tempList, "Easy", "20 mins"))
+            savedWorkouts.add(Workout("Arms Beginner", tempList, "Hard", "120 mins"))
+            savedWorkouts.add(Workout("Core Beginner", tempList, "Easy", "20 mins"))
             listData["Saved"] = savedWorkouts
 
             return listData
         }
 
+    private fun getCustomWorkouts() {
+        FirebaseFirestore.getInstance()
+            .collection("Users")
+            .document(Constants.CURRENT_FIREBASE_USER!!.uid)
+            .collection("Workouts")
+            .document("Custom")
+            .collection("workouts")
+            .addSnapshotListener{ snapshot, e ->
+                if (e != null){
+                    Log.w("ERROR", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && !snapshot.isEmpty) {
+                    customWorkouts.clear()  //first clear the list
+                    snapshot.documents.forEach {
+                        val name = it.get("name")
+                        //this is cuz data is stored in an array of maps {0:{}, 1:{}}
+                        val exercisesDB = it.get("exerciseList") as ArrayList<HashMap<String, Any?>>
+                        val exercises: ArrayList<Exercise> = ArrayList()
+                        for (exercise in exercisesDB){
+                            val unit =
+                                if (exercise["unit"] == Exercise.Unit.REPS)
+                                    Exercise.Unit.REPS
+                                else
+                                    Exercise.Unit.SECS   //no idea why this was necessary
+
+                            val tempExerciseObject= Exercise(
+                                name = exercise["name"].toString(),
+                                description = exercise["description"].toString(),
+                                link = exercise["link"].toString(),
+                                difficulty = exercise["difficulty"].toString(),
+                                unit = unit as Exercise.Unit?
+                            )
+                            tempExerciseObject.value = exercise["value"] as String?
+                            exercises.add(tempExerciseObject)
+                        }
+                        val time = it.get("time")
+                        val difficulty = it.get("difficulty")
+
+                        Log.d("EXERLISTDB", "list: ${exercises as ArrayList<Exercise>} \n type: ${exercises.toString()} \n\n}")
+                        Log.d("EXERLISTHC", "list: ${tempList2 as ArrayList<Exercise>} \n type: ${tempList2.toString()} \n\n}")
+
+                        val tempWorkoutObject = Workout(
+                            name= name.toString(),
+                            exerciseList= exercises,
+                            time = time.toString(),
+                            difficulty = difficulty.toString()
+                        )
+                        customWorkouts.add(tempWorkoutObject!!)
+                    }
+                }
+            }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
+    Log.d("WORKOUT FRAGMENT", "I am created!")
 
     }
 
@@ -110,9 +160,9 @@ class WorkoutFragment : Fragment() {
             Log.d("DEBUG", "Activity: ${this.activity!!}")
             expandableListViewCode!!.setAdapter(adapter)
 
-            for (groups in 0 until listData.size){
-                expandableListViewCode!!.expandGroup(groups);
-            }
+//            for (groups in 0 until listData.size){
+//                expandableListViewCode!!.expandGroup(groups);
+//            }
 
 //            expandableListViewCode!!.setOnGroupExpandListener { groupPosition -> Toast.makeText(this.activity?.applicationContext, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show() }
 //

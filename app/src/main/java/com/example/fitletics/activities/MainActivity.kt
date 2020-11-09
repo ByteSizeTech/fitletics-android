@@ -1,37 +1,48 @@
 package com.example.fitletics.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.example.fitletics.R
 import com.example.fitletics.adapters.ViewPagerAdapter
 import com.example.fitletics.fragments.AnalyticsFragment
 import com.example.fitletics.fragments.DashboardFragment
 import com.example.fitletics.fragments.SettingsFragment
 import com.example.fitletics.fragments.WorkoutFragment
+import com.example.fitletics.models.Constants
+import com.example.fitletics.models.User
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    val mDatabase = FirebaseDatabase.getInstance()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        /*===========TEMPORARY CODE FOR TESTING===========*/
 
-        //changes the activity from by tapping the preview (for now)
+        setupTabs()
+        setupFab()
+        startPedometer()
+    }
 
+    private fun startPedometer() {
+
+    }
+
+    private fun setupFab() {
         start_workout_fab.setOnClickListener()
         {
             val intent = Intent(this, StartWorkoutActivity::class.java)
             startActivity(intent)
         }
-
-        /*===============================================*/
-
-        setupTabs()
     }
 
     private fun setupTabs(){

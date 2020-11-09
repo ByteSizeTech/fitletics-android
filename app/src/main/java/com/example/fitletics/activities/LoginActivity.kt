@@ -2,7 +2,6 @@ package com.example.fitletics.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
@@ -11,10 +10,7 @@ import com.example.fitletics.R
 import com.example.fitletics.models.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.activity_body_analysis_ongoing.*
 import kotlinx.android.synthetic.main.activity_login.*
-
-import kotlinx.android.synthetic.main.activity_sign_up.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -72,13 +68,13 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("FB_SIGNIN", "signInWithEmail:success")
-                    Constants.CURRENT_USER = auth.currentUser
-                    updateUI(Constants.CURRENT_USER)
+                    Constants.CURRENT_FIREBASE_USER = auth.currentUser
+                    updateUI(Constants.CURRENT_FIREBASE_USER)
                 } else {
                     Log.w("FB_SIGNIN", "signInWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
-                    updateUI(Constants.CURRENT_USER)
+                    updateUI(Constants.CURRENT_FIREBASE_USER)
                 }
             }
 
@@ -87,8 +83,8 @@ class LoginActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        Constants.CURRENT_USER = auth.currentUser
-        updateUI(Constants.CURRENT_USER)
+        Constants.CURRENT_FIREBASE_USER = auth.currentUser
+        updateUI(Constants.CURRENT_FIREBASE_USER)
     }
 
     fun updateUI(currentUser: FirebaseUser?){

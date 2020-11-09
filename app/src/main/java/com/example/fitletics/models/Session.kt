@@ -11,7 +11,7 @@ class Session {
     var dateCompleted: Date? = null
     var caloriesBurned: Float? = null
     var muscleGroupExersion: HashMap<String, Int>? = null
-    var CompletedStats: ArrayList<CompletedExerciseStat>? = null
+    var CompletedStats: ArrayList<ExerciseStat>? = null
 
     constructor(
         workout: Workout,
@@ -19,7 +19,7 @@ class Session {
         dateCompleted: Date?,
         caloriesBurned: Float?,
         muscleGroupExersion: HashMap<String, Int>?,
-        CompletedStats: ArrayList<CompletedExerciseStat>?
+        CompletedStats: ArrayList<ExerciseStat>?
     ) {
         this.workout = workout
         this.timeTaken = timeTaken

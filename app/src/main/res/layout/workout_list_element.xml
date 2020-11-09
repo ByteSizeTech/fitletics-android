@@ -8,25 +8,25 @@
 
     <TextView
         android:id="@+id/statText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="5x"
+        android:text="10x"
         android:textColor="@color/fontWhite"
         android:textSize="24dp" />
 
     <TextView
         android:id="@+id/exerciseNameText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
+        android:layout_weight="2"
+        android:gravity="left"
         android:text="Crunches"
         android:textColor="@color/fontWhite"
         android:textSize="24dp" />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="right">

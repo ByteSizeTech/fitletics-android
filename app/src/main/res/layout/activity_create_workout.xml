@@ -37,7 +37,7 @@
         android:textColor="@color/fontWhite"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/textView5"
+        app:layout_constraintEnd_toStartOf="@+id/exercise_value_textview"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/workout_title_text" />
@@ -50,12 +50,12 @@
         android:text="Add"
         android:textColor="@color/colorSecondary"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="@+id/exercise_value_textview"
         app:layout_constraintStart_toStartOf="@+id/create_workout_spinner"
         app:layout_constraintTop_toBottomOf="@+id/create_workout_spinner" />
 
     <EditText
-        android:id="@+id/textView5"
+        android:id="@+id/exercise_value_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="3"
@@ -63,9 +63,9 @@
         android:inputType="number"
         android:textAlignment="center"
         android:textColor="@color/fontWhite"
+        android:textColorHint="#FFBFBEBE"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:textColorHint="#FFBFBEBE"
         app:layout_constraintBottom_toBottomOf="@+id/create_workout_spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -73,7 +73,7 @@
         app:layout_constraintTop_toTopOf="@+id/create_workout_spinner" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/create_workout_done_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -108,7 +108,7 @@
         app:layout_constraintBottom_toTopOf="@+id/divider2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"></ListView>
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <View
         android:id="@+id/divider2"
@@ -118,7 +118,7 @@
         android:layout_marginEnd="64dp"
         android:layout_marginBottom="24dp"
         android:background="@color/fontWhite"
-        app:layout_constraintBottom_toTopOf="@+id/button7"
+        app:layout_constraintBottom_toTopOf="@+id/create_workout_done_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

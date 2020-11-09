@@ -66,16 +66,14 @@ class StartWorkoutActivity : AppCompatActivity() {
     private fun setupArrayList() {
         if (arrayList?.isEmpty()!!){
             arrayList = ArrayList()
-            arrayList?.add(Exercise("Crunches", "5x"))
-            arrayList?.add(Exercise("Sit ups", "8x"))
-            arrayList?.add(Exercise("Strtches", "10x"))
-            arrayList?.add(Exercise("Squats", "3x"))
-            arrayList?.add(Exercise("Pullups", "7x"))
-            arrayList?.add(Exercise("Crunches", "5x"))
-            arrayList?.add(Exercise("Sit ups", "8x"))
-            arrayList?.add(Exercise("Strtches", "10x"))
-            arrayList?.add(Exercise("Squats", "3x"))
-            arrayList?.add(Exercise("Pullups", "7x"))
+            arrayList?.add(Exercise(name="Crunches", value="12x"))
+            arrayList?.add(Exercise(name="Sit ups", value="14x"))
+            arrayList?.add(Exercise(name="Stretches", value="40s"))
+            arrayList?.add(Exercise(name="Squats", value="14x"))
+            arrayList?.add(Exercise(name="Pullups", value="12x"))
+            arrayList?.add(Exercise(name="Crunches", value="14x"))
+            arrayList?.add(Exercise(name="Sit ups", value="8x"))
+            arrayList?.add(Exercise(name="Stretches", value="40s"))
         }
         else
             return

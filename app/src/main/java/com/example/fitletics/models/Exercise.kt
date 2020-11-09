@@ -5,7 +5,7 @@ import java.io.Serializable
 class Exercise: Serializable {
 
     enum class Unit {
-        TIME, REPS
+        SECS, REPS
     }
 
     //idea of a value is that you can just enter a value, say 20
@@ -15,8 +15,9 @@ class Exercise: Serializable {
     var value: String ? = null
     var name: String? = null
     var unit: Unit? = null
-    var difficulty: Int? = null
+    var difficulty: String? = null
     var description: String? = null
+    var link: String? = null
     var targetMuscles: ArrayList<Muscle>? = null
     var harderExercise: Exercise? = null
     var easierExercise: Exercise? = null
@@ -25,4 +26,13 @@ class Exercise: Serializable {
         this.value = value
         this.name = name
     }
+
+    constructor(name: String?, description: String?, link: String?, difficulty: String?, unit: Unit?){
+        this.name = name
+        this.description = description
+        this.link = link
+        this.difficulty = difficulty
+        this.unit = unit
+    }
+
 }
