@@ -7,40 +7,37 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.Button
 import android.widget.ExpandableListView
-import android.widget.Toast
-import com.example.fitletics.adapters.CustomExpandableListAdapter
+import com.example.fitletics.adapters.WorkoutsExpandableListAdapter
 import com.example.fitletics.R
 import com.example.fitletics.activities.*
 import com.example.fitletics.models.Constants
 import com.example.fitletics.models.Exercise
 import com.example.fitletics.models.Workout
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.fragment_workout.*
-import java.util.*
+import com.google.firebase.firestore.SetOptions
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.reflect.typeOf
 
 
 class WorkoutFragment : Fragment() {
 
     internal var expandableListViewCode: ExpandableListView? = null
-    internal var adapter: CustomExpandableListAdapter? = null
+    internal var adapter: WorkoutsExpandableListAdapter? = null
     internal var titleList: List<String> ? = null
 
 
     val customWorkouts = ArrayList<Workout>()
+    val pendingWorkouts = ArrayList<Workout>()
 
     val tempList2: ArrayList<Exercise> = ArrayList()
 
     val data: HashMap<String, List<Workout>>
         get() {
-            val listData = HashMap<String, List<Workout>>()
 
+
+            val listData = HashMap<String, List<Workout>>()
             val tempList: ArrayList<Exercise> = ArrayList()
 
             tempList2.add(Exercise(name="Squats", value="7x"))
@@ -49,17 +46,13 @@ class WorkoutFragment : Fragment() {
             tempList2.add(Exercise(name="Stretches", value="40s"))
 
 
-            getCustomWorkouts()
-//            customWorkouts.add(Workout("First", tempList, "Easy", "20 mins"))
-//            customWorkouts.add(Workout("Deux", tempList, "Easy", "26 mins"))
-//            //Log.d("T_TEST", "ARRAY: ${customWorkouts[1].exerciseList!![0]}")
-//            customWorkouts.add(Workout("Theesra", tempList, "Medium", "82 mins"))
-//            customWorkouts.add(Workout("Last one", tempList, "Hard", "39 mins"))
+            getWorkouts()
             listData["Custom"] = customWorkouts
 
-            val pendingWorkouts = ArrayList<Workout>()
-            pendingWorkouts.add(Workout("Beginner run", tempList2, "Easy", "40 mins"))
-            pendingWorkouts.add(Workout("Try this", tempList, "Medium", "80 mins"))
+
+            //pendingWorkouts.add(Workout("Beginner run", tempList2, "Easy", "40 mins"))
+//            pendingWorkouts.add(Workout("Try this", tempList, "Medium", "80 mins"))
+            getWorkouts()
             listData["Pending"] = pendingWorkouts
 
             val savedWorkouts = ArrayList<Workout>()
@@ -70,7 +63,42 @@ class WorkoutFragment : Fragment() {
             return listData
         }
 
-    private fun getCustomWorkouts() {
+
+    var count = 0
+    private fun initializeTempButton(button: Button) {
+        button.setOnClickListener {
+            count++
+            var tempWorkoutObject = Workout(
+                name = "workout${count}",
+                exerciseList = this.tempList2,
+                difficulty = "TBD",
+                time = "TBD"
+            )
+
+            FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(Constants.CURRENT_FIREBASE_USER!!.uid)
+                .collection("Workouts")
+                .document("Pending")
+                .collection("workouts")
+                .document()
+                .set(tempWorkoutObject, SetOptions.merge())
+                .addOnSuccessListener {
+                    Log.d("WORKOUT STATUS", "Workout added to database")
+                }
+
+            adapter = WorkoutsExpandableListAdapter(
+                this.activity!!,
+                titleList as ArrayList<String>,
+                data,
+                expandableListViewCode
+            )
+            Log.d("DEBUG", "Activity: ${this.activity!!}")
+            expandableListViewCode!!.setAdapter(adapter)
+        }
+    }
+
+    private fun getWorkouts() {
         FirebaseFirestore.getInstance()
             .collection("Users")
             .document(Constants.CURRENT_FIREBASE_USER!!.uid)
@@ -83,9 +111,10 @@ class WorkoutFragment : Fragment() {
                     return@addSnapshotListener
                 }
                 if (snapshot != null && !snapshot.isEmpty) {
+                    Log.d("SNAPSHOT METADATA", "${snapshot}")
                     customWorkouts.clear()  //first clear the list
+
                     snapshot.documents.forEach {
-                        val name = it.get("name")
                         //this is cuz data is stored in an array of maps {0:{}, 1:{}}
                         val exercisesDB = it.get("exerciseList") as ArrayList<HashMap<String, Any?>>
                         val exercises: ArrayList<Exercise> = ArrayList()
@@ -101,24 +130,69 @@ class WorkoutFragment : Fragment() {
                                 description = exercise["description"].toString(),
                                 link = exercise["link"].toString(),
                                 difficulty = exercise["difficulty"].toString(),
-                                unit = unit as Exercise.Unit?
-                            )
+                                unit = unit as Exercise.Unit?)
+
                             tempExerciseObject.value = exercise["value"] as String?
                             exercises.add(tempExerciseObject)
                         }
-                        val time = it.get("time")
-                        val difficulty = it.get("difficulty")
-
-                        Log.d("EXERLISTDB", "list: ${exercises as ArrayList<Exercise>} \n type: ${exercises.toString()} \n\n}")
-                        Log.d("EXERLISTHC", "list: ${tempList2 as ArrayList<Exercise>} \n type: ${tempList2.toString()} \n\n}")
-
                         val tempWorkoutObject = Workout(
-                            name= name.toString(),
+                            name= it.get("name").toString(),
                             exerciseList= exercises,
-                            time = time.toString(),
-                            difficulty = difficulty.toString()
-                        )
-                        customWorkouts.add(tempWorkoutObject!!)
+                            time = it.get("time").toString(),
+                            difficulty = it.get("difficulty").toString())
+                        tempWorkoutObject.id=it.id
+                        Log.d("WORKOUT ID", "${tempWorkoutObject.id}")
+
+                        customWorkouts.add(tempWorkoutObject)
+                    }
+                }
+            }
+
+        FirebaseFirestore.getInstance()
+            .collection("Users")
+            .document(Constants.CURRENT_FIREBASE_USER!!.uid)
+            .collection("Workouts")
+            .document("Pending")
+            .collection("workouts")
+            .addSnapshotListener{ snapshot, e ->
+                if (e != null){
+                    Log.w("ERROR", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && !snapshot.isEmpty) {
+                    Log.d("SNAPSHOT METADATA", "${snapshot}")
+                    pendingWorkouts.clear()  //first clear the list
+
+                    snapshot.documents.forEach {
+                        //this is cuz data is stored in an array of maps {0:{}, 1:{}}
+                        val exercisesDB = it.get("exerciseList") as ArrayList<HashMap<String, Any?>>
+                        val exercises: ArrayList<Exercise> = ArrayList()
+                        for (exercise in exercisesDB){
+                            val unit =
+                                if (exercise["unit"] == Exercise.Unit.REPS)
+                                    Exercise.Unit.REPS
+                                else
+                                    Exercise.Unit.SECS   //no idea why this was necessary
+
+                            val tempExerciseObject= Exercise(
+                                name = exercise["name"].toString(),
+                                description = exercise["description"].toString(),
+                                link = exercise["link"].toString(),
+                                difficulty = exercise["difficulty"].toString(),
+                                unit = unit as Exercise.Unit?)
+
+                            tempExerciseObject.value = exercise["value"] as String?
+                            exercises.add(tempExerciseObject)
+                        }
+                        val tempWorkoutObject = Workout(
+                            name= it.get("name").toString(),
+                            exerciseList= exercises,
+                            time = it.get("time").toString(),
+                            difficulty = it.get("difficulty").toString())
+                        tempWorkoutObject.id=it.id
+                        Log.d("WORKOUT ID", "${tempWorkoutObject.id}")
+
+                        pendingWorkouts.add(tempWorkoutObject)
                     }
                 }
             }
@@ -137,6 +211,8 @@ class WorkoutFragment : Fragment() {
 
         val rootView: View = inflater.inflate(R.layout.fragment_workout, container, false)
 
+        initializeTempButton(rootView.findViewById<Button>(R.id.create_workout_button_test))  //TEMP TEST CODE *********************************
+
         /*Changes intent to create workout*/
         rootView.findViewById<Button>(R.id.create_workout_button).setOnClickListener()
         {
@@ -151,7 +227,7 @@ class WorkoutFragment : Fragment() {
         if (expandableListViewCode != null) {
             val listData = data
             titleList = ArrayList(listData.keys)
-            adapter = CustomExpandableListAdapter(
+            adapter = WorkoutsExpandableListAdapter(
                 this.activity!!,
                 titleList as ArrayList<String>,
                 listData,
@@ -179,20 +255,21 @@ class WorkoutFragment : Fragment() {
                 else {
                     intent = Intent(this.activity!!, StartWorkoutActivity::class.java)
                 }
-                var bundle: Bundle = Bundle();
-                bundle.putSerializable("Workout_ex_list",
-                    data[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition).exerciseList
-                )
+                var bundle: Bundle = Bundle().also { bundle ->
+                    bundle.putSerializable("Workout_ex_list",
+                        this.data[(this.titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition).exerciseList
+                    )
+                }
                 //Log.d("ARGS", "gp: $groupPosition, cp: $childPosition, ld[gp]: ${listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(groupPosition)}")
-                intent.putExtra("Workout_name", data[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition).name)
-                intent.putExtra("Workout_time", data[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition).time)
-                intent.putExtra("Workout_diff", data[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition).difficulty)
-                intent.putExtra("Workout_ex_list", data[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition).exerciseList )
-                startActivity(intent);
+                intent.putExtra("Workout_id", data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].id)
+                intent.putExtra("Workout_name", data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].name)
+                intent.putExtra("Workout_time", data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].time)
+                intent.putExtra("Workout_diff", data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].difficulty)
+                intent.putExtra("Workout_ex_list", data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].exerciseList )
+                startActivity(intent)
                 false
             }
         }
-
         return rootView
     }
 

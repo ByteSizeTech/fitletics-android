@@ -22,7 +22,7 @@
             android:background="@drawable/orange_box" />
 
         <TextView
-            android:id="@+id/dashboardText"
+            android:id="@+id/analytics_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -34,14 +34,16 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+        <ToggleButton
+            android:id="@+id/favorite_toggle"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="40dp"
-            android:layout_marginEnd="25dp"
-            android:src="@drawable/favorite_disabled" />
+            android:layout_marginEnd="32dp"
+            android:textOff=""
+            android:textOn=""
+            android:background="@drawable/toggle_button"/>
 
     </RelativeLayout>
 
@@ -63,11 +65,11 @@
             android:text="Calories" />
 
         <Button
-            android:id="@+id/repsButton"
+            android:id="@+id/valsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Reps" />
+            android:text="Value" />
 
         <Button
             android:id="@+id/timeButton"

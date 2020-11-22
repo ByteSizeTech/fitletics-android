@@ -14,8 +14,8 @@ import com.example.fitletics.R
 import com.example.fitletics.models.Workout
 import java.util.*
 
-class CustomExpandableListAdapter internal constructor
-    (private val context: Activity, private val titleList: List<String>, private val dataList: HashMap<String, List<Workout>>, private val exp: ExpandableListView?) : BaseExpandableListAdapter() {
+class AnalyticsExpandableListAdapter internal constructor
+    (private val context: Activity, private val titleList: List<String>, private val dataList: HashMap<String, List<String>>, private val exp: ExpandableListView?) : BaseExpandableListAdapter() {
 
 
     override fun getChild(listPosition: Int, expandedListPosition: Int): Any {
@@ -28,8 +28,8 @@ class CustomExpandableListAdapter internal constructor
 
     override fun getChildView(listPosition: Int, expandedListPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
-        val expandedListWorkout = getChild(listPosition, expandedListPosition) as Workout
-        val expandedListText = expandedListWorkout.name
+        val expandedListWorkout = getChild(listPosition, expandedListPosition).toString()
+        val expandedListText = expandedListWorkout
         if (convertView == null) {
             val layoutInflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             convertView = layoutInflater.inflate(R.layout.expandable_list_item, null)

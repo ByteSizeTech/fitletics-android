@@ -23,7 +23,7 @@
             android:background="@drawable/orange_box" />
 
         <TextView
-            android:id="@+id/dashboardText"
+            android:id="@+id/analytics_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -77,13 +77,13 @@
                             android:gravity="center_vertical">
 
                             <TextView
-                                android:id="@+id/user_name_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Test Acc"
-                                android:textColor="@color/colorSecondary"
-                                android:textSize="24sp"
-                                android:textStyle="bold" />
+                            android:id="@+id/user_name_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Test Acc"
+                            android:textColor="@color/colorSecondary"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/user_xp_text"
@@ -94,6 +94,14 @@
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/user_id_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Test Acc"
+                                android:textColor="@color/colorSecondary"
+                                android:textSize="12sp"/>
 
                         </LinearLayout>
 

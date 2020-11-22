@@ -15,6 +15,7 @@ import com.example.fitletics.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_baseline_test_ongoing.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.*
 import kotlin.collections.HashMap
@@ -37,7 +38,7 @@ class SignUpActivity : AppCompatActivity() {
 
         sign_up_button.setOnClickListener()
         {
-            signUpUser()
+            validateInfo()
         }
 
         auth = FirebaseAuth.getInstance()
@@ -64,7 +65,7 @@ class SignUpActivity : AppCompatActivity() {
             val datePicker = DatePickerDialog(this,
                 DatePickerDialog.OnDateSetListener{
                         view, mYear, mMonth, mDay ->
-                    DOB_text_signup.setText(" $mDay / ${mMonth+1} / $mYear")
+                    DOB_text_signup.setText(" $mDay/${mMonth+1}/$mYear")
                     //userDOB?.set(mYear, mMonth+1, mDay)
                     userDOB = " $mDay / ${mMonth+1} / $mYear"
             }, year, month, day)
@@ -73,11 +74,39 @@ class SignUpActivity : AppCompatActivity() {
 
     }
 
-    private fun signUpUser(){
-
+    private fun validateInfo(){
         //Data Validation
+        if (userID_edit_text.text.toString().isEmpty()) {
+            userID_edit_text.error = "Please enter a user ID!"
+            userID_edit_text.requestFocus()
+            return
+        }
+
+        var canContinue: Boolean = true
+
+        FirebaseFirestore.getInstance()
+            .collection("Users")
+            .whereEqualTo("userID", userID_edit_text.text.toString())
+            .get()
+            .addOnCompleteListener { task ->
+                Log.d("SIMILAR_ID", "result before if: ${task.result!!.size()} and canContinue: $canContinue")
+                if (task.result!!.size() != 0) {
+                    Log.d("SIMILAR_ID","result after if: ${task.result!!.size()}, and canContinue: $canContinue"
+                    )
+                    canContinue = false
+                    userID_edit_text.error = "Username is taken!"
+                    userID_edit_text.requestFocus()
+                }
+
+                if (canContinue) {
+                    Log.d("SIMILAR_ID", "can proceed to signup!")
+                    signUpUser()
+                }
+//
+            }
+
         if (name_edit_text.text.toString().isEmpty()) {
-            name_edit_text.error = "Please enter a name!"
+            name_edit_text.error = "Please enter a name, and canContinue: $canContinue"
             name_edit_text.requestFocus()
             return
         }
@@ -122,8 +151,9 @@ class SignUpActivity : AppCompatActivity() {
             gender_spinner_signup.requestFocus()
             return
         }
+    }
 
-        /*==========================END OF DATA VALIDATION=================================*/
+    private fun signUpUser(){
 
         //User Sign up
         auth.createUserWithEmailAndPassword(email_edit_text_signup.text.toString(), re_enter_passowrd_edit_text_signup.text.toString())
@@ -132,6 +162,7 @@ class SignUpActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
 
                     val newUser: User = User(
+                        userID = userID_edit_text.text.toString(),
                         name = name_edit_text.text.toString(),
                         email = email_edit_text_signup.text.toString(),
                         DOB = userDOB,
@@ -163,8 +194,8 @@ class SignUpActivity : AppCompatActivity() {
                     FirebaseFirestore.getInstance()
                         .collection("Users")
                         .document(Constants.CURRENT_FIREBASE_USER!!.uid)
-                        .collection("Details")
-                        .document("details")
+//                        .collection("Details")
+//                        .document("details")
                         .set(newUser)
                         .addOnSuccessListener {
                             Log.d("FB_SIGNUP", "createUserWithEmail:success")

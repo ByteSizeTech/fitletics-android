@@ -84,7 +84,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/stat_reps"
+            android:id="@+id/stat_val"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
@@ -94,6 +94,7 @@
             android:textSize="30sp" />
 
         <TextView
+            android:id="@+id/stat_val_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"

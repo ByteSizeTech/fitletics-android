@@ -1,6 +1,7 @@
 package com.example.fitletics.activities
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        window.navigationBarColor = resources.getColor(R.color.tabColor)
 
         setupTabs()
         setupFab()

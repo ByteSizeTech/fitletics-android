@@ -8,48 +8,65 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ExpandableListView
-import com.example.fitletics.adapters.CustomExpandableListAdapter
 import com.example.fitletics.R
 import com.example.fitletics.activities.DetailedAnalyticsActivity
+import com.example.fitletics.adapters.AnalyticsExpandableListAdapter
+import com.example.fitletics.models.Constants
 import com.example.fitletics.models.Exercise
-import com.example.fitletics.models.Workout
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class AnalyticsFragment : Fragment() {
 
     internal var expandableListViewCode: ExpandableListView? = null
-    internal var adapter: CustomExpandableListAdapter? = null
+    internal var adapter: AnalyticsExpandableListAdapter? = null
     internal var titleList: List<String> ? = null
 
-    val data: HashMap<String, List<Workout>>
+    val exercisesList = ArrayList<String>()
+
+    val data: HashMap<String, List<String>>
         get() {
-            val listData = HashMap<String, List<Workout>>()
+            val listData = HashMap<String, List<String>>()
 
             val tempList: ArrayList<Exercise> = ArrayList()
 
-            val categoriesList = ArrayList<Workout>()
-            categoriesList.add(Workout("Arms", tempList, "easy", "20 mins"))
-            categoriesList.add(Workout("Legs", tempList, "easy", "20 mins"))
-            categoriesList.add(Workout("Core", tempList, "easy", "20 mins"))
+            val categoriesList = ArrayList<String>()
+            categoriesList.add("Upper Body")
+            categoriesList.add("Core")
+            categoriesList.add("Lower Body")
             listData["Categories"] = categoriesList
 
-            val exercisesList = ArrayList<Workout>()
-            exercisesList.add(Workout("Pushups", tempList, "easy", "20 mins"))
-            exercisesList.add(Workout("Pullups", tempList, "easy", "20 mins"))
-            exercisesList.add(Workout("Squats", tempList, "easy", "20 mins"))
-            exercisesList.add(Workout("Lunges", tempList, "easy", "20 mins"))
-            exercisesList.add(Workout("Crunches", tempList, "easy", "20 mins"))
-            exercisesList.add(Workout("Plank", tempList, "easy", "20 mins"))
-            exercisesList.add(Workout("Burpees", tempList, "easy", "20 mins"))
-            exercisesList.add(Workout("Jumping Jacks", tempList, "easy", "20 mins"))
+            getExerciseAnalyticsKeys()
+
+
+//            exercisesList.add(Workout("Pushups", tempList, "easy", "20 mins"))
             listData["Exercises"] = exercisesList
 
             return listData
         }
 
+    private fun getExerciseAnalyticsKeys() {
+        FirebaseFirestore.getInstance()
+            .collection("Users")
+            .document(Constants.CURRENT_FIREBASE_USER!!.uid)
+            .collection("Analytics")
+            .addSnapshotListener{snapshot, e ->
+                if (e != null){
+                    Log.w("ERROR", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && !snapshot.isEmpty) {
+                    exercisesList.clear()  //first clear the list
+
+                    snapshot.documents.forEach {
+                        exercisesList.add(it.id)
+                    }
+                }
+            }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -64,7 +81,7 @@ class AnalyticsFragment : Fragment() {
         if (expandableListViewCode != null) {
             val listData = data
             titleList = ArrayList(listData.keys)
-            adapter = CustomExpandableListAdapter(
+            adapter = AnalyticsExpandableListAdapter(
                 this.activity!!,
                 titleList as ArrayList<String>,
                 listData,
@@ -83,6 +100,7 @@ class AnalyticsFragment : Fragment() {
 //
             expandableListViewCode!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
                 val intent = Intent(this.activity!!, DetailedAnalyticsActivity::class.java)
+                intent.putExtra("Analytic name", data[(titleList as ArrayList<String>)[groupPosition]]!![childPosition])
                 startActivity(intent)
                 false
             }

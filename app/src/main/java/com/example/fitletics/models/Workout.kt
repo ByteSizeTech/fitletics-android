@@ -4,6 +4,7 @@ import java.io.Serializable
 
 class Workout : Serializable {
 
+    var id: String? = null
     var name: String? = null
     var exerciseList: ArrayList<Exercise>? = null
     var difficulty: String? = null

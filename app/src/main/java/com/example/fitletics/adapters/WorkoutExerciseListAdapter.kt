@@ -8,13 +8,14 @@ import android.widget.TextView
 import com.example.fitletics.R
 import com.example.fitletics.models.Exercise
 
-class WorkoutExerciseListAdapter(private val context: Activity,  private val arrayList: ArrayList<Exercise>) : BaseAdapter()  {
+class WorkoutExerciseListAdapter(private val context: Activity,
+                                 private val arrayList: ArrayList<Exercise>) : BaseAdapter()  {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
-        var inflater = context.layoutInflater
-        var view = inflater.inflate(R.layout.workout_list_element, null)
+        val inflater = context.layoutInflater
+        val view = inflater.inflate(R.layout.workout_list_element, null)
 
-        var statText = view.findViewById<TextView>(R.id.statText)
-        var exerciseNameText = view.findViewById<TextView>(R.id.exerciseNameText)
+        val statText = view.findViewById<TextView>(R.id.statText)
+        val exerciseNameText = view.findViewById<TextView>(R.id.exerciseNameText)
 
         statText.text = arrayList[p0].value
         exerciseNameText.text = arrayList[p0].name

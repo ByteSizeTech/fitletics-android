@@ -122,6 +122,17 @@
         app:layout_constraintEnd_toEndOf="@+id/textView5"
         app:layout_constraintStart_toStartOf="@+id/textView5" />
 
+    <ImageView
+        android:id="@+id/create_workout_send_workout"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toEndOf="@+id/workout_title_text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/share_icon" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

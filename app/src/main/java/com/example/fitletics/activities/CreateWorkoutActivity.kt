@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
@@ -36,6 +37,8 @@ class CreateWorkoutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_workout)
+
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         //populate firebase with exercises (preferebly JSON so easy to edit)
         //replace w spinner (make spinner accept exercises)
@@ -139,7 +142,6 @@ class CreateWorkoutActivity : AppCompatActivity() {
 
     private fun doneButton(){
         create_workout_done_button.setOnClickListener {
-
             var tempWorkoutObject = Workout(
                 name= workout_title_text.text.toString(),
                 exerciseList= this.createdExerciseList,

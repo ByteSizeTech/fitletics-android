@@ -8,6 +8,7 @@ class User {
         ENDOMORPHIC, ECTOMORPHIC, MESOMORPHIC
     }
 
+    var userID: String? = null
     var name: String? = null
     var email: String? = null
     var DOB: String? = null
@@ -18,6 +19,7 @@ class User {
     var bodyType: BodyType? = null
 
     constructor(){
+        userID= "NO ID"
         name = "NO NAME"
         email = "NO EMAIL"
         DOB = "NO DOB"
@@ -27,6 +29,7 @@ class User {
     }
 
     constructor(
+        userID: String?,
         name: String?,
         email: String?,
         DOB: String?,
@@ -34,6 +37,7 @@ class User {
         weight: Int?,
         height: Int?
     ) {
+        this.userID = userID
         this.name = name
         this.email = email
         this.DOB = DOB
