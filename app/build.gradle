@@ -59,6 +59,16 @@ dependencies {
     //graph-view
     implementation 'com.jjoe64:graphview:4.2.2'
 
+    //Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.1"
+
+    //sockets.io
+    implementation 'com.github.nkzawa:socket.io-client:0.6.0'
+
+    //work-runtime
+    implementation "androidx.work:work-runtime-ktx:2.4.0"
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 

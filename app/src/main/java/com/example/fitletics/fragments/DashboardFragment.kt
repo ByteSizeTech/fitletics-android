@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.GridView
+import android.widget.Toast
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import com.example.fitletics.R
+import com.example.fitletics.activities.ConnectPCQRActivity
 import com.example.fitletics.activities.DetailedAnalyticsActivity
 import com.example.fitletics.adapters.DashboardAnalyticsAdapter
 import com.example.fitletics.models.Constants
@@ -71,7 +73,32 @@ class DashboardFragment : Fragment() {
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
-                    Constants.CURRENT_USER = snapshot.toObject(User::class.java)
+                    val userID = snapshot.data?.get("userID") as String
+                    val name = snapshot.data?.get("name") as String
+                    val email = snapshot.data?.get("email") as String
+                    val gender = snapshot.data?.get("gender") as String
+                    val DOB = snapshot.data?.get("dob") as String
+                    val weight = snapshot.data?.get("weight") as Long
+                    val height = snapshot.data?.get("height") as Long
+                    val bodyTypefromDB = snapshot.data?.get("bodyType") as String?
+
+                    var bodyType: User.BodyType? = null
+                    when(bodyTypefromDB){
+                        "ENDOMORPHIC" -> bodyType = User.BodyType.ENDOMORPHIC
+                        "ECTOMORPHIC" -> bodyType = User.BodyType.ECTOMORPHIC
+                        "MESOMORPHIC" -> bodyType = User.BodyType.MESOMORPHIC
+                        null -> bodyType = User.BodyType.MESOMORPHIC
+                    }
+                    Constants.CURRENT_USER = User(
+                        userID,
+                        name,
+                        email,
+                        DOB,
+                        gender,
+                        weight.toInt(),
+                        height.toInt(),
+                        bodyType
+                    )
                     setupUserDetails()
                 }
             }
@@ -115,7 +142,7 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setDataList(){
-        arrayList?.add(DashboardAnalyticsItem("Walking Distance", "0 steps", R.color.color1 ))
+        arrayList?.add(DashboardAnalyticsItem("Steps Walked", Constants.STEP_COUNT, R.color.color1 ))
         arrayList?.add(DashboardAnalyticsItem("Calories Burned", "0 Kcal", R.color.color2))
         arrayList?.add(DashboardAnalyticsItem("Workout Duration", "0 mins", R.color.color3))
         getDatabaseFavoriteAnalytics()

@@ -14,6 +14,7 @@ import com.example.fitletics.R
 import com.example.fitletics.activities.*
 import com.example.fitletics.models.Constants
 import com.example.fitletics.models.Exercise
+import com.example.fitletics.models.WebsiteSession
 import com.example.fitletics.models.Workout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -33,11 +34,11 @@ class WorkoutFragment : Fragment() {
 
     val tempList2: ArrayList<Exercise> = ArrayList()
 
-    val data: HashMap<String, List<Workout>>
+    val data: LinkedHashMap<String, List<Workout>>
         get() {
 
 
-            val listData = HashMap<String, List<Workout>>()
+            val listData = LinkedHashMap<String, List<Workout>>()
             val tempList: ArrayList<Exercise> = ArrayList()
 
             tempList2.add(Exercise(name="Squats", value="7x"))
@@ -47,22 +48,23 @@ class WorkoutFragment : Fragment() {
 
 
             getWorkouts()
-            listData["Custom"] = customWorkouts
-
 
             //pendingWorkouts.add(Workout("Beginner run", tempList2, "Easy", "40 mins"))
 //            pendingWorkouts.add(Workout("Try this", tempList, "Medium", "80 mins"))
-            getWorkouts()
-            listData["Pending"] = pendingWorkouts
+//            getWorkouts()
 
             val savedWorkouts = ArrayList<Workout>()
-            savedWorkouts.add(Workout("Arms Beginner", tempList, "Hard", "120 mins"))
-            savedWorkouts.add(Workout("Core Beginner", tempList, "Easy", "20 mins"))
-            listData["Saved"] = savedWorkouts
+            savedWorkouts.add(Workout("Full Body", tempList, "Hard", "120 mins"))
+            savedWorkouts.add(Workout("Upper Body", tempList, "Easy", "20 mins"))
+            savedWorkouts.add(Workout("Core", tempList, "Hard", "120 mins"))
+            savedWorkouts.add(Workout("Lower Body", tempList, "Hard", "120 mins"))
+
+            listData["Standard"] = savedWorkouts
+            listData["Custom"] = customWorkouts
+            listData["Pending"] = pendingWorkouts
 
             return listData
         }
-
 
     var count = 0
     private fun initializeTempButton(button: Button) {
@@ -248,25 +250,30 @@ class WorkoutFragment : Fragment() {
 //                Toast.makeText(this.activity?.applicationContext, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<Workout>)[groupPosition]]!!.get(childPosition),
 //                    Toast.LENGTH_SHORT).show()
                 Log.d("WTF IS THIS?", "It is: ${(titleList as ArrayList<String>)[groupPosition]}")
-                var intent: Intent
+                val intent: Intent
+                val intentClass: Class<*>
                 if ((titleList as ArrayList<String>)[groupPosition] == "Pending") {
                     intent = Intent(this.activity!!, SharedWorkoutActivity::class.java)
+                    intentClass = SharedWorkoutActivity::class.java
                 }
                 else {
                     intent = Intent(this.activity!!, StartWorkoutActivity::class.java)
+                    intentClass = StartWorkoutActivity::class.java
                 }
-                var bundle: Bundle = Bundle().also { bundle ->
-                    bundle.putSerializable("Workout_ex_list",
-                        this.data[(this.titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition).exerciseList
-                    )
-                }
-                //Log.d("ARGS", "gp: $groupPosition, cp: $childPosition, ld[gp]: ${listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(groupPosition)}")
-                intent.putExtra("Workout_id", data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].id)
-                intent.putExtra("Workout_name", data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].name)
-                intent.putExtra("Workout_time", data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].time)
-                intent.putExtra("Workout_diff", data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].difficulty)
-                intent.putExtra("Workout_ex_list", data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].exerciseList )
-                startActivity(intent)
+                val tempWorkout = Workout(
+                    id = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].id,
+                    name = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].name,
+                    exerciseList = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].exerciseList!!,
+                    difficulty = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].difficulty,
+                    time = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].time
+                )
+
+                WebsiteSession(this.activity!!, intentClass, tempWorkout);
+
+
+//                intent.putExtra("Workout_object", tempWorkout)
+
+//                startActivity(intent)
                 false
             }
         }

@@ -45,4 +45,48 @@ class User {
         this.weight = weight
         this.height = height
     }
+
+    constructor(
+        userID: String?,
+        name: String?,
+        email: String?,
+        DOB: String?,
+        gender: String?,
+        weight: Int?,
+        height: Int?,
+        bodyType: String?
+    ) {
+        this.userID = userID
+        this.name = name
+        this.email = email
+        this.DOB = DOB
+        this.gender = gender
+        this.weight = weight
+        this.height = height
+        when(bodyType){
+            "ENDOMORPHIC" -> this.bodyType = BodyType.ENDOMORPHIC
+            "ECTOMORPHIC" -> this.bodyType = BodyType.ECTOMORPHIC
+            "MESOMORPHIC" -> this.bodyType = BodyType.MESOMORPHIC
+        }
+    }
+
+    constructor(
+        userID: String?,
+        name: String?,
+        email: String?,
+        DOB: String?,
+        gender: String?,
+        weight: Int?,
+        height: Int?,
+        bodyType: BodyType?
+    ) {
+        this.userID = userID
+        this.name = name
+        this.email = email
+        this.DOB = DOB
+        this.gender = gender
+        this.weight = weight
+        this.height = height
+        this.bodyType = bodyType
+    }
 }

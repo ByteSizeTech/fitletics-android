@@ -1,6 +1,8 @@
 package com.example.fitletics.models
 
-class Muscle {
+import java.io.Serializable
+
+class Muscle : Serializable {
 
     var name: String? = null
     var maleIntensity: Int? = null
@@ -10,5 +12,9 @@ class Muscle {
         this.name = name
         this.maleIntensity = maleIntensity
         this.femaleIntensity = femaleIntensity
+    }
+
+    fun getDBFriendlyResult(){
+
     }
 }

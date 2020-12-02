@@ -35,4 +35,15 @@ class Exercise: Serializable {
         this.unit = unit
     }
 
+    fun getDBFriendlyResult(): Map<String, Any?> {
+        return mapOf<String, Any?>(
+            "value" to this.value,
+            "name" to this.name,
+            "unit" to this.unit.toString(),
+            "difficulty" to this.difficulty,
+            "description" to this.description,
+            "link" to this.link
+        )
+    }
+
 }

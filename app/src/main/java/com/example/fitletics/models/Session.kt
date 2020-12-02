@@ -10,6 +10,7 @@ class Session {
     var timeTaken: Float? = null
     var dateCompleted: Date? = null
     var caloriesBurned: Float? = null
+    //it was decided that each index of the hasmap would correspond to the completed stat
     var muscleGroupExersion: HashMap<String, Int>? = null
     var CompletedStats: ArrayList<ExerciseStat>? = null
 

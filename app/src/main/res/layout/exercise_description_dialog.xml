@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/exercise_name_e_desc_text"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:text="Body-weight Squats"
+        android:textColor="@color/colorSecondary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/exercise_description_e_desc_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:text="The bodyweight squat is a lower body strengthening exercise that can be performed virtually anywhere with no equipment and limited space. It's a highly functional movement working all the major muscles of the legs"
+        android:textColor="#737373"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exercise_name_e_desc_text" />
+
+    <TextView
+        android:id="@+id/watch_video_e_desc_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:linksClickable="true"
+        android:padding="25dp"
+        android:text=""
+        android:textColor="#0000EE "
+        android:textColorLink="#0000EE "
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/cancel_e_desc_button"
+        app:layout_constraintTop_toBottomOf="@+id/exercise_description_e_desc_text" />
+
+    <TextView
+        android:id="@+id/cancel_e_desc_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:padding="25dp"
+        android:text="Cancel"
+        android:textColor="#d13737"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exercise_description_e_desc_text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
