@@ -1,5 +1,6 @@
 package com.example.fitletics.dialogs
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Html
 import android.text.method.LinkMovementMethod
@@ -9,27 +10,55 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.fitletics.R
-import com.example.fitletics.models.Exercise
+import com.example.fitletics.activities.ActiveSessionActivity
+import com.example.fitletics.models.utils.WebsiteSession
 import kotlinx.android.synthetic.main.exercise_description_dialog.view.*
 
-class ExerciseDescriptionDialog(val exercise: Exercise? ): DialogFragment() {
+class ExerciseDescriptionDialog(
+//    val exercise: Exercise?
+    val ctx: Context,
+    val title: String,
+    val body: String?,
+    val positive: String,
+    val negative: String,
+    val isExerciseDescription: Boolean
+): DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         var rootView: View = inflater.inflate(R.layout.exercise_description_dialog, container, false)
 
-        val name = rootView.findViewById<TextView>(R.id.exercise_name_e_desc_text)
-        val description = rootView.findViewById<TextView>(R.id.exercise_description_e_desc_text)
-        val link = rootView.findViewById<TextView>(R.id.watch_video_e_desc_button)
+        val titleTextView = rootView.findViewById<TextView>(R.id.exercise_name_e_desc_text)
+        val bodyTextView = rootView.findViewById<TextView>(R.id.exercise_description_e_desc_text)
+        val positiveTextView = rootView.findViewById<TextView>(R.id.watch_video_e_desc_button)
+        val negativeTextView = rootView.findViewById<TextView>(R.id.cancel_e_desc_button)
 
-        name.text = exercise?.name
-        description.text = exercise?.description
-        val weblink = exercise?.link
-
-        link.append(Html.fromHtml("<a href=\"$weblink\">Watch video</a>"));
-        link.movementMethod = LinkMovementMethod.getInstance();
+        titleTextView.text = title
+        bodyTextView.text = body
+        negativeTextView.text = negative
+//
+//        name.text = exercise?.name
+//        description.text = exercise?.description
+//        val weblink = exercise?.link
+//
+        if (isExerciseDescription) {
+            positiveTextView.append(Html.fromHtml("<a href=\"$positive\">Watch video</a>"));
+            positiveTextView.movementMethod = LinkMovementMethod.getInstance();
+        }
+        else{
+            positiveTextView.text = positive
+            positiveTextView.setOnClickListener {
+                WebsiteSession(
+                    ctx,
+                    ActiveSessionActivity::class.java,
+                    null
+                );
+                dismiss()
+            }
+        }
 
         rootView.cancel_e_desc_button.setOnClickListener{
             dismiss()

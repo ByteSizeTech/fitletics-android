@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/session_current_rep_tv"
+        android:id="@+id/session_current_rep_tv2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
@@ -19,7 +19,7 @@
         android:textStyle="bold" />
 
     <View
-        android:id="@+id/session_rep_divider_view"
+        android:id="@+id/session_rep_divider_view2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="72dp"
@@ -28,7 +28,7 @@
         android:background="#ffffff" />
 
     <TextView
-        android:id="@+id/session_total_rep_tv"
+        android:id="@+id/session_total_rep_tv2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"

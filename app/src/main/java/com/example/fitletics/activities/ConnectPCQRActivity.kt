@@ -14,8 +14,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.util.isNotEmpty
 import com.example.fitletics.R
-import com.example.fitletics.models.WebsiteSession
-import com.example.fitletics.models.Workout
+import com.example.fitletics.models.utils.WebsiteSession
+import com.example.fitletics.models.support.Workout
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode

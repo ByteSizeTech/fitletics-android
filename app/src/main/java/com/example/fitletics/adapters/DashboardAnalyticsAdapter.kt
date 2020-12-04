@@ -8,7 +8,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.example.fitletics.R
-import com.example.fitletics.models.DashboardAnalyticsItem
+import com.example.fitletics.models.misc.DashboardAnalyticsItem
 
 class DashboardAnalyticsAdapter(var context: Context, var arrayList: ArrayList<DashboardAnalyticsItem>) :BaseAdapter() {
 

@@ -1,8 +1,10 @@
-package com.example.fitletics.models
+package com.example.fitletics.models.misc
 
-class FavoriteAnalytic {
+import android.graphics.Color
 
-    var title: String? = null
+class DashboardAnalyticsItem {
+
+    var title: String ? = null
     var stat: String? = null
     var color: Int? = null
 

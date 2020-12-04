@@ -6,18 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.GridView
-import android.widget.Toast
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import com.example.fitletics.R
-import com.example.fitletics.activities.ConnectPCQRActivity
 import com.example.fitletics.activities.DetailedAnalyticsActivity
 import com.example.fitletics.adapters.DashboardAnalyticsAdapter
-import com.example.fitletics.models.Constants
-import com.example.fitletics.models.DashboardAnalyticsItem
-import com.example.fitletics.models.User
+import com.example.fitletics.models.support.Constants
+import com.example.fitletics.models.misc.DashboardAnalyticsItem
+import com.example.fitletics.models.support.User
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.analytics_dashboard_card.view.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
@@ -28,6 +24,7 @@ class DashboardFragment : Fragment() {
     private var arrayList: ArrayList<DashboardAnalyticsItem>? = null
     private var gridView: GridView? = null
     private var dashboardAnalyticsAdapter: DashboardAnalyticsAdapter? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,16 +86,17 @@ class DashboardFragment : Fragment() {
                         "MESOMORPHIC" -> bodyType = User.BodyType.MESOMORPHIC
                         null -> bodyType = User.BodyType.MESOMORPHIC
                     }
-                    Constants.CURRENT_USER = User(
-                        userID,
-                        name,
-                        email,
-                        DOB,
-                        gender,
-                        weight.toInt(),
-                        height.toInt(),
-                        bodyType
-                    )
+                    Constants.CURRENT_USER =
+                        User(
+                            userID,
+                            name,
+                            email,
+                            DOB,
+                            gender,
+                            weight.toInt(),
+                            height.toInt(),
+                            bodyType
+                        )
                     setupUserDetails()
                 }
             }
@@ -128,10 +126,14 @@ class DashboardFragment : Fragment() {
                     workout.data?.entries?.forEach { value ->
                         if(value.key == "favorite"){
                             if (value.value as Boolean) {
-                                arrayList?.add(DashboardAnalyticsItem(
-                                    workout.id,
-                                    (workout.data as Map<String, List<Map<String, String>>>)["analytics"]?.last()?.get("value"),
-                                    R.color.color1 ))
+                                arrayList?.add(
+                                    DashboardAnalyticsItem(
+                                        workout.id,
+                                        (workout.data as Map<String, List<Map<String, String>>>)["analytics"]?.last()
+                                            ?.get("value"),
+                                        R.color.color1
+                                    )
+                                )
                             }
                         }
                     }
@@ -142,9 +144,27 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setDataList(){
-        arrayList?.add(DashboardAnalyticsItem("Steps Walked", Constants.STEP_COUNT, R.color.color1 ))
-        arrayList?.add(DashboardAnalyticsItem("Calories Burned", "0 Kcal", R.color.color2))
-        arrayList?.add(DashboardAnalyticsItem("Workout Duration", "0 mins", R.color.color3))
+        arrayList?.add(
+            DashboardAnalyticsItem(
+                "Steps Walked",
+                Constants.STEP_COUNT,
+                R.color.color1
+            )
+        )
+        arrayList?.add(
+            DashboardAnalyticsItem(
+                "Calories Burned",
+                "0 Kcal",
+                R.color.color2
+            )
+        )
+        arrayList?.add(
+            DashboardAnalyticsItem(
+                "Workout Duration",
+                "0 mins",
+                R.color.color3
+            )
+        )
         getDatabaseFavoriteAnalytics()
     }
 

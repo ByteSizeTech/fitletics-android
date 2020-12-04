@@ -1,0 +1,102 @@
+FUNCTION_BLOCK mesomorph
+
+//defining input and output vars
+VAR_INPUT
+	UpperBodyScore: REAL;
+	LowerBodyScore: REAL;
+	CoreScore: REAL;
+END_VAR
+
+VAR_OUTPUT
+	UpperPriority: REAL;
+	LowerPriority: REAL;
+	CorePriority: REAL;
+	FullBodyPriority: REAL;
+END_VAR
+
+
+//setting linguistic terms for fuzzification
+FUZZIFY UpperBodyScore
+	TERM low := gauss 0 1.769;
+	TERM medium := gauss 5 1.769;
+	TERM high := gauss 10 1.769;
+END_FUZZIFY
+
+FUZZIFY LowerBodyScore
+	TERM low := gauss 0 1.769;
+	TERM medium := gauss 5 1.769;
+	TERM high := gauss 10 1.769;
+END_FUZZIFY
+
+FUZZIFY CoreScore
+	TERM low := gauss 0 1.769;
+	TERM medium := gauss 5 1.769;
+	TERM high := gauss 10 1.769;
+END_FUZZIFY
+
+
+//setting linguistic terms for defuzzification
+DEFUZZIFY UpperPriority
+	TERM low := gbell 0.2083 2.5 0;
+	TERM medium := gbell 0.2083 2.5 0.5;
+	TERM high := gbell 0.2083 2.5 1;
+	METHOD: COG;
+	DEFAULT:= 0;
+	RANGE:= (0 .. 1);
+END_DEFUZZIFY
+
+DEFUZZIFY LowerPriority
+	TERM low := gbell 0.2083 2.5 0;
+	TERM medium := gbell 0.2083 2.5 0.5;
+	TERM high := gbell 0.2083 2.5 1;
+	METHOD: COG;
+	DEFAULT:= 0;
+	RANGE:= (0 .. 1);
+END_DEFUZZIFY
+
+DEFUZZIFY CorePriority
+	TERM low := gbell 0.2083 2.5 0;
+	TERM medium := gbell 0.2083 2.5 0.5;
+	TERM high := gbell 0.2083 2.5 1;
+	METHOD: COG;
+	DEFAULT:= 0;
+	RANGE:= (0 .. 1);
+END_DEFUZZIFY
+
+DEFUZZIFY FullBodyPriority
+	TERM low := gbell 0.2083 2.5 0;
+	TERM medium := gbell 0.2083 2.5 0.5;
+	TERM high := gbell 0.2083 2.5 1;
+	METHOD: COG;
+	DEFAULT:= 0;
+	RANGE:= (0 .. 1);
+END_DEFUZZIFY
+
+
+//settings the rules
+RULEBLOCK set1
+	AND : MIN;
+	ACT: MIN;
+	ACCU : MAX;
+
+	RULE 1 : IF (UpperBodyScore IS low AND LowerBodyScore IS low) AND CoreScore IS low THEN UpperPriority IS low, LowerPriority IS low, CorePriority IS low, FullBodyPriority IS high;
+	RULE 2 : IF (UpperBodyScore IS medium AND LowerBodyScore IS medium) AND CoreScore IS medium THEN UpperPriority IS low, LowerPriority IS low, CorePriority IS low, FullBodyPriority IS high;
+	RULE 3 : IF (UpperBodyScore IS high AND LowerBodyScore IS high) AND CoreScore IS high THEN UpperPriority IS low, LowerPriority IS low, CorePriority IS low, FullBodyPriority IS high;
+	RULE 4 : IF (UpperBodyScore IS low AND LowerBodyScore IS medium) AND CoreScore IS medium THEN UpperPriority IS high, LowerPriority IS low, CorePriority IS low, FullBodyPriority IS medium;
+	RULE 5 : IF (UpperBodyScore IS low AND LowerBodyScore IS high) AND CoreScore IS high THEN UpperPriority IS high, LowerPriority IS low, CorePriority IS low, FullBodyPriority IS low;
+	RULE 6 : IF (UpperBodyScore IS medium AND LowerBodyScore IS high) AND CoreScore IS high THEN UpperPriority IS high, LowerPriority IS low, CorePriority IS low, FullBodyPriority IS medium;
+	RULE 7 : IF (UpperBodyScore IS medium AND LowerBodyScore IS low) AND CoreScore IS low THEN UpperPriority IS low, LowerPriority IS high, CorePriority IS high, FullBodyPriority IS medium;
+	RULE 8 : IF (UpperBodyScore IS high AND LowerBodyScore IS low) AND CoreScore IS low THEN UpperPriority IS low, LowerPriority IS medium, CorePriority IS high, FullBodyPriority IS low;
+	RULE 9 : IF (UpperBodyScore IS high AND LowerBodyScore IS medium) AND CoreScore IS low THEN UpperPriority IS low, LowerPriority IS low, CorePriority IS high, FullBodyPriority IS low;
+	RULE 10 : IF (UpperBodyScore IS high AND LowerBodyScore IS low) AND CoreScore IS medium THEN UpperPriority IS low, LowerPriority IS high, CorePriority IS medium, FullBodyPriority IS low;
+	RULE 11 : IF (UpperBodyScore IS low AND LowerBodyScore IS low) AND CoreScore IS high THEN UpperPriority IS high, LowerPriority IS medium, CorePriority IS low, FullBodyPriority IS low;
+	RULE 12 : IF (UpperBodyScore IS medium AND LowerBodyScore IS medium) AND CoreScore IS high THEN UpperPriority IS high, LowerPriority IS high, CorePriority IS low, FullBodyPriority IS medium;
+	RULE 13 : IF (UpperBodyScore IS medium AND LowerBodyScore IS high) AND CoreScore IS low THEN UpperPriority IS high, LowerPriority IS low, CorePriority IS low, FullBodyPriority IS medium;
+	RULE 14 : IF (UpperBodyScore IS medium AND LowerBodyScore IS high) AND CoreScore IS medium THEN UpperPriority IS medium, LowerPriority IS low, CorePriority IS high, FullBodyPriority IS low;
+	RULE 15 : IF (UpperBodyScore IS medium AND LowerBodyScore IS low) AND CoreScore IS high THEN UpperPriority IS low, LowerPriority IS high, CorePriority IS low, FullBodyPriority IS low;
+	RULE 16 : IF (UpperBodyScore IS low AND LowerBodyScore IS medium) AND CoreScore IS high THEN UpperPriority IS high, LowerPriority IS low, CorePriority IS low, FullBodyPriority IS low;
+
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

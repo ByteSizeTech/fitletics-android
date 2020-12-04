@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ActiveSessionActivity"></activity>
+        <activity android:name=".activities.StartStandardWorkoutActivity"></activity>
+        <activity android:name=".activities.ActiveSessionActivity" />
         <activity android:name=".activities.CreateWorkoutActivity" />
         <activity android:name=".activities.SharedWorkoutActivity" />
         <activity android:name=".activities.DetailedAnalyticsActivity" />
@@ -31,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.StartWorkoutActivity" />
+        <activity android:name=".activities.StartCustomWorkoutActivity" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.BAnalysisCompleteActivity" />
         <activity android:name=".activities.BAnalysisOngoingActivity" />

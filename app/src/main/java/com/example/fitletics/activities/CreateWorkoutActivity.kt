@@ -11,10 +11,10 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.example.fitletics.R
 import com.example.fitletics.adapters.WorkoutExerciseListAdapter
-import com.example.fitletics.models.Constants
-import com.example.fitletics.models.Exercise
-import com.example.fitletics.models.User
-import com.example.fitletics.models.Workout
+import com.example.fitletics.models.support.Constants
+import com.example.fitletics.models.support.Exercise
+import com.example.fitletics.models.support.Muscle
+import com.example.fitletics.models.support.Workout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -22,8 +22,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.android.synthetic.main.activity_create_workout.*
-import kotlinx.android.synthetic.main.activity_sign_up.*
-import com.example.fitletics.activities.CreateWorkoutActivity as CreateWorkoutActivity
 
 class CreateWorkoutActivity : AppCompatActivity() {
 
@@ -33,6 +31,8 @@ class CreateWorkoutActivity : AppCompatActivity() {
 
     private var listView: ListView? = null
     private var listAdapter: WorkoutExerciseListAdapter? = null
+
+    private val TAG = "CREATE_WORKOUT_ACT"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,14 +82,41 @@ class CreateWorkoutActivity : AppCompatActivity() {
                         val difficulty = exercise.child("difficulty").value
                         val link = exercise.child("link").value
                         val unit = exercise.child("unit").getValue(Exercise.Unit::class.java)
-                        val tempExerciseObject= Exercise(
-                            name = name.toString(),
-                            description = description.toString(),
-                            link = link.toString(),
-                            difficulty = difficulty.toString(),
-                            unit = unit
-                        )
-                        Log.d("EXERCISE LIST",
+
+                        val targetedMuscles: ArrayList<Muscle>? = ArrayList();
+                        for (i  in 0..2){
+                            val muscleName =  exercise.child("targeted_muscle").child(i.toString()).child("name").value.toString()
+                            val male_exer =  Integer.parseInt(exercise.child("targeted_muscle").child(i.toString()).child("male_exer").value.toString())
+                            val fem_exer =  Integer.parseInt(exercise.child("targeted_muscle").child(i.toString()).child("fem_exer").value.toString())
+
+                            targetedMuscles?.add(
+                                Muscle(
+                                    muscleName,
+                                    male_exer,
+                                    fem_exer
+                                )
+                            )
+                            Log.d(TAG, "name of muscle: ${targetedMuscles?.get(i)?.name} " +
+                                    "fem_exer: ${targetedMuscles?.get(i)?.femaleIntensity}," +
+                                    "male:exer: ${targetedMuscles?.get(i)?.maleIntensity}  from ex: $name" )
+                        }
+                        var timePerRep: Double? = null
+                        //TODO: Add easier/harder exercise to object and in the done button function
+                        if (unit == Exercise.Unit.REPS){
+                            timePerRep = exercise.child("timeforrep").value.toString().toDoubleOrNull()
+                            Log.d("VAL_TEST", "time per rep for $name is $timePerRep")
+                        }
+                        val tempExerciseObject=
+                            Exercise(
+                                name = name.toString(),
+                                description = description.toString(),
+                                link = link.toString(),
+                                difficulty = difficulty.toString(),
+                                unit = unit,
+                                targetMuscles = targetedMuscles,
+                                timePerRep = timePerRep
+                            )
+                        Log.d("EXERCISE_LIST",
                             "name: ${tempExerciseObject.name}, description: ${tempExerciseObject.description}, unit: ${tempExerciseObject.unit}")
                         exerList.add(tempExerciseObject)
                     }
@@ -121,18 +148,19 @@ class CreateWorkoutActivity : AppCompatActivity() {
     private fun addButton() {
         create_add_workout.setOnClickListener {
             var value = exercise_value_textview.text.toString()
-            if (exerList[selectedExercise!!].unit == Exercise.Unit.REPS)
-                value += 'x'
-            else
-                value += 's'
-            val tempExerciseObject =Exercise(
-                exerList[selectedExercise!!].name,
-                exerList[selectedExercise!!].description,
-                exerList[selectedExercise!!].link,
-                exerList[selectedExercise!!].difficulty,
-                exerList[selectedExercise!!].unit)
+            val tempExerciseObject =
+                Exercise(
+                    name = exerList[selectedExercise!!].name,
+                    description = exerList[selectedExercise!!].description,
+                    link = exerList[selectedExercise!!].link,
+                    difficulty = exerList[selectedExercise!!].difficulty,
+                    unit = exerList[selectedExercise!!].unit
+                )
 
-            tempExerciseObject.value = value
+            tempExerciseObject.targetMuscles = exerList[selectedExercise!!].targetMuscles
+            tempExerciseObject.value = value.toInt()
+            tempExerciseObject.timePerRep = exerList[selectedExercise!!].timePerRep
+
             createdExerciseList.add(tempExerciseObject)
             listAdapter = WorkoutExerciseListAdapter(this, createdExerciseList!!)
             listView?.adapter = listAdapter
@@ -143,10 +171,10 @@ class CreateWorkoutActivity : AppCompatActivity() {
     private fun doneButton(){
         create_workout_done_button.setOnClickListener {
             var tempWorkoutObject = Workout(
-                name= workout_title_text.text.toString(),
-                exerciseList= this.createdExerciseList,
-                difficulty="TBD",
-                time="TBD"
+                name = workout_title_text.text.toString(),
+                exerciseList = this.createdExerciseList,
+                difficulty = "TBD",
+                time = "TBD"
             )
 
             FirebaseFirestore.getInstance()

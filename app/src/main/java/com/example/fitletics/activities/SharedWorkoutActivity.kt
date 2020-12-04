@@ -9,9 +9,9 @@ import android.widget.TextView
 import com.example.fitletics.R
 import com.example.fitletics.adapters.WorkoutExerciseListAdapter
 import com.example.fitletics.dialogs.ExerciseDescriptionDialog
-import com.example.fitletics.models.Constants
-import com.example.fitletics.models.Exercise
-import com.example.fitletics.models.Workout
+import com.example.fitletics.models.support.Constants
+import com.example.fitletics.models.support.Exercise
+import com.example.fitletics.models.support.Workout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.android.synthetic.main.activity_shared_workout.*
@@ -42,7 +42,7 @@ class SharedWorkoutActivity : AppCompatActivity() {
         listView?.setOnItemClickListener{parent, view, position, id ->
             val entry= parent.getItemAtPosition(position) as Exercise
             Log.d(TAG, "desc: ${entry.name}");
-            val dialog = ExerciseDescriptionDialog(entry)
+            val dialog = ExerciseDescriptionDialog(this, entry.name!!, entry.description, entry.link!!, "Cancel", true)
             dialog.show(supportFragmentManager, "exerciseDescription")
         }
 
@@ -51,10 +51,10 @@ class SharedWorkoutActivity : AppCompatActivity() {
     private fun setupButtons() {
         shared_accept_button.setOnClickListener {
             var tempWorkoutObject = Workout(
-                name= workoutObject?.name,
-                exerciseList= workoutObject?.exerciseList!!,
-                difficulty=workoutObject?.difficulty,
-                time=workoutObject?.time
+                name = workoutObject?.name,
+                exerciseList = workoutObject?.exerciseList!!,
+                difficulty = workoutObject?.difficulty,
+                time = workoutObject?.time
             )
             tempWorkoutObject.id = null
             //add workout to custom document
@@ -110,11 +110,36 @@ class SharedWorkoutActivity : AppCompatActivity() {
         if (workoutObject?.exerciseList?.isNullOrEmpty()!!){
             Log.d(TAG, "Exercise list was empty!")
             workoutObject?.exerciseList = ArrayList()
-            workoutObject?.exerciseList?.add(Exercise(name="Crunches", value="5x"))
-            workoutObject?.exerciseList?.add(Exercise(name="Sit ups", value="8x"))
-            workoutObject?.exerciseList?.add(Exercise(name="Strtches", value="10x"))
-            workoutObject?.exerciseList?.add(Exercise(name="Squats", value="3x"))
-            workoutObject?.exerciseList?.add(Exercise(name="Pullups", value="7x"))
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Crunches",
+                    value = 5
+                )
+            )
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Sit ups",
+                    value = 8
+                )
+            )
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Strtches",
+                    value = 10
+                )
+            )
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Squats",
+                    value = 3
+                )
+            )
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Pullups",
+                    value = 7
+                )
+            )
         }
         else
             return

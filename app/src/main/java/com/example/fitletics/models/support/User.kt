@@ -1,6 +1,4 @@
-package com.example.fitletics.models
-
-import java.util.*
+package com.example.fitletics.models.support
 
 class User {
 
@@ -64,9 +62,12 @@ class User {
         this.weight = weight
         this.height = height
         when(bodyType){
-            "ENDOMORPHIC" -> this.bodyType = BodyType.ENDOMORPHIC
-            "ECTOMORPHIC" -> this.bodyType = BodyType.ECTOMORPHIC
-            "MESOMORPHIC" -> this.bodyType = BodyType.MESOMORPHIC
+            "ENDOMORPHIC" -> this.bodyType =
+                BodyType.ENDOMORPHIC
+            "ECTOMORPHIC" -> this.bodyType =
+                BodyType.ECTOMORPHIC
+            "MESOMORPHIC" -> this.bodyType =
+                BodyType.MESOMORPHIC
         }
     }
 

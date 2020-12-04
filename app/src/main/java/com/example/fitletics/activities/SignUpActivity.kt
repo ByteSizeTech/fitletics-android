@@ -10,15 +10,12 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import com.example.fitletics.R
-import com.example.fitletics.models.Constants
-import com.example.fitletics.models.User
+import com.example.fitletics.models.support.Constants
+import com.example.fitletics.models.support.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_baseline_test_ongoing.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.*
-import kotlin.collections.HashMap
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -161,15 +158,16 @@ class SignUpActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
 
-                    val newUser: User = User(
-                        userID = userID_edit_text.text.toString(),
-                        name = name_edit_text.text.toString(),
-                        email = email_edit_text_signup.text.toString(),
-                        DOB = userDOB,
-                        gender = gender,
-                        weight = Integer.parseInt(weight_text_signup.text.toString()),
-                        height = Integer.parseInt(height_text_signup.text.toString())
-                    )
+                    val newUser: User =
+                        User(
+                            userID = userID_edit_text.text.toString(),
+                            name = name_edit_text.text.toString(),
+                            email = email_edit_text_signup.text.toString(),
+                            DOB = userDOB,
+                            gender = gender,
+                            weight = Integer.parseInt(weight_text_signup.text.toString()),
+                            height = Integer.parseInt(height_text_signup.text.toString())
+                        )
 
                     Log.d("DOB", userDOB.toString())
 

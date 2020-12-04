@@ -15,20 +15,19 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.fitletics.R
 import com.example.fitletics.adapters.WorkoutExerciseListAdapter
 import com.example.fitletics.dialogs.ExerciseDescriptionDialog
-import com.example.fitletics.models.Constants
-import com.example.fitletics.models.Constants.Companion.CURRENT_FIREBASE_USER
-import com.example.fitletics.models.Exercise
-import com.example.fitletics.models.Workout
+import com.example.fitletics.models.support.Constants
+import com.example.fitletics.models.support.Exercise
+import com.example.fitletics.models.utils.WebsiteSession
+import com.example.fitletics.models.support.Workout
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
-import kotlinx.android.synthetic.main.activity_body_analysis_ongoing.*
-import kotlinx.android.synthetic.main.activity_start_workout.*
+import kotlinx.android.synthetic.main.activity_start_custom_workout.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class StartWorkoutActivity : AppCompatActivity() {
+class StartCustomWorkoutActivity : AppCompatActivity() {
 
     private var workoutObject: Workout? = null
     private var listView: ListView? = null
@@ -41,14 +40,11 @@ class StartWorkoutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_start_workout)
+        setContentView(R.layout.activity_start_custom_workout)
 
         begin_workout_button.isEnabled = false
 
-        begin_workout_button.setOnClickListener {
-            sendstartSession()
-            startActivity(Intent(this, ActiveSessionActivity::class.java))
-        }
+
 
 
         sharedPref = getSharedPreferences("session_uid_data", Context.MODE_PRIVATE)
@@ -60,30 +56,30 @@ class StartWorkoutActivity : AppCompatActivity() {
         setupSendButton()
         setupArrayList()
         setupActivityText()
+        populateListView()
 
+        begin_workout_button.setOnClickListener {
+            startActiveSessionActivity()
+        }
+
+        startSession()
+    }
+
+    private fun populateListView() {
         listView = findViewById(R.id.workout_exercise_list)
         listAdapter = WorkoutExerciseListAdapter(this, workoutObject?.exerciseList!!)
         listView?.adapter = listAdapter
 
         listView?.setOnItemClickListener{parent, view, position, id ->
             val entry= parent.getItemAtPosition(position) as Exercise
-            Log.d(TAG, "desc: ${entry.name}");
-            val dialog = ExerciseDescriptionDialog(entry)
+            Log.d(TAG, "desc: ${entry.name}")
+            val dialog = ExerciseDescriptionDialog(this, entry.name!!, entry.description, entry.link!!, "Cancel", true)
             dialog.show(supportFragmentManager, "exerciseDescription")
         }
-
-        startSession()
-    }
-
-    private fun sendstartSession() {
-
-    }
-
-    private fun bundleWorkout(){
-
     }
 
 
+    lateinit var sessionTracker: ListenerRegistration
     private fun startSession() {
         //check if session is already populated
         //val UserUID = hashMapOf("UID" to Constants.CURRENT_USER!!.userID )
@@ -95,11 +91,20 @@ class StartWorkoutActivity : AppCompatActivity() {
                     "uid" to Constants.CURRENT_FIREBASE_USER!!.uid,
                     "active_task" to "SD",
                     "task_state" to "requested",
-                    "task_message" to mapOf("workout_obj" to workoutObject?.getDBFriendlyResult())
-                )
-                , SetOptions.merge()
+                    "task_message" to
+                            mapOf(
+                                "workout_obj" to workoutObject?.firebaseFriendlyWorkout(),
+                                "active_session_listeners" to
+                                        mapOf(
+                                            "curr_ex_name" to "null",
+                                            "curr_ex_unit" to "null",
+                                            "curr_ex_progress" to "null",
+                                            "curr_ex_goal" to "null",
+                                            "skip_request" to "null"
+                                        ))), SetOptions.merge()
             ).addOnSuccessListener {
 //                sendWorkout();
+                sessionTracker =
                 FirebaseFirestore.getInstance()
                     .collection("Sessions")
                     .document(sessionUID!!)
@@ -109,13 +114,16 @@ class StartWorkoutActivity : AppCompatActivity() {
                             return@addSnapshotListener
                         }
                         if (snapshot != null && snapshot.exists()) {
-                            if (snapshot.data?.get("task_state") == "ongoing") {
-                                Log.d(TAG, "Capture button enabled!")
+                            if (snapshot.data?.get("task_state") == "waiting") {
+                                Log.d(TAG, "Begin workout button enabled!")
                                 begin_workout_button.isEnabled = true
                             }
                             if (snapshot.data?.get("task_state") == "cancelled") {
-
                                 sessionCancelled()
+                                return@addSnapshotListener
+                            }
+                            if (snapshot.data?.get("active_task") == "AS"  && snapshot.data?.get("task_state") == "requested") {
+                                startActiveSessionActivity()
                                 return@addSnapshotListener
                             }
                         }
@@ -127,20 +135,42 @@ class StartWorkoutActivity : AppCompatActivity() {
                 Log.d(TAG, "Error updating document")
                 startActivity(Intent(this, ConnectPCQRActivity::class.java));
                 Toast.makeText(baseContext, "Error! Scan QR", Toast.LENGTH_SHORT).show()
-
-                //TODO: delete share pref if exists
             }
     }
 
-    private fun sessionCancelled() {
+    private fun startActiveSessionActivity() {
+//        FirebaseFirestore.getInstance()
+//            .collection("Sessions")
+//            .document(sessionUID!!)
+//            .set(
+//                mapOf("active_task" to "AS",
+//                        "task_state" to "requested"
+//            ),SetOptions.merge())
+//            .addOnCompleteListener {
+//                WebsiteSession(this, ActiveSessionActivity::class.java, workoutObject);
+//                finish()
+//            }.addOnFailureListener {
+//                Log.d(TAG, "Start active session request failed")
+//            }
+
+        sessionTracker.remove()
+        WebsiteSession(
+            this,
+            ActiveSessionActivity::class.java,
+            workoutObject
+        );
         finish()
     }
 
-    private fun setupSendButton()
-    {
+    private fun sessionCancelled() {
+        //TODO: Pass cancel functions
+        finish()
+    }
+
+    private fun setupSendButton() {
         create_workout_send_workout.setOnClickListener {
             val dialog = AlertDialog.Builder(this)
-            val dialogView = layoutInflater.inflate(R.layout.alert_dialog, null)
+            val dialogView = layoutInflater.inflate(R.layout.dialog_template, null)
             val usernameText = dialogView.findViewById<EditText>(R.id.recipient_username_edit_text)
             dialog.setView(dialogView)
             dialog.setPositiveButton( "Send") { _: DialogInterface, _: Int ->}
@@ -171,12 +201,13 @@ class StartWorkoutActivity : AppCompatActivity() {
                                 Log.d("SENDING_WORKOUT", "can proceed to sending!")
                                 Log.d("SENDING_WORKOUT","uID is ${task.result?.documents!![0].id}!")
 
-                                var tempWorkoutObject = Workout(
-                                    name = workoutObject?.name,
-                                    exerciseList = workoutObject?.exerciseList!!,
-                                    difficulty = workoutObject?.difficulty,
-                                    time = workoutObject?.time
-                                )
+                                var tempWorkoutObject =
+                                    Workout(
+                                        name = workoutObject?.name,
+                                        exerciseList = workoutObject?.exerciseList!!,
+                                        difficulty = workoutObject?.difficulty,
+                                        time = workoutObject?.time
+                                    )
 
                                 FirebaseFirestore.getInstance()
                                     .collection("Users")
@@ -222,7 +253,9 @@ class StartWorkoutActivity : AppCompatActivity() {
         FirebaseFirestore.getInstance()
             .collection("Sessions")
             .document(sessionUID!!)
-            .update(mapOf("task_message" to "cancelled"))
+            .update(mapOf(
+                "active_task" to "DB",
+                "task_message" to "cancel"))
             .addOnSuccessListener {
                 Log.d(TAG, "Sent cancel message to session")
             }.addOnFailureListener {
@@ -239,14 +272,54 @@ class StartWorkoutActivity : AppCompatActivity() {
         if (workoutObject?.exerciseList?.isEmpty()!!){
             Log.d(TAG, "Exercise list was empty!")
             workoutObject?.exerciseList = ArrayList()
-            workoutObject?.exerciseList?.add(Exercise(name="Crunches", value="12x"))
-            workoutObject?.exerciseList?.add(Exercise(name="Sit ups", value="14x"))
-            workoutObject?.exerciseList?.add(Exercise(name="Stretches", value="40s"))
-            workoutObject?.exerciseList?.add(Exercise(name="Squats", value="14x"))
-            workoutObject?.exerciseList?.add(Exercise(name="Pullups", value="12x"))
-            workoutObject?.exerciseList?.add(Exercise(name="Crunches", value="14x"))
-            workoutObject?.exerciseList?.add(Exercise(name="Sit ups", value="8x"))
-            workoutObject?.exerciseList?.add(Exercise(name="Stretches", value="40s"))
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Crunches",
+                    value = 12
+                )
+            )
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Sit ups",
+                    value = 14
+                )
+            )
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Stretches",
+                    value = 40
+                )
+            )
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Squats",
+                    value = 14
+                )
+            )
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Pullups",
+                    value = 12
+                )
+            )
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Crunches",
+                    value = 14
+                )
+            )
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Sit ups",
+                    value = 8
+                )
+            )
+            workoutObject?.exerciseList?.add(
+                Exercise(
+                    name = "Stretches",
+                    value = 40
+                )
+            )
         }
         else
             return

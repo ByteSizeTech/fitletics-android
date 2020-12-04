@@ -13,8 +13,7 @@ import android.widget.Button
 import com.example.fitletics.R
 import com.example.fitletics.activities.BAnalysisOngoingActivity
 import com.example.fitletics.activities.LoginActivity
-import com.example.fitletics.models.Constants
-import com.example.fitletics.models.WebsiteSession
+import com.example.fitletics.models.utils.WebsiteSession
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.Exception
@@ -52,7 +51,11 @@ class SettingsFragment : Fragment() {
 
         rootView.findViewById<Button>(R.id.button3).setOnClickListener()
         {
-            WebsiteSession(this.activity!!,BAnalysisOngoingActivity::class.java, null)
+            WebsiteSession(
+                this.activity!!,
+                BAnalysisOngoingActivity::class.java,
+                null
+            )
 //            this.activity!!.finish()
         }
 

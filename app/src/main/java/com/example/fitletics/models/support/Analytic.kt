@@ -1,4 +1,4 @@
-package com.example.fitletics.models
+package com.example.fitletics.models.support
 
 class Analytic {
     var date: String? = null

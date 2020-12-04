@@ -2,10 +2,8 @@ package com.example.fitletics.activities
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -23,12 +21,11 @@ import com.example.fitletics.fragments.AnalyticsFragment
 import com.example.fitletics.fragments.DashboardFragment
 import com.example.fitletics.fragments.SettingsFragment
 import com.example.fitletics.fragments.WorkoutFragment
-import com.example.fitletics.models.Constants
-import com.example.fitletics.models.User
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import com.example.fitletics.models.support.Constants
+import com.example.fitletics.models.utils.RecEngine
+import com.example.fitletics.models.utils.WebsiteSession
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -38,6 +35,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     val mDatabase = FirebaseDatabase.getInstance()
 
     val TAG = "MAIN_ACTIVITY"
+
+    var sessionUID: String? = null
+    lateinit var sharedPref: SharedPreferences
 
 
     class MyWorker(appContext: Context, workerParams: WorkerParameters) : CoroutineWorker(appContext, workerParams) {
@@ -96,19 +96,21 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 Result.failure()
             }
         }
-
         private fun doYourTask() {
             Log.d("MyWorker", "task Running!")
         }
-
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         window.navigationBarColor = resources.getColor(R.color.tabColor)
+
+        sharedPref = getSharedPreferences("session_uid_data", Context.MODE_PRIVATE)
+        sessionUID = sharedPref.getString("UID", null)
+
+        Log.d("PLEZ_WORK", "WORK STARTED")
 
         Log.d("MyWorker", "Launching periodic func")
         MyWorker.WorkManagerScheduler.refreshPeriodicWork(this)
@@ -144,7 +146,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         {
             Log.d("SensorChange", "Sensor Permission NOT Needed!");
         }
-
         loadData();
         resetSteps();
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager;
@@ -210,8 +211,29 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private fun setupFab() {
         start_workout_fab.setOnClickListener()
         {
-            val intent = Intent(this, StartWorkoutActivity::class.java)
-            startActivity(intent)
+            if (!sessionUID.isNullOrEmpty()) {
+                Log.d(TAG, "checking active session...")
+                FirebaseFirestore.getInstance()
+                    .collection("Sessions")
+                    .document(sessionUID!!)
+                    .get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            if (document.data?.get("active_task") == "AS" && document.data?.get("task_state") == "ongoing") {
+                                Log.d(TAG, "document: ${document.data?.get("active_task")}")
+                                Log.d(TAG, "document: ${document.data?.get("task_state")}")
+
+                                WebsiteSession(
+                                    this,
+                                    ActiveSessionActivity::class.java,
+                                    null
+                                );
+                            }
+                        }
+                    }
+            }
+//            val intent = Intent(this, StartCustomWorkoutActivity::class.java)
+//            startActivity(intent)
         }
     }
 

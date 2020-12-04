@@ -11,7 +11,7 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.ExpandableListView
 import android.widget.TextView
 import com.example.fitletics.R
-import com.example.fitletics.models.Workout
+import com.example.fitletics.models.support.Workout
 import java.util.*
 
 class WorkoutsExpandableListAdapter internal constructor

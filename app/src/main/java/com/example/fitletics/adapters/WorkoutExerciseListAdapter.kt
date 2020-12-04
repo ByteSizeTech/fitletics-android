@@ -1,12 +1,13 @@
 package com.example.fitletics.adapters
 
 import android.app.Activity
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.fitletics.R
-import com.example.fitletics.models.Exercise
+import com.example.fitletics.models.support.Exercise
 
 class WorkoutExerciseListAdapter(private val context: Activity,
                                  private val arrayList: ArrayList<Exercise>) : BaseAdapter()  {
@@ -17,7 +18,18 @@ class WorkoutExerciseListAdapter(private val context: Activity,
         val statText = view.findViewById<TextView>(R.id.statText)
         val exerciseNameText = view.findViewById<TextView>(R.id.exerciseNameText)
 
-        statText.text = arrayList[p0].value
+        if(arrayList[p0].unit == Exercise.Unit.REPS) {
+            Log.d("Exercise_List_Adapter", "isreps")
+            statText.text = "${arrayList[p0].value.toString()}x"
+        }
+        else if (arrayList[p0].unit == Exercise.Unit.SECS) {
+            Log.d("Exercise_List_Adapter", "issecs")
+            statText.text = "${arrayList[p0].value.toString()}s"
+        }
+        else{
+            Log.d("Exercise_List_Adapter", "WRONG")
+            statText.text = "WRONG"
+        }
         exerciseNameText.text = arrayList[p0].name
 
         return view

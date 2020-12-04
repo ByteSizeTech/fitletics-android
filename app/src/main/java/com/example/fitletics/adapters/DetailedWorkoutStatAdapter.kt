@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.fitletics.R
-import com.example.fitletics.models.Analytic
+import com.example.fitletics.models.support.Analytic
 import kotlin.text.split
 
 class DetailedWorkoutStatAdapter(private val context: Activity,

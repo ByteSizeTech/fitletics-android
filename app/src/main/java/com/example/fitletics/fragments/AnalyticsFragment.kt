@@ -11,8 +11,8 @@ import android.widget.ExpandableListView
 import com.example.fitletics.R
 import com.example.fitletics.activities.DetailedAnalyticsActivity
 import com.example.fitletics.adapters.AnalyticsExpandableListAdapter
-import com.example.fitletics.models.Constants
-import com.example.fitletics.models.Exercise
+import com.example.fitletics.models.support.Constants
+import com.example.fitletics.models.support.Exercise
 import com.google.firebase.firestore.FirebaseFirestore
 
 

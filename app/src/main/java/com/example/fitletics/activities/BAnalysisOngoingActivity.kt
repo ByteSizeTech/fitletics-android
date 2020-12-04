@@ -8,8 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fitletics.R
-import com.example.fitletics.models.Constants
-import com.example.fitletics.models.WebsiteSession
+import com.example.fitletics.models.support.Constants
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_body_analysis_ongoing.*
 import kotlinx.coroutines.CoroutineScope

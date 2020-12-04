@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fitletics.R
 import com.example.fitletics.adapters.DetailedWorkoutStatAdapter
-import com.example.fitletics.models.Analytic
-import com.example.fitletics.models.Constants
+import com.example.fitletics.models.support.Analytic
+import com.example.fitletics.models.support.Constants
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
@@ -139,12 +138,13 @@ class DetailedAnalyticsActivity : AppCompatActivity() {
                     }
                 }
                 dbAnalyticList.forEach {
-                    val tempAnalytic = Analytic(
-                        date= it["date"],
-                        time=it["time"],
-                        calories=it["cals"],
-                        value = it["value"]
-                    )
+                    val tempAnalytic =
+                        Analytic(
+                            date = it["date"],
+                            time = it["time"],
+                            calories = it["cals"],
+                            value = it["value"]
+                        )
                     analyticList.add(tempAnalytic)
                 }
             }

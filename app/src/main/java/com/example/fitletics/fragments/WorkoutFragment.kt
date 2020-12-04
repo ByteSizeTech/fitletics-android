@@ -1,6 +1,8 @@
 package com.example.fitletics.fragments
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,10 +14,12 @@ import android.widget.ExpandableListView
 import com.example.fitletics.adapters.WorkoutsExpandableListAdapter
 import com.example.fitletics.R
 import com.example.fitletics.activities.*
-import com.example.fitletics.models.Constants
-import com.example.fitletics.models.Exercise
-import com.example.fitletics.models.WebsiteSession
-import com.example.fitletics.models.Workout
+import com.example.fitletics.dialogs.ExerciseDescriptionDialog
+import com.example.fitletics.models.support.Constants
+import com.example.fitletics.models.support.Exercise
+import com.example.fitletics.models.support.Muscle
+import com.example.fitletics.models.support.Workout
+import com.example.fitletics.models.utils.WebsiteSession
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlin.collections.ArrayList
@@ -24,6 +28,7 @@ import kotlin.collections.HashMap
 
 class WorkoutFragment : Fragment() {
 
+    private val TAG = "Workout_Fragment"
     internal var expandableListViewCode: ExpandableListView? = null
     internal var adapter: WorkoutsExpandableListAdapter? = null
     internal var titleList: List<String> ? = null
@@ -34,17 +39,41 @@ class WorkoutFragment : Fragment() {
 
     val tempList2: ArrayList<Exercise> = ArrayList()
 
+    var sessionUID: String? = null
+    lateinit var sharedPref: SharedPreferences
+
     val data: LinkedHashMap<String, List<Workout>>
         get() {
-
 
             val listData = LinkedHashMap<String, List<Workout>>()
             val tempList: ArrayList<Exercise> = ArrayList()
 
-            tempList2.add(Exercise(name="Squats", value="7x"))
-            tempList2.add(Exercise(name="Lunges", value="14x"))
-            tempList2.add(Exercise(name="Push ups", value="20x"))
-            tempList2.add(Exercise(name="Stretches", value="40s"))
+            tempList2.add(
+                Exercise(
+                    name = "Squats",
+                    value = 7
+                )
+            )
+            tempList2.add(
+                Exercise(
+                    name = "Lunges",
+                    value = 14
+                )
+            )
+            tempList2.add(
+                Exercise(
+                    name = "Push ups",
+                    value = 20
+                )
+            )
+            tempList2.add(
+                Exercise(
+                    name = "Stretches",
+                    value = 40
+                )
+            )
+
+
 
 
             getWorkouts()
@@ -54,10 +83,38 @@ class WorkoutFragment : Fragment() {
 //            getWorkouts()
 
             val savedWorkouts = ArrayList<Workout>()
-            savedWorkouts.add(Workout("Full Body", tempList, "Hard", "120 mins"))
-            savedWorkouts.add(Workout("Upper Body", tempList, "Easy", "20 mins"))
-            savedWorkouts.add(Workout("Core", tempList, "Hard", "120 mins"))
-            savedWorkouts.add(Workout("Lower Body", tempList, "Hard", "120 mins"))
+            savedWorkouts.add(
+                Workout(
+                    "Full Body",
+                    tempList,
+                    "Hard",
+                    "120 mins"
+                )
+            )
+            savedWorkouts.add(
+                Workout(
+                    "Upper Body",
+                    tempList,
+                    "Easy",
+                    "20 mins"
+                )
+            )
+            savedWorkouts.add(
+                Workout(
+                    "Core",
+                    tempList,
+                    "Hard",
+                    "120 mins"
+                )
+            )
+            savedWorkouts.add(
+                Workout(
+                    "Lower Body",
+                    tempList,
+                    "Hard",
+                    "120 mins"
+                )
+            )
 
             listData["Standard"] = savedWorkouts
             listData["Custom"] = customWorkouts
@@ -121,27 +178,56 @@ class WorkoutFragment : Fragment() {
                         val exercisesDB = it.get("exerciseList") as ArrayList<HashMap<String, Any?>>
                         val exercises: ArrayList<Exercise> = ArrayList()
                         for (exercise in exercisesDB){
+
+                            var timePerRep: Double?
                             val unit =
-                                if (exercise["unit"] == Exercise.Unit.REPS)
+                                if (exercise["unit"] == Exercise.Unit.REPS || exercise["unit"] == "REPS") {
                                     Exercise.Unit.REPS
-                                else
-                                    Exercise.Unit.SECS   //no idea why this was necessary
+//                                    timePerRep = exercise["timePerRep"].toString().toDoubleOrNull()
+                                }
+                                else {
+                                    Exercise.Unit.SECS
+//                                    timePerRep = null
+                                }
 
-                            val tempExerciseObject= Exercise(
-                                name = exercise["name"].toString(),
-                                description = exercise["description"].toString(),
-                                link = exercise["link"].toString(),
-                                difficulty = exercise["difficulty"].toString(),
-                                unit = unit as Exercise.Unit?)
+                            timePerRep = exercise["timePerRep"].toString().toDoubleOrNull()
 
-                            tempExerciseObject.value = exercise["value"] as String?
+                            val tempExerciseObject=
+                                Exercise(
+                                    name = exercise["name"].toString(),
+                                    description = exercise["description"].toString(),
+                                    link = exercise["link"].toString(),
+                                    difficulty = exercise["difficulty"].toString(),
+                                    unit = unit as Exercise.Unit?
+                                )
+                            tempExerciseObject.timePerRep = timePerRep
+                            tempExerciseObject.value = exercise["value"].toString().toInt()
                             exercises.add(tempExerciseObject)
+
+                            val muscleListDB = exercise["targetMuscles"] as ArrayList<HashMap<String, Any?>>
+                            val targetedMuscles: ArrayList<Muscle> = ArrayList()
+                            for (muscle in muscleListDB){
+                                val muscleName = muscle["name"].toString()
+                                val male_exer = muscle["maleIntensity"].toString().toInt()
+                                val fem_exer = muscle["femaleIntensity"].toString().toInt()
+
+                                targetedMuscles.add(
+                                    Muscle(
+                                        muscleName,
+                                        male_exer,
+                                        fem_exer
+                                    )
+                                )
+                            }
+                            tempExerciseObject.targetMuscles = targetedMuscles
                         }
-                        val tempWorkoutObject = Workout(
-                            name= it.get("name").toString(),
-                            exerciseList= exercises,
-                            time = it.get("time").toString(),
-                            difficulty = it.get("difficulty").toString())
+                        val tempWorkoutObject =
+                            Workout(
+                                name = it.get("name").toString(),
+                                exerciseList = exercises,
+                                time = it.get("time").toString(),
+                                difficulty = it.get("difficulty").toString()
+                            )
                         tempWorkoutObject.id=it.id
                         Log.d("WORKOUT ID", "${tempWorkoutObject.id}")
 
@@ -162,7 +248,7 @@ class WorkoutFragment : Fragment() {
                     return@addSnapshotListener
                 }
                 if (snapshot != null && !snapshot.isEmpty) {
-                    Log.d("SNAPSHOT METADATA", "${snapshot}")
+                    Log.d("SNAPSHOT_METADATA", "${snapshot}")
                     pendingWorkouts.clear()  //first clear the list
 
                     snapshot.documents.forEach {
@@ -170,27 +256,55 @@ class WorkoutFragment : Fragment() {
                         val exercisesDB = it.get("exerciseList") as ArrayList<HashMap<String, Any?>>
                         val exercises: ArrayList<Exercise> = ArrayList()
                         for (exercise in exercisesDB){
+                            var timePerRep: Double?
                             val unit =
-                                if (exercise["unit"] == Exercise.Unit.REPS)
+                                if (exercise["unit"] == Exercise.Unit.REPS || exercise["unit"] == "REPS") {
                                     Exercise.Unit.REPS
-                                else
-                                    Exercise.Unit.SECS   //no idea why this was necessary
+//                                    timePerRep = exercise["timePerRep"].toString().toDoubleOrNull()
+                                }
+                                else {
+                                    Exercise.Unit.SECS
+//                                    timePerRep = null
+                                }
 
-                            val tempExerciseObject= Exercise(
-                                name = exercise["name"].toString(),
-                                description = exercise["description"].toString(),
-                                link = exercise["link"].toString(),
-                                difficulty = exercise["difficulty"].toString(),
-                                unit = unit as Exercise.Unit?)
+                            timePerRep = exercise["timePerRep"].toString().toDoubleOrNull()
 
-                            tempExerciseObject.value = exercise["value"] as String?
+                            val tempExerciseObject=
+                                Exercise(
+                                    name = exercise["name"].toString(),
+                                    description = exercise["description"].toString(),
+                                    link = exercise["link"].toString(),
+                                    difficulty = exercise["difficulty"].toString(),
+                                    unit = unit as Exercise.Unit?
+                                )
+                            tempExerciseObject.timePerRep = timePerRep
+                            tempExerciseObject.value = exercise["value"].toString().toInt()
                             exercises.add(tempExerciseObject)
+
+                            val muscleListDB = exercise["targetMuscles"] as ArrayList<HashMap<String, Any?>>
+                            val targetedMuscles: ArrayList<Muscle> = ArrayList()
+                            for (muscle in muscleListDB){
+                                val muscleName = muscle["name"].toString()
+                                val male_exer = muscle["maleIntensity"].toString().toInt()
+                                val fem_exer = muscle["femaleIntensity"].toString().toInt()
+
+                                targetedMuscles.add(
+                                    Muscle(
+                                        muscleName,
+                                        male_exer,
+                                        fem_exer
+                                    )
+                                )
+                            }
+                            tempExerciseObject.targetMuscles = targetedMuscles
                         }
-                        val tempWorkoutObject = Workout(
-                            name= it.get("name").toString(),
-                            exerciseList= exercises,
-                            time = it.get("time").toString(),
-                            difficulty = it.get("difficulty").toString())
+                        val tempWorkoutObject =
+                            Workout(
+                                name = it.get("name").toString(),
+                                exerciseList = exercises,
+                                time = it.get("time").toString(),
+                                difficulty = it.get("difficulty").toString()
+                            )
                         tempWorkoutObject.id=it.id
                         Log.d("WORKOUT ID", "${tempWorkoutObject.id}")
 
@@ -202,6 +316,9 @@ class WorkoutFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedPref = this.activity!!.getSharedPreferences("session_uid_data", Context.MODE_PRIVATE)
+        sessionUID = sharedPref.getString("UID", null)
 
     Log.d("WORKOUT FRAGMENT", "I am created!")
 
@@ -249,35 +366,82 @@ class WorkoutFragment : Fragment() {
             expandableListViewCode!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
 //                Toast.makeText(this.activity?.applicationContext, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<Workout>)[groupPosition]]!!.get(childPosition),
 //                    Toast.LENGTH_SHORT).show()
-                Log.d("WTF IS THIS?", "It is: ${(titleList as ArrayList<String>)[groupPosition]}")
-                val intent: Intent
-                val intentClass: Class<*>
-                if ((titleList as ArrayList<String>)[groupPosition] == "Pending") {
-                    intent = Intent(this.activity!!, SharedWorkoutActivity::class.java)
-                    intentClass = SharedWorkoutActivity::class.java
-                }
-                else {
-                    intent = Intent(this.activity!!, StartWorkoutActivity::class.java)
-                    intentClass = StartWorkoutActivity::class.java
-                }
-                val tempWorkout = Workout(
-                    id = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].id,
-                    name = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].name,
-                    exerciseList = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].exerciseList!!,
-                    difficulty = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].difficulty,
-                    time = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].time
-                )
 
-                WebsiteSession(this.activity!!, intentClass, tempWorkout);
+
+                if (!sessionUID.isNullOrEmpty()) {
+                    Log.d(TAG, "checking active session...")
+                    FirebaseFirestore.getInstance()
+                        .collection("Sessions")
+                        .document(sessionUID!!)
+                        .get()
+                        .addOnSuccessListener { document ->
+                            if (document != null) {
+                                if (document.data?.get("active_task") == "AS" && document.data?.get("task_state") == "ongoing") {
+                                    Log.d(TAG, "document: ${document.data?.get("active_task")}")
+                                    Log.d(TAG, "document: ${document.data?.get("task_state")}")
+
+                                    val dialog = ExerciseDescriptionDialog(this.activity!!,
+                                        "Ongoing Session!",
+                                        "There is an on-going session!" +
+                                                "\nYou must end the active session in order to start another activity that requires the website. " +
+                                                "\n\nDo you want to end the active session?",
+                                        "Continue Session", "End Session", false)
+                                    dialog.show(this.activity!!.supportFragmentManager, "exerciseDescription")
+                                }
+                                else{
+                                    launchWorkoutDescription(groupPosition, childPosition)
+                                }
+                            }
+                        }
+                }
+                else{
+                    launchWorkoutDescription(groupPosition, childPosition)
+                }
+
+
+
+//                Log.d(TAG, "It is: ${(titleList as ArrayList<String>)[groupPosition]}")
+
+
+
 
 
 //                intent.putExtra("Workout_object", tempWorkout)
+
 
 //                startActivity(intent)
                 false
             }
         }
         return rootView
+    }
+
+    private fun launchWorkoutDescription(groupPosition: Int, childPosition: Int) {
+        Log.d(TAG, "Reached else..")
+
+        val tempWorkout =
+            Workout(
+                id = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].id,
+                name = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].name,
+                exerciseList = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].exerciseList!!,
+                difficulty = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].difficulty,
+                time = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].time
+            )
+        if ((titleList as ArrayList<String>)[groupPosition] == "Pending"){
+            val intent = Intent(this.activity!!, SharedWorkoutActivity::class.java)
+            intent.putExtra("Workout_object", tempWorkout)
+            startActivity(intent)
+        }
+        else{
+            val intentClass = StartCustomWorkoutActivity::class.java
+            tempWorkout.calculateDifficulty()
+            tempWorkout.calculateDuration()
+            WebsiteSession(
+                this.activity!!,
+                intentClass,
+                tempWorkout
+            );
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
