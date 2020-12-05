@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.example.fitletics.R
 import com.example.fitletics.models.support.Workout
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
 import kotlinx.android.synthetic.main.activity_active_session.*
 import kotlin.math.roundToInt
@@ -52,6 +53,9 @@ class ActiveSessionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_active_session)
 
+        session_rep_ll.visibility = View.GONE
+        session_progress_bar_ll.visibility = View.GONE
+
 
 
 //        workoutObject = intent.getSerializableExtra("Workout_object") as Workout?
@@ -77,9 +81,26 @@ class ActiveSessionActivity : AppCompatActivity() {
             requestSkip()
         }
 
+        session_end_button.setOnClickListener {
+            requestSessionEnd()
+        }
+
 
         startSession()
 
+    }
+
+    private fun requestSessionEnd() {
+        FirebaseFirestore.getInstance()
+            .collection("Sessions")
+            .document(sessionUID!!)
+            .set(mapOf(
+                "task_state" to "endrequest"
+            ), SetOptions.merge())
+            .addOnCompleteListener {
+                Log.d(TAG, "End requested")
+                endActivity()
+            }
     }
 
     private fun requestSkip() {
@@ -101,12 +122,13 @@ class ActiveSessionActivity : AppCompatActivity() {
     lateinit var rootView: ViewGroup
     lateinit var repView: View
     lateinit var secView: View
+    private lateinit var sessionTracker: ListenerRegistration
+    //TODO: Move to top
     private fun startSession() {
         FirebaseFirestore.getInstance()
             .collection("Sessions")
             .document(sessionUID!!)
-            .set(
-                mapOf(
+            .set(mapOf(
                     "active_task" to "AS",
                     "task_state" to "ongoing"
                 ), SetOptions.merge())
@@ -115,10 +137,7 @@ class ActiveSessionActivity : AppCompatActivity() {
                 Log.d(TAG, "Session name changed to 1st exercise!")
                 var repInitialSetup = true
                 var secsInitialSetup = true
-
-                //TODO: Move to top
-                session_rep_ll.visibility = View.GONE
-                session_progress_bar_ll.visibility = View.GONE
+                sessionTracker =
                 FirebaseFirestore.getInstance()
                     .collection("Sessions")
                     .document(sessionUID!!)
@@ -129,8 +148,6 @@ class ActiveSessionActivity : AppCompatActivity() {
                         }
                         if (snapshot != null && snapshot.exists()) {
                             if (snapshot.data?.get("task_state") == "ongoing") {
-
-
                                 for (value in snapshot?.data?.entries!!){
                                     if (value.key == "task_message") {
 
@@ -216,6 +233,10 @@ class ActiveSessionActivity : AppCompatActivity() {
                                     }
                                 }
                             }
+                            if (snapshot.data?.get("task_state") == "complete"){
+                                endActivity()
+                                return@addSnapshotListener
+                            }
                         }
                         else{
                             Log.d(TAG, "Session UID obj is null!")
@@ -226,6 +247,11 @@ class ActiveSessionActivity : AppCompatActivity() {
                 startActivity(Intent(this, ConnectPCQRActivity::class.java));
                 Toast.makeText(baseContext, "Error! Scan QR", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun endActivity() {
+        sessionTracker.remove()
+        finish()
     }
 
 }

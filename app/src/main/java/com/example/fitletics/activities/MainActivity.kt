@@ -115,6 +115,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         Log.d("MyWorker", "Launching periodic func")
         MyWorker.WorkManagerScheduler.refreshPeriodicWork(this)
 
+        RecEngine.recommendWorkout(this);
+
         setupTabs()
         setupFab()
         startPedometer()

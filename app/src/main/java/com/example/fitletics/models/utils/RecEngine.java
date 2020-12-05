@@ -1,6 +1,7 @@
 package com.example.fitletics.models.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.fitletics.models.support.Exercise;
 import com.example.fitletics.models.support.ExerciseStat;
@@ -8,6 +9,7 @@ import com.example.fitletics.models.support.Muscle;
 import com.example.fitletics.models.support.Session;
 import com.example.fitletics.models.support.Workout;
 import com.example.fitletics.models.utils.WorkoutPriority;
+import com.google.firebase.firestore.DocumentReference;
 
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.FunctionBlock;
@@ -16,6 +18,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.Math.round;
 
@@ -319,14 +323,23 @@ public class RecEngine {
     }
 
     //Identifies the ideal category for the user and recommends a workout as well
-    public static Workout recommendWorkout(Context ctx) throws Exception {
+    public static void recommendWorkout(Context ctx) throws Exception {
         //TODO: @Vishal assign the vars from the DB
-        String bodyType = "Mesomorph";
-        double upperBodyScore = 2;
-        double lowerBodyScore = 9;
-        double coreScore = 4;
+        Map<String, Object> data = FirebaseQueries.Companion.getUserInfo();
 
-        return recommendWorkout(recommendWorkoutCategory(getWorkoutPriorities(ctx, bodyType, upperBodyScore, lowerBodyScore, coreScore)));
+
+
+
+        String bodyTypeTest = (String) data.get("bodyType");
+        Log.d("TEST_JAVA", "data: " + bodyTypeTest);
+
+
+//        String bodyType = "Mesomorph";
+//        double upperBodyScore = 2;
+//        double lowerBodyScore = 9;
+//        double coreScore = 4;
+
+//        return recommendWorkout(recommendWorkoutCategory(getWorkoutPriorities(ctx, bodyType, upperBodyScore, lowerBodyScore, coreScore)));
     }
 
 }

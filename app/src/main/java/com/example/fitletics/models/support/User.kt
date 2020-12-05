@@ -16,6 +16,11 @@ class User {
     var height: Int? = null
     var bodyType: BodyType? = null
 
+    //TODO: Add these after BLT in signup Process
+    var upperScore :Double? = null
+    var coreScore: Double? = null
+    var lowerScore: Double? = null
+
     constructor(){
         userID= "NO ID"
         name = "NO NAME"
