@@ -1,4 +1,4 @@
-package com.example.fitletics.dialogs
+package com.example.fitletics.fragments.homepage.dialogs
 
 import android.content.Context
 import android.os.Bundle

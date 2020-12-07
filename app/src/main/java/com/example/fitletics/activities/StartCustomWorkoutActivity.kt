@@ -14,7 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fitletics.R
 import com.example.fitletics.adapters.WorkoutExerciseListAdapter
-import com.example.fitletics.dialogs.ExerciseDescriptionDialog
+import com.example.fitletics.fragments.homepage.dialogs.ExerciseDescriptionDialog
 import com.example.fitletics.models.support.Constants
 import com.example.fitletics.models.support.Exercise
 import com.example.fitletics.models.utils.WebsiteSession
@@ -73,7 +73,15 @@ class StartCustomWorkoutActivity : AppCompatActivity() {
         listView?.setOnItemClickListener{parent, view, position, id ->
             val entry= parent.getItemAtPosition(position) as Exercise
             Log.d(TAG, "desc: ${entry.name}")
-            val dialog = ExerciseDescriptionDialog(this, entry.name!!, entry.description, entry.link!!, "Cancel", true)
+            val dialog =
+                ExerciseDescriptionDialog(
+                    this,
+                    entry.name!!,
+                    entry.description,
+                    entry.link!!,
+                    "Cancel",
+                    true
+                )
             dialog.show(supportFragmentManager, "exerciseDescription")
         }
     }

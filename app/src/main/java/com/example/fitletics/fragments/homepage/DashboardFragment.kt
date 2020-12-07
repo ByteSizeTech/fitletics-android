@@ -1,4 +1,4 @@
-package com.example.fitletics.fragments
+package com.example.fitletics.fragments.homepage
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,6 +14,7 @@ import com.example.fitletics.adapters.DashboardAnalyticsAdapter
 import com.example.fitletics.models.support.Constants
 import com.example.fitletics.models.misc.DashboardAnalyticsItem
 import com.example.fitletics.models.support.User
+import com.example.fitletics.models.utils.UserXP
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.analytics_dashboard_card.view.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
@@ -77,6 +78,7 @@ class DashboardFragment : Fragment() {
                     val DOB = snapshot.data?.get("dob") as String
                     val weight = snapshot.data?.get("weight") as Long
                     val height = snapshot.data?.get("height") as Long
+                    val xp = (snapshot.data?.get("xp") as Long).toInt()
                     val bodyTypefromDB = snapshot.data?.get("bodyType") as String?
 
                     var bodyType: User.BodyType? = null
@@ -95,7 +97,8 @@ class DashboardFragment : Fragment() {
                             gender,
                             weight.toInt(),
                             height.toInt(),
-                            bodyType
+                            bodyType,
+                            xp
                         )
                     setupUserDetails()
                 }
@@ -105,6 +108,14 @@ class DashboardFragment : Fragment() {
     private fun setupUserDetails(){
         user_name_text.text = Constants.CURRENT_USER!!.name
         user_id_text.text = Constants.CURRENT_USER!!.userID
+
+        val user_Xp =  UserXP.returnExperienceProgress(Constants.CURRENT_USER!!.xp!!)
+        Log.d("USERXP", "$user_Xp")
+
+        user_progress_bar.progress = user_Xp["Percentage"] as Int
+        user_progress_text.text = user_Xp["XP"] as String
+        user_xp_text.text = "Level ${user_Xp["Level"]}"
+
     }
 
     private fun setupFavoriteAnalytics(){

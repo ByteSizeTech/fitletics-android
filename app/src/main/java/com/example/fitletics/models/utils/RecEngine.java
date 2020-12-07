@@ -21,6 +21,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 import static java.lang.Math.round;
 
 public class RecEngine {
@@ -323,16 +329,40 @@ public class RecEngine {
     }
 
     //Identifies the ideal category for the user and recommends a workout as well
+
+    private static OkHttpClient client = new OkHttpClient();
+
+
+    static String dbResponse = "";
+
+    public static String run(String url){
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        String outputResponse = "";
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    dbResponse = response.body().toString();
+                }
+            }
+        });
+
+        return dbResponse;
+    }
+
+
     public static void recommendWorkout(Context ctx) throws Exception {
         //TODO: @Vishal assign the vars from the DB
-        Map<String, Object> data = FirebaseQueries.Companion.getUserInfo();
-
-
-
-
-        String bodyTypeTest = (String) data.get("bodyType");
-        Log.d("TEST_JAVA", "data: " + bodyTypeTest);
-
 
 //        String bodyType = "Mesomorph";
 //        double upperBodyScore = 2;
@@ -341,5 +371,6 @@ public class RecEngine {
 
 //        return recommendWorkout(recommendWorkoutCategory(getWorkoutPriorities(ctx, bodyType, upperBodyScore, lowerBodyScore, coreScore)));
     }
+
 
 }

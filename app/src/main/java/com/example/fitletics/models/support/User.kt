@@ -15,6 +15,7 @@ class User {
     var weight: Int? = null
     var height: Int? = null
     var bodyType: BodyType? = null
+    var caloriesPerStep: Double? = null
 
     //TODO: Add these after BLT in signup Process
     var upperScore :Double? = null
@@ -84,7 +85,8 @@ class User {
         gender: String?,
         weight: Int?,
         height: Int?,
-        bodyType: BodyType?
+        bodyType: BodyType?,
+        xp: Int?
     ) {
         this.userID = userID
         this.name = name
@@ -94,5 +96,28 @@ class User {
         this.weight = weight
         this.height = height
         this.bodyType = bodyType
+        this.xp = xp
+    }
+
+    constructor(
+        userID: String?,
+        name: String?,
+        email: String?,
+        DOB: String?,
+        gender: String?,
+        weight: Int?,
+        height: Int?,
+        xp: Int?
+//        caloriesPerStep: Double
+    ) {
+        this.userID = userID
+        this.name = name
+        this.email = email
+        this.DOB = DOB
+        this.gender = gender
+        this.weight = weight
+        this.height = height
+        this.xp = xp
+//        this.caloriesPerStep = caloriesPerStep
     }
 }

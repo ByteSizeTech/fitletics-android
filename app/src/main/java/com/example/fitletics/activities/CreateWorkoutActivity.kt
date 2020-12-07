@@ -177,6 +177,9 @@ class CreateWorkoutActivity : AppCompatActivity() {
                 time = "TBD"
             )
 
+            tempWorkoutObject.calculateDuration();
+            tempWorkoutObject.calculateDifficulty();
+
             FirebaseFirestore.getInstance()
                 .collection("Users")
                 .document(Constants.CURRENT_FIREBASE_USER!!.uid)
@@ -190,6 +193,16 @@ class CreateWorkoutActivity : AppCompatActivity() {
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
+
+//            FirebaseFirestore.getInstance()
+//                .collection("BLT_REF")
+//                .document("Baseline_Test_Exercise")
+//                .set(tempWorkoutObject)
+//                .addOnSuccessListener {
+//                    Log.d("WORKOUT STATUS", "Workout added to database")
+//                    startActivity(Intent(this, MainActivity::class.java))
+//                    finish()
+//                }
         }
     }
 

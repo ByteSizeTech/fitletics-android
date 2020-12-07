@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorSecondary"
     android:orientation="vertical"
-    tools:context=".fragments.WorkoutFragment">
+    tools:context=".fragments.homepage.WorkoutFragment">
 
 
     <LinearLayout
@@ -80,7 +80,7 @@
                             android:id="@+id/user_name_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Test Acc"
+                            android:text="Loading.."
                             android:textColor="@color/colorSecondary"
                             android:textSize="24sp"
                             android:textStyle="bold" />
@@ -90,7 +90,7 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Level 3"
+                                android:text=""
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
@@ -99,7 +99,7 @@
                                 android:id="@+id/user_id_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Test Acc"
+                                android:text=""
                                 android:textColor="@color/colorSecondary"
                                 android:textSize="12sp"/>
 
@@ -136,7 +136,7 @@
                             android:id="@+id/user_progress_text"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:text="1865/3500 XP"
+                            android:text="xx/xx XP"
 
                             android:layout_weight="0"
                             android:gravity="center"

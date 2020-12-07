@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.fitletics.R
 import com.example.fitletics.models.support.Constants
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.android.synthetic.main.activity_body_analysis_ongoing.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,6 +75,7 @@ class BAnalysisOngoingActivity : AppCompatActivity() {
         //TODO: if user cancels activity, cancel body analysis
     }
 
+    lateinit var baSessionListener: ListenerRegistration
     private fun startSession() {
         //check if session is already populated
         //val UserUID = hashMapOf("UID" to Constants.CURRENT_USER!!.userID )
@@ -85,6 +87,7 @@ class BAnalysisOngoingActivity : AppCompatActivity() {
                 "active_task" to "BA",
                 "task_state" to "requested"))
             .addOnSuccessListener {
+                baSessionListener =
                 FirebaseFirestore.getInstance()
                     .collection("Sessions")
                     .document(sessionUID!!)
@@ -101,7 +104,6 @@ class BAnalysisOngoingActivity : AppCompatActivity() {
                             if (snapshot.data?.get("task_state") == "complete"){
                                 Log.d("BA_SESSION", "Going to body Analysis complete!")
                                 bodyAnalysisComplete()
-                                return@addSnapshotListener
                             }
 //                            if (snapshot.data?.get("task_state") == "cancelled"){
 //                                bodyAnalysisCancelled()
@@ -148,10 +150,14 @@ class BAnalysisOngoingActivity : AppCompatActivity() {
     }
 
     private fun bodyAnalysisComplete() {
+        baSessionListener.remove()
+        Log.d("BA_SESSION", "Starting complete activity")
         startActivity(Intent(this, BAnalysisCompleteActivity::class.java))
+        finish()
     }
 
     private fun bodyAnalysisCancelled() {
+        baSessionListener.remove()
         startActivity(Intent(this, MainActivity::class.java))
     }
 

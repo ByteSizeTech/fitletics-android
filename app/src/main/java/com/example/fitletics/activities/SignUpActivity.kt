@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.example.fitletics.R
 import com.example.fitletics.models.support.Constants
 import com.example.fitletics.models.support.User
+import com.example.fitletics.models.utils.WebsiteSession
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -166,7 +167,8 @@ class SignUpActivity : AppCompatActivity() {
                             DOB = userDOB,
                             gender = gender,
                             weight = Integer.parseInt(weight_text_signup.text.toString()),
-                            height = Integer.parseInt(height_text_signup.text.toString())
+                            height = Integer.parseInt(height_text_signup.text.toString()),
+                            xp = 0
                         )
 
                     Log.d("DOB", userDOB.toString())
@@ -197,7 +199,8 @@ class SignUpActivity : AppCompatActivity() {
                         .set(newUser)
                         .addOnSuccessListener {
                             Log.d("FB_SIGNUP", "createUserWithEmail:success")
-                            startActivity(Intent(this, ConnectPCQRActivity::class.java))
+//                            startActivity(Intent(this, ConnectPCQRActivity::class.java))
+                            WebsiteSession(this, BAnalysisOngoingActivity::class.java, null)
                         }
                 }
 

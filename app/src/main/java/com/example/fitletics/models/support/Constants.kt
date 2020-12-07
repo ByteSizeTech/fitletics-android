@@ -9,6 +9,8 @@ class Constants {
         var CURRENT_USER: User? = null
         var SESSION_CONNECTION: String? = null
         var STEP_COUNT: String? = null
+        //TODO: Make the boolean true on main activity
+        var HAS_SIGNEDUP: Boolean = false
     }
 
 

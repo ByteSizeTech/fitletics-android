@@ -40,9 +40,9 @@
         android:layout_marginTop="25dp"
         android:fontFamily="sans-serif-black"
         android:gravity="center"
-        android:text="Connecting to DB.."
+        android:text="Establishing connection to website..."
         android:textColor="@color/fontWhite"
-        android:textSize="56sp"
+        android:textSize="54sp"
         android:textStyle="bold" />
 
     <LinearLayout

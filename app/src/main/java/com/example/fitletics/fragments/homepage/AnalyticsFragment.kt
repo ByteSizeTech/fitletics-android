@@ -1,4 +1,4 @@
-package com.example.fitletics.fragments
+package com.example.fitletics.fragments.homepage
 
 import android.content.Intent
 import android.os.Bundle
@@ -48,7 +48,7 @@ class AnalyticsFragment : Fragment() {
     private fun getExerciseAnalyticsKeys() {
         FirebaseFirestore.getInstance()
             .collection("Users")
-            .document(Constants.CURRENT_FIREBASE_USER!!.uid)
+            .document(Constants.CURRENT_FIREBASE_USER?.uid!!)
             .collection("Analytics")
             .addSnapshotListener{snapshot, e ->
                 if (e != null){

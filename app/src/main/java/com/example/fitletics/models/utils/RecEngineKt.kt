@@ -14,6 +14,7 @@ import java.util.*
 
 class RecEngineKt {
     //Outputs the priorities for every supported workout sorted in descending order
+
     @Throws(IOException::class)
     fun getWorkoutPriorities(
         ctx: Context,
@@ -280,29 +281,18 @@ class RecEngineKt {
 
     //Identifies the ideal category for the user and recommends a workout as well
     @Throws(Exception::class)
-    fun recommendWorkout(ctx: Context): Workout {
+    fun recommendWorkout(ctx: Context) {
         //TODO: @Vishal assign the vars from the DB
 
         var bodyType: String = ""
         var upperBodyScore: Double = 0.0
         var coreScore: Double = 0.0
         var lowerBodyScore: Double = 0.0
-        FirebaseFirestore.getInstance()
-            .collection("Users")
-            .document(Constants.CURRENT_FIREBASE_USER!!.uid)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    bodyType = document.data?.get("bodyType").toString()
-                    upperBodyScore = document.data?.get("upperScore").toString().toDouble()
-                    coreScore = document.data?.get("coreScore").toString().toDouble()
-                    lowerBodyScore = document.data?.get("lowerScore").toString().toDouble()
 
-                }
-            }
+        Log.d("LOLLZZZ", "${FirebaseQueries.getUserInfo()} lmaooo")
 
 
 
-        return recommendWorkout(recommendWorkoutCategory(getWorkoutPriorities(ctx, bodyType, upperBodyScore, lowerBodyScore, coreScore)));
+//        return recommendWorkout(recommendWorkoutCategory(getWorkoutPriorities(ctx, bodyType, upperBodyScore, lowerBodyScore, coreScore)));
     }
 }

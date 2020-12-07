@@ -1,4 +1,4 @@
-package com.example.fitletics.fragments
+package com.example.fitletics.fragments.homepage
 
 import android.content.Context
 import android.content.Intent
@@ -14,14 +14,13 @@ import android.widget.ExpandableListView
 import com.example.fitletics.adapters.WorkoutsExpandableListAdapter
 import com.example.fitletics.R
 import com.example.fitletics.activities.*
-import com.example.fitletics.dialogs.ExerciseDescriptionDialog
+import com.example.fitletics.fragments.homepage.dialogs.ExerciseDescriptionDialog
 import com.example.fitletics.models.support.Constants
 import com.example.fitletics.models.support.Exercise
 import com.example.fitletics.models.support.Muscle
 import com.example.fitletics.models.support.Workout
 import com.example.fitletics.models.utils.WebsiteSession
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -73,9 +72,6 @@ class WorkoutFragment : Fragment() {
                 )
             )
 
-
-
-
             getWorkouts()
 
             //pendingWorkouts.add(Workout("Beginner run", tempList2, "Easy", "40 mins"))
@@ -124,38 +120,38 @@ class WorkoutFragment : Fragment() {
         }
 
     var count = 0
-    private fun initializeTempButton(button: Button) {
-        button.setOnClickListener {
-            count++
-            var tempWorkoutObject = Workout(
-                name = "workout${count}",
-                exerciseList = this.tempList2,
-                difficulty = "TBD",
-                time = "TBD"
-            )
-
-            FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(Constants.CURRENT_FIREBASE_USER!!.uid)
-                .collection("Workouts")
-                .document("Pending")
-                .collection("workouts")
-                .document()
-                .set(tempWorkoutObject, SetOptions.merge())
-                .addOnSuccessListener {
-                    Log.d("WORKOUT STATUS", "Workout added to database")
-                }
-
-            adapter = WorkoutsExpandableListAdapter(
-                this.activity!!,
-                titleList as ArrayList<String>,
-                data,
-                expandableListViewCode
-            )
-            Log.d("DEBUG", "Activity: ${this.activity!!}")
-            expandableListViewCode!!.setAdapter(adapter)
-        }
-    }
+//    private fun initializeTempButton(button: Button) {
+//        button.setOnClickListener {
+//            count++
+//            var tempWorkoutObject = Workout(
+//                name = "workout${count}",
+//                exerciseList = this.tempList2,
+//                difficulty = "TBD",
+//                time = "TBD"
+//            )
+//
+//            FirebaseFirestore.getInstance()
+//                .collection("Users")
+//                .document(Constants.CURRENT_FIREBASE_USER!!.uid)
+//                .collection("Workouts")
+//                .document("Pending")
+//                .collection("workouts")
+//                .document()
+//                .set(tempWorkoutObject, SetOptions.merge())
+//                .addOnSuccessListener {
+//                    Log.d("WORKOUT STATUS", "Workout added to database")
+//                }
+//
+//            adapter = WorkoutsExpandableListAdapter(
+//                this.activity!!,
+//                titleList as ArrayList<String>,
+//                data,
+//                expandableListViewCode
+//            )
+//            Log.d("DEBUG", "Activity: ${this.activity!!}")
+//            expandableListViewCode!!.setAdapter(adapter)
+//        }
+//    }
 
     private fun getWorkouts() {
         FirebaseFirestore.getInstance()
@@ -330,7 +326,8 @@ class WorkoutFragment : Fragment() {
 
         val rootView: View = inflater.inflate(R.layout.fragment_workout, container, false)
 
-        initializeTempButton(rootView.findViewById<Button>(R.id.create_workout_button_test))  //TEMP TEST CODE *********************************
+        //TEMP TEST CODE *********************************
+//        initializeTempButton(rootView.findViewById<Button>(R.id.create_workout_button_test))
 
         /*Changes intent to create workout*/
         rootView.findViewById<Button>(R.id.create_workout_button).setOnClickListener()
@@ -380,12 +377,15 @@ class WorkoutFragment : Fragment() {
                                     Log.d(TAG, "document: ${document.data?.get("active_task")}")
                                     Log.d(TAG, "document: ${document.data?.get("task_state")}")
 
-                                    val dialog = ExerciseDescriptionDialog(this.activity!!,
-                                        "Ongoing Session!",
-                                        "There is an on-going session!" +
-                                                "\nYou must end the active session in order to start another activity that requires the website. " +
-                                                "\n\nDo you want to end the active session?",
-                                        "Continue Session", "End Session", false)
+                                    val dialog =
+                                        ExerciseDescriptionDialog(
+                                            this.activity!!,
+                                            "Ongoing Session!",
+                                            "There is an on-going session!" +
+                                                    "\nYou must end the active session in order to start another activity that requires the website. " +
+                                                    "\n\nDo you want to end the active session?",
+                                            "Continue Session", "End Session", false
+                                        )
                                     dialog.show(this.activity!!.supportFragmentManager, "exerciseDescription")
                                 }
                                 else{

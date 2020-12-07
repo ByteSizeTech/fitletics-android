@@ -1,4 +1,4 @@
-package com.example.fitletics.fragments
+package com.example.fitletics.fragments.homepage
 
 import android.content.Context
 import android.content.Intent
