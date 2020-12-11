@@ -101,7 +101,6 @@ class BAnalysisCompleteActivity : AppCompatActivity() {
                         )
                     }
                     tempExerciseObject.targetMuscles = targetedMuscles
-//                Log.d(TAG, "exerciseList: ${it.result?.get("exerciseList")}")
                 }
                 val tempWorkoutObject =
                     Workout(
@@ -110,7 +109,6 @@ class BAnalysisCompleteActivity : AppCompatActivity() {
                         time = it.data?.get("time").toString(),
                         difficulty = it.data?.get("difficulty").toString()
                     )
-//                Log.d(TAG, "from here: ${tempWorkoutObject.exerciseList}")
                 BLT_WORKOUT = tempWorkoutObject
                 Log.d(TAG, "setup workout obj: $BLT_WORKOUT")
 

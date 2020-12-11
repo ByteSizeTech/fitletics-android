@@ -44,9 +44,6 @@ class StartCustomWorkoutActivity : AppCompatActivity() {
 
         begin_workout_button.isEnabled = false
 
-
-
-
         sharedPref = getSharedPreferences("session_uid_data", Context.MODE_PRIVATE)
         sessionUID = sharedPref.getString("UID", null)
 
@@ -147,19 +144,6 @@ class StartCustomWorkoutActivity : AppCompatActivity() {
     }
 
     private fun startActiveSessionActivity() {
-//        FirebaseFirestore.getInstance()
-//            .collection("Sessions")
-//            .document(sessionUID!!)
-//            .set(
-//                mapOf("active_task" to "AS",
-//                        "task_state" to "requested"
-//            ),SetOptions.merge())
-//            .addOnCompleteListener {
-//                WebsiteSession(this, ActiveSessionActivity::class.java, workoutObject);
-//                finish()
-//            }.addOnFailureListener {
-//                Log.d(TAG, "Start active session request failed")
-//            }
 
         sessionTracker.remove()
         WebsiteSession(
@@ -171,7 +155,6 @@ class StartCustomWorkoutActivity : AppCompatActivity() {
     }
 
     private fun sessionCancelled() {
-        //TODO: Pass cancel functions
         finish()
     }
 

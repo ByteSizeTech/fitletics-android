@@ -115,7 +115,7 @@ class SharedWorkoutActivity : AppCompatActivity() {
     }
 
     private fun setupArrayList() {
-        if (workoutObject?.exerciseList?.isNullOrEmpty()!!){
+        if (workoutObject?.exerciseList?.isNullOrEmpty()!!){ //for testing purposes, if no object was passed (never called)
             Log.d(TAG, "Exercise list was empty!")
             workoutObject?.exerciseList = ArrayList()
             workoutObject?.exerciseList?.add(

@@ -166,7 +166,6 @@ class DashboardFragment : Fragment() {
                         val completedStat = entry["completedStats"] as Map<String, Any?>
 
                         for (workout in completedStat) {
-//                            Log.d(TAG, "endtries: ${workout.value}")
                             val stat = workout.value as Map<String, Any?>
                             if (stat["exerciseName"] == exerciseName) {
                                 val dashboardItem : DashboardAnalyticsItem

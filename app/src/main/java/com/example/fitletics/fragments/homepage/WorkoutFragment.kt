@@ -74,10 +74,6 @@ class WorkoutFragment : Fragment() {
 
             getWorkouts()
 
-            //pendingWorkouts.add(Workout("Beginner run", tempList2, "Easy", "40 mins"))
-//            pendingWorkouts.add(Workout("Try this", tempList, "Medium", "80 mins"))
-//            getWorkouts()
-
             val standardWorkouts = ArrayList<Workout>()
             val fullBodyWorkout: Workout = Workout()
             fullBodyWorkout.name = "FullBody"
@@ -100,38 +96,6 @@ class WorkoutFragment : Fragment() {
         }
 
     var count = 0
-//    private fun initializeTempButton(button: Button) {
-//        button.setOnClickListener {
-//            count++
-//            var tempWorkoutObject = Workout(
-//                name = "workout${count}",
-//                exerciseList = this.tempList2,
-//                difficulty = "TBD",
-//                time = "TBD"
-//            )
-//
-//            FirebaseFirestore.getInstance()
-//                .collection("Users")
-//                .document(Constants.CURRENT_FIREBASE_USER!!.uid)
-//                .collection("Workouts")
-//                .document("Pending")
-//                .collection("workouts")
-//                .document()
-//                .set(tempWorkoutObject, SetOptions.merge())
-//                .addOnSuccessListener {
-//                    Log.d("WORKOUT STATUS", "Workout added to database")
-//                }
-//
-//            adapter = WorkoutsExpandableListAdapter(
-//                this.activity!!,
-//                titleList as ArrayList<String>,
-//                data,
-//                expandableListViewCode
-//            )
-//            Log.d("DEBUG", "Activity: ${this.activity!!}")
-//            expandableListViewCode!!.setAdapter(adapter)
-//        }
-//    }
 
     private fun getWorkouts() {
         FirebaseFirestore.getInstance()
@@ -333,17 +297,8 @@ class WorkoutFragment : Fragment() {
             Log.d("DEBUG", "Activity: ${this.activity!!}")
             expandableListViewCode!!.setAdapter(adapter)
 
-//            for (groups in 0 until listData.size){
-//                expandableListViewCode!!.expandGroup(groups);
-//            }
 
-//            expandableListViewCode!!.setOnGroupExpandListener { groupPosition -> Toast.makeText(this.activity?.applicationContext, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show() }
-//
-//             expandableListViewCode!!.setOnGroupCollapseListener { groupPosition -> Toast.makeText(this.activity?.applicationContext, (titleList as ArrayList<String>)[groupPosition] + " List Collapsed.", Toast.LENGTH_SHORT).show() }
-//
             expandableListViewCode!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
-//                Toast.makeText(this.activity?.applicationContext, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<Workout>)[groupPosition]]!!.get(childPosition),
-//                    Toast.LENGTH_SHORT).show()
 
                 if ((titleList as ArrayList<String>)[groupPosition] == "Pending"){
                     val tempWorkout =
@@ -411,6 +366,7 @@ class WorkoutFragment : Fragment() {
                 tempStandardWorkoutWorkout
             );
         }
+
         else{
             val tempWorkout =
                 Workout(
@@ -434,4 +390,5 @@ class WorkoutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
+
 }

@@ -42,27 +42,11 @@ class WebsiteSession(context: Context, intentClass: Class<*>, workout: Workout?)
             context.startActivity(intent);
         }
         else {  //everything is fine, start session
-            //TODO: check if there is an active session going on (make it a func call so it is easy to call from the logout activity)
-//            checkActiveSession(sessionUID)
             Log.d(TAG, "Starting ${intentClass.simpleName} session w $sessionUID")
             val intent: Intent = Intent(context, intentClass)
             intent.putExtra("Workout_object", workout)
             context.startActivity(intent);
         }
-    }
-
-    private fun checkActiveSession(sessionUID: String) {
-        Log.d(TAG, "checking active session..." )
-        FirebaseFirestore.getInstance()
-            .collection("Sessions")
-            .document(sessionUID!!)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document != null){
-                    if (document.data?.get("active_task") == "SD" && document.data?.get("task_state") == "ongoing")
-                 Log.d(TAG, "document: ${document.data?.get("active_task")}")
-                }
-            }
     }
 
     private fun populateUID(): String? {

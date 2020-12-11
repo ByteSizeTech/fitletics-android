@@ -129,7 +129,6 @@ class ConnectPCQRActivity : AppCompatActivity() {
         WebsiteSession.setSharedPrefs(uid)
         val intent = Intent(this, receivedIntentClass);
         intent.putExtra("Workout_object", receivedWorkout)
-//        intent.putExtra("uid", uid)
         startActivity(intent)
         finish()
     }

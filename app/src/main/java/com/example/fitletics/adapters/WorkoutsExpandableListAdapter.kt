@@ -51,12 +51,9 @@ class WorkoutsExpandableListAdapter internal constructor
         exp?.setDividerHeight(0);
 
         if (isLastChild && (listPosition == groupCount - 1)) {
-//        if (isLastChild)
             convertView.background = context!!.resources.getDrawable(R.drawable.last_expandable_item, context!!.theme)
             Log.d("GROUP", "listPosition = $listPosition, groupCount - 1 = ${groupCount - 1} ");
         }
-//        else if (listPosition == 0 )
-//            convertView.background = context!!.resources.getDrawable(R.drawable.first_expandable_item, context!!.theme)
         else
             convertView.background = context!!.resources.getDrawable(R.drawable.middle_expandable_item, context!!.theme)
 

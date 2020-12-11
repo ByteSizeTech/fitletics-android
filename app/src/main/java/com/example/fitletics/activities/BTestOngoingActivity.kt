@@ -130,6 +130,7 @@ class BTestOngoingActivity : AppCompatActivity() {
     }
 
     private fun sessionCancelled() {
+        sessionDescriptionTracker.remove()
         finish()
     }
 }

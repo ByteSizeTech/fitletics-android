@@ -58,10 +58,6 @@ class ActiveSessionActivity : AppCompatActivity() {
         session_progress_bar_ll.visibility = View.GONE
 
 
-
-//        workoutObject = intent.getSerializableExtra("Workout_object") as Workout?
-//        Log.d(TAG, "workoutObject from intent: ${workoutObject?.name}")
-
         sharedPref = getSharedPreferences("session_uid_data", Context.MODE_PRIVATE)
         sessionUID = sharedPref.getString("UID", null)
 
@@ -111,7 +107,6 @@ class ActiveSessionActivity : AppCompatActivity() {
     lateinit var repView: View
     lateinit var secView: View
     private lateinit var sessionTracker: ListenerRegistration
-    //TODO: Move to top
     private fun startSession() {
         FirebaseFirestore.getInstance()
             .collection("Sessions")
@@ -175,7 +170,6 @@ class ActiveSessionActivity : AppCompatActivity() {
                                                 "${listenerObjects["curr_ex_goal"].toString().toInt()} and " +
                                                 "pvar val: ${progress} and " +
                                                 "pbar val: ${session_exercise_progress.progress}")
-
                                     }
 
                                     try {
@@ -184,108 +178,9 @@ class ActiveSessionActivity : AppCompatActivity() {
                                                 session_exercise_progress.max - (session_exercise_progress.max - listenerObjects["curr_ex_progress"]!!.toInt())
                                         }
                                     }catch (e: Exception){
-                                        Log.d(TAG, "ITS ACTUALLY THIS")
+                                        Log.d(TAG, "Error reading type")
                                     }
                                 }
-
-                                //region old_code
-
-//                                Log.d(TAG, "Workout obj? ${workoutName}")
-
-
-//                                for (value in snapshot?.data?.entries!!){
-//                                    if (value.key == "task_message") {
-//
-//                                        val workoutObjRef = (value.value as Map<String, Any>)["workout_obj"] as Map<String, String>
-//                                        session_workout_name_text_view.text = workoutObjRef["name"].toString()
-//
-//
-//                                        val listenerObjects = (value.value as Map<String, Any>)["active_session_listeners"] as Map<String, String>
-//
-//                                        //Log.d(TAG, "${i++}: ${listenerO}: ${listener.value} \n")
-//                                        session_current_exercise_name_tv.text = listenerObjects["curr_ex_name"].toString()
-//
-////                                        rootView = this.findViewById(R.id.exercise_progress_linear_layout)
-//
-//                                        if (listenerObjects["skip_request"] == "")
-//
-//
-//                                        if (listenerObjects["curr_ex_unit"].toString() == "REPS"){
-//                                            if (repInitialSetup) {
-//                                                session_progress_bar_ll.visibility = View.GONE
-////                                                if (!rootView.children.toList().isEmpty()){
-////                                                    rootView.removeAllViewsInLayout()
-////                                                }
-//                                                canRunRunnable = false
-//                                                repInitialSetup = false
-//                                                secsInitialSetup = true // resets the initial setup variable when the unit is changed to a rep so that it can be called again when it changes to secs
-////
-//
-//                                                session_rep_ll.visibility = View.VISIBLE
-////                                                val inflater = LayoutInflater.from(this)
-////                                                repView = inflater.inflate(R.layout.rep_count_layout, rootView, true)
-////                                                rootView.addView(reps)
-//
-//
-//                                            }
-//
-//                                            session_total_rep_tv.text = listenerObjects["curr_ex_goal"].toString()
-//                                            Log.d("PROGRESS_BAR", "ex goal listener: ${listenerObjects["curr_ex_goal"].toString()}")
-//
-//
-//                                            session_current_rep_tv.text = listenerObjects["curr_ex_progress"].toString()
-//                                            Log.d("PROGRESS_BAR", "ex curr_rep listener: ${listenerObjects["curr_ex_progress"].toString()}")
-//                                        }
-//                                        else if (listenerObjects["curr_ex_unit"].toString() == "SECS"){
-//                                            if (secsInitialSetup) {
-//                                                session_rep_ll.visibility = View.GONE
-//
-////                                                if (!rootView.children.toList().isEmpty()) {
-////                                                    Log.d("PROGRESS_BAR", "Tried to remove rep fom secs")
-////                                                    rootView.()
-////                                                }
-//                                                secsInitialSetup = false
-//                                                repInitialSetup = true
-//
-//                                                session_progress_bar_ll.visibility = View.VISIBLE
-//
-////                                                val inflater = LayoutInflater.from(this)
-////                                                secView = inflater.inflate(R.layout.exercise_secs_progress_bar_layout, rootView, true)
-//
-////                                                var exerciseProgressLinearLayout = findViewById<LinearLayout>(R.id.exercise_progress_linear_layout)
-////                                                exerciseProgressLinearLayout.removeAllViewsInLayout()
-////                                                layoutInflater.inflate(R.layout.exercise_secs_progress_bar_layout, exerciseProgressLinearLayout)
-//                                                session_exercise_progress.max = listenerObjects["curr_ex_goal"].toString().toInt()
-//
-//                                                progress = 0.0
-//                                                secsgoal = listenerObjects["curr_ex_goal"].toString().toDouble()
-//                                                session_exercise_progress.progress = progress.roundToInt()
-//
-//                                                Log.d("PROGRESS_BAR", "Pbar initialized with goal: " +
-//                                                        "${listenerObjects["curr_ex_goal"].toString().toInt()} and " +
-//                                                        "pvar val: ${progress} and " +
-//                                                        "pbar val: ${session_exercise_progress.progress}")
-//
-//                                            }
-//
-//                                            if (listenerObjects["curr_ex_progress"]!!.toString() != "null") {
-//                                                session_exercise_progress.progress =
-//                                                    session_exercise_progress.max - (session_exercise_progress.max - listenerObjects["curr_ex_progress"]!!.toInt())
-//                                            }
-//
-//
-////                                            if(listenerObjects["curr_ex_progress"].toString() == "inpose") {
-////                                                runnable.run()
-////                                            }
-////                                            else{
-////                                                Log.d("PROGRESS_BAR", "Removed callback -> not inpose")
-////                                                handler.removeCallbacks(runnable)
-////                                            }
-//                                        }
-//                                    }
-//                                }
-
-                                //endregion old_code
                             }
                             if (snapshot.data?.get("task_state") == "complete"){
                                 endActivity()
@@ -305,9 +200,7 @@ class ActiveSessionActivity : AppCompatActivity() {
 
     private fun endActivity() {
         sessionTracker.remove()
-//        finish()
-//        startActivity(Intent(this, BTestCompleteActivity::class.java))
-//        finish()
+        finish()
     }
 
 }

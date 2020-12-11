@@ -111,7 +111,6 @@ public class RecEngine {
     }
 
     //Gets the appropriate milestone workout for the user in order to determine what exercises to recommend
-    //TODO: @Vishal the milestone should be the milestone workout that matches the last session. get it based on the last workout name and level.
     static HashMap<String, Object> getMilestoneWorkout(String category, Session lastSession, Workout milestone){
 
         String level;
@@ -173,7 +172,6 @@ public class RecEngine {
     }
 
     //Gets the required exercise details from the database and returns it as an Exercise object
-    //TODO: @Vishal pass in an appropriate list of exercises from the DB. make sure every exercise in the workout is present
     static Exercise getExercise(String exerciseName, Exercise[] exercises){
 
         for (int i = 0; i < exercises.length; i++)

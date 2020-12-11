@@ -108,7 +108,6 @@ class User {
         weight: Int?,
         height: Int?,
         xp: Int?
-//        caloriesPerStep: Double
     ) {
         this.userID = userID
         this.name = name
@@ -118,6 +117,5 @@ class User {
         this.weight = weight
         this.height = height
         this.xp = xp
-//        this.caloriesPerStep = caloriesPerStep
     }
 }

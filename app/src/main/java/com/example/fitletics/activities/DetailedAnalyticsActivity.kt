@@ -44,7 +44,7 @@ class DetailedAnalyticsActivity : AppCompatActivity() {
 
         listView = findViewById(R.id.recent_exercise_stat_list)
 
-        if (intent.getStringExtra("Analytic name") == "Push Up") {
+        if (intent.getStringExtra("Analytic name") == "Push Up") {      //MOCK DATA if push up is selected
             testAnalytics.add(Analytic("8/12/20", 12.toString(), 8.toString()))
             testAnalytics.add(Analytic("8/12/20", 12.toString(), 8.toString()))
             testAnalytics.add(Analytic("9/12/20", 10.toString(), 6.toString()))
@@ -116,12 +116,6 @@ class DetailedAnalyticsActivity : AppCompatActivity() {
     }
 
     private fun setupGraphVariables(isReversed: Boolean = true) {
-//        calList = analyticList.map {
-//            DataPoint(it.date!!.split("/")[0].toDouble(),
-//                it.cals!!.split(" ")[0].toDouble())
-//        }.toTypedArray()
-
-//        Log.d("CAL_LIST", "$calList")
 
         val averagedAnalytic: ArrayList<Analytic> = ArrayList()
 
@@ -147,31 +141,6 @@ class DetailedAnalyticsActivity : AppCompatActivity() {
             tempRepList.clear()
             tempTTakenList.clear()
         }
-
-
-//        var tempRepList : ArrayList<Int> = ArrayList()
-//        val tempTTakenList : ArrayList<Int> = ArrayList()
-//        for (i in (analyticList.indices)+1){
-//            if (i > 0) {
-//                if (analyticList[i].date == analyticList[i - 1].date) {
-//                    Log.d(TAG, "AVERAGED_VAL: date was similar -> ${analyticList[i].date} / ${analyticList[i - 1].date}" )
-//                    tempRepList.add((analyticList[i].value)!!.toInt())
-//                    Log.d(TAG, "AVERAGED_VAL: added value -> ${analyticList[i].value} or ${analyticList[i - 1].value}" )
-//                    tempTTakenList.add((analyticList[i].time)!!.toInt())
-//                } else {
-//                    if (tempRepList.size != 0) {
-//                        val repAvg = tempRepList.sum() / tempRepList.size
-//                        Log.d(TAG, "AVERAGED_VAL: repavg -> ${tempRepList.sum()} / ${tempRepList.size}" )
-//                        val timeAvg = tempRepList.sum() / tempRepList.size
-//                        val tempAnalytic = Analytic(analyticList[i - 1].date, timeAvg.toString(), repAvg.toString())
-//                        averagedAnalytic.add(tempAnalytic)
-//                        Log.d(TAG, "AVERAGED_VAL: ${tempAnalytic.date}, ${tempAnalytic.value}, ${tempAnalytic.time}\n" )
-//                    }
-//                    tempRepList.clear()
-//                    tempTTakenList.clear()
-//                }
-//            }
-//        }
 
         if (isReversed) {
             valList = averagedAnalytic.map {
@@ -214,23 +183,6 @@ class DetailedAnalyticsActivity : AppCompatActivity() {
 
     private fun setupAnalyticsfromDatabase(key: String?) {
         var dbAnalyticList: List<Map<String, String>> = ArrayList()
-//        FirebaseFirestore.getInstance()
-//            .collection("Users")
-//            .document(Constants.CURRENT_FIREBASE_USER!!.uid)
-//            .collection("Analytics")
-//            .document(key!!)
-//            .addSnapshotListener { snapshot, e ->
-//                if (e != null){
-//                    Log.w("ERROR", "Listen failed.", e)
-//                    return@addSnapshotListener
-//                }
-//                snapshot!!.data?.entries?.forEach {
-//                    analyticList = it.value as List<Map<String, String>>
-//                }
-//                Log.d("DB_ANALYTIC_REP", "DocumentSnapshot data: ${(analyticList[0]["value"])}")
-//            }
-
-        //TODO: Uncomment this code below
 
         FirebaseFirestore.getInstance()
             .collection("Users")
@@ -253,23 +205,6 @@ class DetailedAnalyticsActivity : AppCompatActivity() {
             }.addOnFailureListener {
                 Log.d(TAG, "$key does not exist as favorites")
             }
-
-//                dbAnalyticList.forEach {
-//                    val tempAnalytic =
-//                        Analytic(
-//                            date = it["date"],
-//                            time = it["time"],
-//                            calories = it["cals"],
-//                            value = it["value"]
-//                        )
-//                    analyticList.add(tempAnalytic)
-//                }
-//            }
-//                listAdapter = DetailedWorkoutStatAdapter(this, analyticList)
-//                listView?.adapter = listAdapter
-//                setupGraphVariables()
-//                setupButtonListeners()
-//        }
 
         FirebaseFirestore
             .getInstance()
@@ -298,11 +233,9 @@ class DetailedAnalyticsActivity : AppCompatActivity() {
                                 )
                             analyticList.add(tempAnalytic)
                             }
-//                            Log.d(TAG, "analytic: ${tempAnalytic.date}, ${tempAnalytic.time}, ${tempAnalytic.value}")
                         }
                     }
                 }
-//                Log.d(TAG, "result: ${result}")
                 listAdapter = DetailedWorkoutStatAdapter(this, analyticList)
                 listView?.adapter = listAdapter
                 setupGraphVariables()

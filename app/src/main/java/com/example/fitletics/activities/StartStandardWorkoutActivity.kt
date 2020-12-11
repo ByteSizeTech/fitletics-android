@@ -91,7 +91,7 @@ class StartStandardWorkoutActivity : AppCompatActivity() {
             .addOnCompleteListener { documentSnapshot ->
                 val result = documentSnapshot.result?.documents
 
-                Log.d(TAG, "TELL_ME_WHAT_THIS_IS: ${result}")
+                Log.d(TAG, "CHECK_THIS: ${result}")
 
                 if (!result.isNullOrEmpty()){
                     val caloriesBurned = result.get(0).get("caloriesBurned")
@@ -160,7 +160,6 @@ class StartStandardWorkoutActivity : AppCompatActivity() {
                             )
                         }
                         var timePerRep: Double? = null
-                        //TODO: Add easier/harder exercise to object and in the done button function
                         if (unit == Exercise.Unit.REPS) {
                             timePerRep =
                                 exercise.child("timeforrep").value.toString().toDoubleOrNull()
@@ -238,7 +237,6 @@ class StartStandardWorkoutActivity : AppCompatActivity() {
             it.id in milesStoneExerciseData.keys
         } as ArrayList<Exercise>
 
-//        Log.d(TAG, "milestoneExData: ${milestoneWorkout.exerciseList}")
         for (i in milestoneWorkout.exerciseList!!.indices){
             for (j in milesStoneExerciseData)
                 if (j.key == milestoneWorkout.exerciseList!![i].id){
@@ -307,10 +305,4 @@ class StartStandardWorkoutActivity : AppCompatActivity() {
             dialog.show(supportFragmentManager, "exerciseDescription")
         }
     }
-
-//    private fun startSession() {
-//    }
-//
-//    private fun startActiveSessionActivity() {
-//    }
 }

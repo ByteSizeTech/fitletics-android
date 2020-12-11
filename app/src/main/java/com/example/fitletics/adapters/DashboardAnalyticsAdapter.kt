@@ -15,25 +15,18 @@ class DashboardAnalyticsAdapter(var context: Context, var arrayList: ArrayList<D
     private var count: Int = 0
 
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
-        var view:View
-//        if(count <= arrayList.size) {
-            view = View.inflate(context, R.layout.analytics_dashboard_card, null)
-            var titleText: TextView = view.findViewById(R.id.analytics_dashboard_title)
-            var statText: TextView = view.findViewById(R.id.analytics_dashboard_stats)
-            var relativeLayout: RelativeLayout = view.findViewById(R.id.relative_root)
+        val view:View
+        view = View.inflate(context, R.layout.analytics_dashboard_card, null)
 
-            var listItems: DashboardAnalyticsItem = arrayList.get(p0)
+        val titleText: TextView = view.findViewById(R.id.analytics_dashboard_title)
+        val statText: TextView = view.findViewById(R.id.analytics_dashboard_stats)
+        val relativeLayout: RelativeLayout = view.findViewById(R.id.relative_root)
 
-            titleText.text = listItems.title
-            statText.text = listItems.stat
-            relativeLayout.setBackgroundColor(ContextCompat.getColor(p2!!.getContext(), listItems.color!!));
-//        }
+        val listItems: DashboardAnalyticsItem = arrayList.get(p0)
 
-//        else {
-//            view = View.inflate(context, R.layout.add_more_card, null)
-//            count = 0
-//        }
-//        count++
+        titleText.text = listItems.title
+        statText.text = listItems.stat
+        relativeLayout.setBackgroundColor(ContextCompat.getColor(p2!!.getContext(), listItems.color!!));
         return view
     }
 

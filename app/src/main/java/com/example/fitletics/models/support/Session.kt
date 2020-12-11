@@ -55,10 +55,8 @@ class Session {
     @RequiresApi(Build.VERSION_CODES.O)
     constructor(sessionMap: Map<String, Any?>){
         this.caloriesBurned = sessionMap["caloriesBurned"].toString().toFloatOrNull()
-//        this.dateCompleted = LocalDate.parse(sessionMap["dateCompleted"].toString(), DateTimeFormatter.ofPattern("dd-MM-yyyy")) as Date?
         this.timeTaken = sessionMap["timeTaken"].toString().toFloatOrNull()
         this.workout =  Workout(sessionMap["workout"] as Map<String, Any?>)
-        this
     }
 
     constructor(

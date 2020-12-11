@@ -40,27 +40,10 @@ class CreateWorkoutActivity : AppCompatActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        //populate firebase with exercises (preferebly JSON so easy to edit)
-        //replace w spinner (make spinner accept exercises)
-        //add selected exerciese to list
-        //add workout to database
-
-
-        //MAKE GOOGLE SHEETS WITH PENDING WORK
-
 
         setupExerciseList()
 
         listView = findViewById(R.id.create_workout_exercise_list)
-
-
-//        val workouts = arrayOf(Workout("Number uno", tempList, "Easy", "378 mins"),
-//            Workout("Numero deaux", tempList, "Easy", "456 mins"),
-//            Workout("theesra", tempList, "Easy", "347 mins"),
-//            Workout("arbaaa", tempList, "Easy", "16 mins"))
-
-        val stringss = arrayOf("Lmao", "lol", "lel")
-
 
         create_workout_spinner.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_item,  exerList.map { it.name }
@@ -194,6 +177,7 @@ class CreateWorkoutActivity : AppCompatActivity() {
                     finish()
                 }
 
+            //Temp code used to quickly create variants of BLT workouts
 //            FirebaseFirestore.getInstance()
 //                .collection("BLT_REF")
 //                .document("Baseline_Test_Exercise")

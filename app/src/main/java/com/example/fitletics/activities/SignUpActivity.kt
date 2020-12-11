@@ -180,18 +180,6 @@ class SignUpActivity : AppCompatActivity() {
                     Constants.CURRENT_FIREBASE_USER = user
 
 
-                    //firebase code
-//                    FirebaseDatabase.getInstance().getReference("Users")
-//                        .child(Constants.CURRENT_FIREBASE_USER!!.uid)
-//                        .child("Details")
-//                        .setValue(newUser)
-//                        .addOnCompleteListener {
-////                            Toast.makeText(baseContext, "User Details Added!",
-////                                Toast.LENGTH_SHORT).show()
-//                            Log.d("FB_SIGNUP", "createUserWithEmail:success")
-//                            startActivity(Intent(this, ConnectPCQRActivity::class.java))
-//                        }
-
                     //firestore code
 
                     FirebaseFirestore.getInstance()

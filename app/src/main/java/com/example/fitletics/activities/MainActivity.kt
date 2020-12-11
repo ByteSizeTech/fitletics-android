@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 val currentDate = Calendar.getInstance()
                 val dueDate = Calendar.getInstance()
 
-                // Set Execution around 07:00:00 AM
+                // Set Execution around 12:00:00 AM
                 dueDate.set(Calendar.HOUR_OF_DAY, 12)
                 dueDate.set(Calendar.MINUTE, 0)
                 dueDate.set(Calendar.SECOND, 0)
@@ -138,7 +138,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     private val STEP_PERMISSION_CODE = 1;
 
-    private var step_track: String? = null
 
     private fun startPedometer() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)

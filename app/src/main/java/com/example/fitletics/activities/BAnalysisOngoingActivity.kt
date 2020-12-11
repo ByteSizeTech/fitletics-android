@@ -56,29 +56,14 @@ class BAnalysisOngoingActivity : AppCompatActivity() {
 
 
         sharedPref = getSharedPreferences("session_uid_data", Context.MODE_PRIVATE)
-//
-//        intentUID = intent.getStringExtra("uid")
-//
         sessionUID = sharedPref.getString("UID", null)
 
-//        if (sessionUID.isNullOrBlank()){
-//            //change intent to connect to PC
-//            Log.d("BA_SESSION", "SessionUID was $sessionUID, Scan QR")
-//            startActivity(Intent(this, ConnectPCQRActivity::class.java));
-//        }
-//        else {  //everything is fine, start session
-//            Log.d("BA_SESSION", "Starting session w $sessionUID")
-//            startSession()
-//        }
-
         startSession()
-        //TODO: if user cancels activity, cancel body analysis
     }
 
     lateinit var baSessionListener: ListenerRegistration
     private fun startSession() {
         //check if session is already populated
-        //val UserUID = hashMapOf("UID" to Constants.CURRENT_USER!!.userID )
         FirebaseFirestore.getInstance()
             .collection("Sessions")
             .document(sessionUID!!)
@@ -160,35 +145,4 @@ class BAnalysisOngoingActivity : AppCompatActivity() {
         baSessionListener.remove()
         startActivity(Intent(this, MainActivity::class.java))
     }
-
-//    private fun populateUID(): String? {
-//        var uid: String? = null
-//        val preferenceString = sharedPref.getString("UID", null)
-//        if (intentUID.isNullOrBlank()){
-//            Log.d("BA_SESSION", "intent UID is : $intentUID")
-//        }
-//        else{
-//            uid = intentUID!!;
-//            val editor = sharedPref.edit()
-//            editor.apply{
-//                putString("UID", uid)
-//            }.apply()
-//            Log.d("BA_SESSION", "UID was saved to pref from intent as $uid")
-//            Constants.SESSION_CONNECTION = uid;
-//            Log.d("BA_SESSION", "populateUID func returned UID from intent: $uid")
-//            return uid
-//        }
-//
-//        if(preferenceString.isNullOrBlank()){
-//            Log.d("BA_SESSION", "preference UID is : $preferenceString")
-//        }
-//        else {
-//            uid = preferenceString
-//            Log.d("BA_SESSION", "populateUID func returned UID from prefs: $uid")
-//            return uid
-//        }
-//
-//        Log.d("BA_SESSION", "populateUID func returned UID : $uid")
-//        return uid
-//    }
 }

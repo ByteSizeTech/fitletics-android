@@ -37,17 +37,8 @@ class AnalyticsFragment : Fragment() {
 
             val tempList: ArrayList<Exercise> = ArrayList()
 
-//            val categoriesList = ArrayList<String>()
-//            categoriesList.add("Upper Body")
-//            categoriesList.add("Core")
-//            categoriesList.add("Lower Body")
-//            listData["Categories"] = categoriesList
-//
-//            getExerciseAnalyticsKeys()
-
             getAllExercises()
 
-//            exercisesList.add(Workout("Pushups", tempList, "easy", "20 mins"))
             listData["Exercises"] = exercisesList
 
             return listData
@@ -73,29 +64,6 @@ class AnalyticsFragment : Fragment() {
             })
     }
     private fun getExerciseAnalyticsKeys() {
-//        FirebaseFirestore.getInstance()
-//            .collection("Users")
-//            .document(Constants.CURRENT_FIREBASE_USER?.uid!!)
-//            .collection("Analytics")
-//            .addSnapshotListener{snapshot, e ->
-//                if (e != null){
-//                    Log.w("ERROR", "Listen failed.", e)
-//                    return@addSnapshotListener
-//                }
-//                if (snapshot != null && !snapshot.isEmpty) {
-//                    exercisesList.clear()  //first clear the list
-//
-//                    snapshot.documents.forEach {
-//                        exercisesList.add(it.id)
-//                    }
-//                }
-//            }
-
-//        FirebaseFirestore.getInstance()
-//            .collection("Users")
-//            .document(Constants.CURRENT_FIREBASE_USER?.uid!!)
-//            .collection("WorkoutSession")
-//            .
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,14 +91,7 @@ class AnalyticsFragment : Fragment() {
             Log.d("DEBUG", "Activity: ${this.activity!!}")
             expandableListViewCode!!.setAdapter(adapter)
 
-//            for (groups in 0 until listData.size){
-//                expandableListViewCode!!.expandGroup(groups);
-//            }
 
-//            expandableListViewCode!!.setOnGroupExpandListener { groupPosition -> Toast.makeText(this.activity?.applicationContext, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show() }
-//
-//             expandableListViewCode!!.setOnGroupCollapseListener { groupPosition -> Toast.makeText(this.activity?.applicationContext, (titleList as ArrayList<String>)[groupPosition] + " List Collapsed.", Toast.LENGTH_SHORT).show() }
-//
             expandableListViewCode!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
                 val intent = Intent(this.activity!!, DetailedAnalyticsActivity::class.java)
                 intent.putExtra("Analytic name", data[(titleList as ArrayList<String>)[groupPosition]]!![childPosition])

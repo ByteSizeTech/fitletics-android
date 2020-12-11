@@ -39,11 +39,7 @@ class ExerciseDescriptionDialog(
         titleTextView.text = title
         bodyTextView.text = body
         negativeTextView.text = negative
-//
-//        name.text = exercise?.name
-//        description.text = exercise?.description
-//        val weblink = exercise?.link
-//
+
         if (isExerciseDescription) {
             positiveTextView.append(Html.fromHtml("<a href=\"$positive\">Watch video</a>"));
             positiveTextView.movementMethod = LinkMovementMethod.getInstance();
