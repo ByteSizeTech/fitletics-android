@@ -11,11 +11,6 @@
         android:layout_height="wrap_content"
         android:gravity="end">
 
-<!--        <View-->
-<!--            android:layout_width="55dp"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:background="@color/fontWhite" />-->
 
         <TextView
             android:id="@+id/stat_date"
@@ -52,31 +47,6 @@
             android:textColor="@color/fontWhite"
             android:textSize="18sp" />
     </LinearLayout>
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="horizontal">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/stst_cals"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="sans-serif-medium"-->
-<!--            android:paddingStart="10dp"-->
-<!--            android:text="122"-->
-<!--            android:textColor="@color/colorPrimary"-->
-<!--            android:textSize="30sp" />-->
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="sans-serif-light"-->
-<!--            android:paddingStart="10dp"-->
-<!--            android:text="cals"-->
-<!--            android:textColor="@color/fontWhite"-->
-<!--            android:textSize="18sp" />-->
-<!--    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"

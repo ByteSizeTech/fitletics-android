@@ -57,13 +57,6 @@
         android:layout_marginBottom="5dp">
 
 
-<!--        <Button-->
-<!--            android:id="@+id/calsButton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="Calories" />-->
-
         <Button
             android:id="@+id/valsButton"
             android:layout_width="wrap_content"

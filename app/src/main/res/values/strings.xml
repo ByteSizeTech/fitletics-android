@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Fitletics</string>
-    <!-- TODO: Remove or change this placeholder text -->
 
     <string-array name="gender_list">
         <item>--Pick a Gender--</item>
