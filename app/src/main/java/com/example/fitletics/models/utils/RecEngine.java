@@ -31,12 +31,13 @@ import static java.lang.Math.round;
 
 public class RecEngine {
 
+
     //Outputs the priorities for every supported workout sorted in descending order
-    static WorkoutPriority[] getWorkoutPriorities(Context ctx, String bodyType, double upperBodyScore, double lowerBodyScore, double coreScore) throws IOException {
+    //TODO: @Vishal get the params from the DB
+    public static WorkoutPriority[] getWorkoutPriorities(Context ctx, String bodyType, double upperBodyScore, double lowerBodyScore, double coreScore) throws IOException {
 
         //bodyType should be Ectomorph, Endomorph or Mesomorph (exact same spelling)
         String filename = "fcl/" + bodyType + ".fcl";
-
         InputStream is = ctx.getApplicationContext().getAssets().open(filename);
 
         FIS fis = FIS.load(is, true);
@@ -69,18 +70,9 @@ public class RecEngine {
         return workoutPriorities;
     }
 
-    // Returns the names of the last 2 workouts that the user did
-    static String[] getLastTwoWorkouts(){
-        //TODO: @Vishal replace this with code that actually gets the names from the DB.
-        // Names should be in the following set: {Upper, Lower, Core, FullBody}
-        String [] workoutNames = {"Upper", "Lower"};
-        return workoutNames;
-    }
-
     // Recommends one workout category to the user
-    static String recommendWorkoutCategory(WorkoutPriority[] workoutPriorities){
-
-        String[] lastTwoWorkouts = getLastTwoWorkouts();
+    //TODO: @Vishal get the names of the last two workouts from the DB as a string. If it's a standard workout, make sure the spelling is Core, Upper, Lower, Full
+    public static String recommendWorkoutCategory(WorkoutPriority[] workoutPriorities, String[] lastTwoWorkouts){
 
         boolean firstWorkoutIsAllowed = true;
 
@@ -92,25 +84,6 @@ public class RecEngine {
         else
             return workoutPriorities[1].getWorkoutCategory();
 
-    }
-
-    // Returns a Session object with details pertaining to the user's last session for that category
-    static Session getLatestSession(String category){
-        //TODO: @Vishal find the last workout session from this category. Return a null object if it doesn't exist
-        Session lastSession = new Session();
-
-        return lastSession;
-    }
-
-    //TODO: @Vishal Store Milestones in the DB as a workout. Workout name should be Core, Upper, Lower, Full and
-    // level should be Beginner, Intermediate or Advanced
-    //Returns a milestone workout based on the workout category and level
-    static Workout returnMilestone(String category, String level){
-
-        //TODO: @Vishal find the milestone by looking for the category as the milestone name and the correct level in the database
-        Workout milestone = new Workout();
-
-        return milestone;
     }
 
     //Checks if the user did every recommended exercise correctly in their last session
@@ -138,14 +111,17 @@ public class RecEngine {
     }
 
     //Gets the appropriate milestone workout for the user in order to determine what exercises to recommend
-    static Workout getMilestoneWorkout(String category){
-        Session lastSession = getLatestSession(category);
+    //TODO: @Vishal the milestone should be the milestone workout that matches the last session. get it based on the last workout name and level.
+    static HashMap<String, Object> getMilestoneWorkout(String category, Session lastSession, Workout milestone){
 
         String level;
+        HashMap<String, Object> outputToFindMilestone = new HashMap<>();
 
         if (lastSession == null) {
             level = "Beginner";
-            return returnMilestone(category, level);
+            outputToFindMilestone.put("Category", category);
+            outputToFindMilestone.put("Level", level);
+            return outputToFindMilestone;
         }
         else {
             //get last workout
@@ -153,9 +129,8 @@ public class RecEngine {
             level = lastWorkout.getLevel();
 
             //find matching milestone
-            String lastWorkoutName = lastWorkout.getName();
-            String lastWorkoutLevel = lastWorkout.getLevel();
-            Workout milestone = returnMilestone(lastWorkoutName, lastWorkoutLevel);
+//            String lastWorkoutName = lastWorkout.getName();
+//            String lastWorkoutLevel = lastWorkout.getLevel();
 
             //check if user was asked to do the same exercises and reps as the milestone
             boolean sameRecommendationAsMilestone = true;
@@ -183,27 +158,38 @@ public class RecEngine {
                 else if (level.equals("Intermediate")) nextLevel = "Advanced";
                 else nextLevel = "Advanced";
 
-                if (exercisesDonePerfectly) return returnMilestone(category, nextLevel);
-                else return returnMilestone(category, level);
+                outputToFindMilestone.put("Category", category);
+                if (exercisesDonePerfectly) outputToFindMilestone.put("Level", nextLevel);
+                else outputToFindMilestone.put("Level", level);
             }
-            else return returnMilestone(category, level);
+            else {
+                outputToFindMilestone.put("Category", category);
+                outputToFindMilestone.put("Level", level);
+            }
+            return outputToFindMilestone;
 
         }
 
     }
 
     //Gets the required exercise details from the database and returns it as an Exercise object
-    static Exercise getExercise(String exerciseName){
-        //TODO: @Vishal this should find the exercise in the db and return the object
+    //TODO: @Vishal pass in an appropriate list of exercises from the DB. make sure every exercise in the workout is present
+    static Exercise getExercise(String exerciseName, Exercise[] exercises){
+
+        for (int i = 0; i < exercises.length; i++)
+            if (exercises[i].getName().equals(exerciseName))
+                return new Exercise(exercises[i]);
+
         return new Exercise();
+
     }
 
     //Recommends a workout that the user should do if they pick a category
-    public static Workout recommendWorkout(String category) throws Exception{
+    public static Workout recommendWorkout(String category, Workout milestone, Session lastSession) throws Exception{
 
-        Workout milestone = new Workout(getMilestoneWorkout(category));
+//        Workout milestone = new Workout(getMilestoneWorkout(category));
 
-        Session lastSession = new Session(getLatestSession(category));
+//        Session lastSession = new Session(getLatestSession(category));
         Workout lastWorkout = lastSession.getWorkout();
 
         Workout recommendedWorkout = new Workout();
@@ -235,7 +221,8 @@ public class RecEngine {
                     ExerciseStat exerciseStat = lastSession.getCompletedStats().get(i);
                     if (exercise.getName().equals(exerciseStat.getName())) {
 
-                        recommendedExercises.add(new Exercise(getExercise(exercise.getName())));
+//                        recommendedExercises.add(new Exercise(getExercise(exercise.getName(), exercises)));
+                        recommendedExercises.add(new Exercise(milestoneExercise));
 
                         if (exercise.getUnit() == Exercise.Unit.SECS) { //time-based exercises
                             float differenceBetweenRecommendedAndDone = exercise.getValue() - exerciseStat.getTimeTaken();
@@ -293,7 +280,8 @@ public class RecEngine {
                     ExerciseStat exerciseStat = lastSession.getCompletedStats().get(i);
                     if (exercise.getName().equals(exerciseStat.getName())) {
 
-                        recommendedExercises.add(new Exercise(getExercise(exercise.getName())));
+//                        recommendedExercises.add(new Exercise(getExercise(exercise.getName(), exercises)));
+                        recommendedExercises.add(new Exercise(milestoneExercise));
 
                         if (exercise.getUnit() == Exercise.Unit.SECS) { //time-based exercises
                             int differenceBetweenMilestoneAndRecommended = milestoneExercise.getValue() - exercise.getValue();
@@ -326,50 +314,6 @@ public class RecEngine {
         recommendedWorkout.calculateDuration();
         recommendedWorkout.calculateDifficulty();
         return recommendedWorkout;
-    }
-
-    //Identifies the ideal category for the user and recommends a workout as well
-
-    private static OkHttpClient client = new OkHttpClient();
-
-
-    static String dbResponse = "";
-
-    public static String run(String url){
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        String outputResponse = "";
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                } else {
-                    dbResponse = response.body().toString();
-                }
-            }
-        });
-
-        return dbResponse;
-    }
-
-
-    public static void recommendWorkout(Context ctx) throws Exception {
-        //TODO: @Vishal assign the vars from the DB
-
-//        String bodyType = "Mesomorph";
-//        double upperBodyScore = 2;
-//        double lowerBodyScore = 9;
-//        double coreScore = 4;
-
-//        return recommendWorkout(recommendWorkoutCategory(getWorkoutPriorities(ctx, bodyType, upperBodyScore, lowerBodyScore, coreScore)));
     }
 
 

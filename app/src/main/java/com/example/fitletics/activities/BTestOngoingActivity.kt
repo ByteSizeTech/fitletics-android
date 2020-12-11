@@ -52,8 +52,22 @@ class BTestOngoingActivity : AppCompatActivity() {
         workoutObject = intent.getSerializableExtra("Workout_object") as Workout?
         Log.d(TAG, "workoutObject from intent: ${workoutObject?.name}")
 
-        startSession()
+        checkIfSessionIsComplete()
+    }
 
+    private fun checkIfSessionIsComplete() {
+        FirebaseFirestore.getInstance()
+            .collection("Sessions")
+            .document(sessionUID!!)
+            .get()
+            .addOnCompleteListener {doc->
+                if (doc.result?.get("active_session") == "DB" && doc.result?.get("task_state") == "complete"){
+                    startActivity(Intent(this, BTestCompleteActivity::class.java))
+                    finish()
+                }else{
+                    startSession()
+                }
+            }
     }
 
     lateinit var sessionDescriptionTracker: ListenerRegistration
@@ -94,11 +108,9 @@ class BTestOngoingActivity : AppCompatActivity() {
                                 }
                                 if (snapshot.data?.get("task_state") == "cancelled") {
                                     sessionCancelled()
-                                    return@addSnapshotListener
                                 }
                                 if (snapshot.data?.get("active_task") == "AS"  && snapshot.data?.get("task_state") == "requested") {
                                     startActiveSessionActivity()
-                                    return@addSnapshotListener
                                 }
                             }
                             else{

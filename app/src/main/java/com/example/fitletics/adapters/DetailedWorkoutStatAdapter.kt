@@ -17,15 +17,15 @@ class DetailedWorkoutStatAdapter(private val context: Activity,
 
         val dateText = view.findViewById<TextView>(R.id.stat_date)
         val timeText = view.findViewById<TextView>(R.id.stat_time)
-        val calsText = view.findViewById<TextView>(R.id.stst_cals)
+//        val calsText = view.findViewById<TextView>(R.id.stst_cals)
         val valsValueText = view.findViewById<TextView>(R.id.stat_val)
         val valsUnitText = view.findViewById<TextView>(R.id.stat_val_unit)
 
         dateText.text = analyticList[p0].date
         timeText.text = analyticList[p0].time!!.split(" ")[0]
-        calsText.text = analyticList[p0].cals!!.split(" ")[0]
+//        calsText.text = analyticList[p0].cals!!.split(" ")[0]
         valsValueText.text = analyticList[p0].value!!.split(" ")[0]
-        valsUnitText.text = analyticList[p0].value!!.split(" ")[1]
+//        valsUnitText.text = analyticList[p0].value!!.split(" ")[1]
 
         return view
     }

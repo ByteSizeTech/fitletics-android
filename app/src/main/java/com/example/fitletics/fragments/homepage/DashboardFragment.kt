@@ -13,16 +13,18 @@ import com.example.fitletics.activities.DetailedAnalyticsActivity
 import com.example.fitletics.adapters.DashboardAnalyticsAdapter
 import com.example.fitletics.models.support.Constants
 import com.example.fitletics.models.misc.DashboardAnalyticsItem
+import com.example.fitletics.models.support.Analytic
 import com.example.fitletics.models.support.User
 import com.example.fitletics.models.utils.UserXP
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.analytics_dashboard_card.view.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 
 class DashboardFragment : Fragment() {
 
-    private var arrayList: ArrayList<DashboardAnalyticsItem>? = null
+    private var dashboardAnalyticsArrayList: ArrayList<DashboardAnalyticsItem>? = null
     private var gridView: GridView? = null
     private var dashboardAnalyticsAdapter: DashboardAnalyticsAdapter? = null
 
@@ -115,11 +117,11 @@ class DashboardFragment : Fragment() {
         user_progress_bar.progress = user_Xp["Percentage"] as Int
         user_progress_text.text = user_Xp["XP"] as String
         user_xp_text.text = "Level ${user_Xp["Level"]}"
-
     }
 
+    var favoriteAnalyticList : ArrayList<String> = ArrayList()
     private fun setupFavoriteAnalytics(){
-        arrayList = ArrayList()
+        dashboardAnalyticsArrayList = ArrayList()
         setDataList()
     }
 
@@ -137,39 +139,79 @@ class DashboardFragment : Fragment() {
                     workout.data?.entries?.forEach { value ->
                         if(value.key == "favorite"){
                             if (value.value as Boolean) {
-                                arrayList?.add(
-                                    DashboardAnalyticsItem(
-                                        workout.id,
-                                        (workout.data as Map<String, List<Map<String, String>>>)["analytics"]?.last()
-                                            ?.get("value"),
-                                        R.color.color1
+                                favoriteAnalyticList?.add(workout.id)
+                                setupFavoriteAnalyticValue(workout.id)
+                            }}}}
+                dashboardAnalyticsAdapter = DashboardAnalyticsAdapter(this.activity!!.applicationContext, dashboardAnalyticsArrayList!!)
+                gridView?.adapter = dashboardAnalyticsAdapter
+
+            }
+    }
+
+    private fun setupFavoriteAnalyticValue(exerciseName : String) {
+        FirebaseFirestore
+            .getInstance()
+            .collection("Users")
+            .document(Constants.CURRENT_FIREBASE_USER!!.uid)
+            .collection("WorkoutSession")
+            .orderBy("dateCompleted", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnCompleteListener { documentSnapshot ->
+                val results = documentSnapshot.result?.documents
+
+                if (results != null) {
+                    for (entry in results) {
+                        val dateCompleted = entry["dateCompleted"] as String?
+                        val completedStat = entry["completedStats"] as Map<String, Any?>
+
+                        for (workout in completedStat) {
+//                            Log.d(TAG, "endtries: ${workout.value}")
+                            val stat = workout.value as Map<String, Any?>
+                            if (stat["exerciseName"] == exerciseName) {
+                                val dashboardItem : DashboardAnalyticsItem
+                                if(exerciseName == "Plank" || exerciseName == "Wallsit"){
+                                    val index = ((0..10).random()).toLong()
+                                    dashboardItem  = DashboardAnalyticsItem(
+                                        exerciseName,
+                                        "${stat["repsDone"].toString()} seconds",
+                                        index
                                     )
-                                )
+                                }else{
+                                    val index = ((0..10).random()).toLong()
+                                    dashboardItem  = DashboardAnalyticsItem(
+                                        exerciseName,
+                                        "${stat["repsDone"].toString()} reps",
+                                        index
+                                    )
+                                }
+
+                                dashboardAnalyticsArrayList?.add(dashboardItem)
                             }
                         }
                     }
+                    dashboardAnalyticsAdapter = DashboardAnalyticsAdapter(this.activity!!.applicationContext, dashboardAnalyticsArrayList!!)
+                    gridView?.adapter = dashboardAnalyticsAdapter
                 }
-                dashboardAnalyticsAdapter = DashboardAnalyticsAdapter(this.activity!!.applicationContext, arrayList!!)
-                gridView?.adapter = dashboardAnalyticsAdapter
             }
     }
 
     private fun setDataList(){
-        arrayList?.add(
+        dashboardAnalyticsArrayList?.add(
             DashboardAnalyticsItem(
                 "Steps Walked",
                 Constants.STEP_COUNT,
                 R.color.color1
             )
         )
-        arrayList?.add(
+        dashboardAnalyticsArrayList?.add(
             DashboardAnalyticsItem(
                 "Calories Burned",
                 "0 Kcal",
                 R.color.color2
             )
         )
-        arrayList?.add(
+        dashboardAnalyticsArrayList?.add(
             DashboardAnalyticsItem(
                 "Workout Duration",
                 "0 mins",

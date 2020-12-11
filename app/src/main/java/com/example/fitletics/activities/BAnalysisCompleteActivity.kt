@@ -45,14 +45,16 @@ class BAnalysisCompleteActivity : AppCompatActivity() {
             .document(Constants.CURRENT_FIREBASE_USER!!.uid)
             .get()
             .addOnCompleteListener { doc ->
-                if (doc.result?.get("coreScore") == null){
-//                    WebsiteSession(this, BTestOngoingActivity, )
+                Log.d(TAG, "document being get is ${doc.result?.get("coreScore")}")
+                if (doc.result?.get("coreScore") == 0.0){
+                    Log.d(TAG, "reached inside the if")
                     getBLTWorkout()
                 }
             }
     }
 
     private fun getBLTWorkout() {
+        Log.d(TAG, "called func")
         FirebaseFirestore.getInstance()
             .collection("BLT_REF")
             .document("Baseline_Test_Exercise")
@@ -110,6 +112,7 @@ class BAnalysisCompleteActivity : AppCompatActivity() {
                     )
 //                Log.d(TAG, "from here: ${tempWorkoutObject.exerciseList}")
                 BLT_WORKOUT = tempWorkoutObject
+                Log.d(TAG, "setup workout obj: $BLT_WORKOUT")
 
                 WebsiteSession(this, BTestOngoingActivity::class.java, BLT_WORKOUT);
             }

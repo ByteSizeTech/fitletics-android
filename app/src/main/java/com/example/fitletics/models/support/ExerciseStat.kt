@@ -20,4 +20,10 @@ class ExerciseStat {
         this.repsDone = repsDone.toInt()
         this.feedback = feedback
     }
+
+    constructor(completedStat: Map<String, Any?>){
+        this.name = completedStat["exerciseName"].toString()
+        this.repsDone = completedStat["repsDone"].toString().toIntOrNull()
+        this.timeTaken = completedStat["timeTaken"].toString().toFloatOrNull()
+    }
 }

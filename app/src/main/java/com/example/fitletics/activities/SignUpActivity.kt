@@ -170,6 +170,9 @@ class SignUpActivity : AppCompatActivity() {
                             height = Integer.parseInt(height_text_signup.text.toString()),
                             xp = 0
                         )
+                    newUser.upperScore = 0.0
+                    newUser.coreScore = 0.0
+                    newUser.lowerScore = 0.0
 
                     Log.d("DOB", userDOB.toString())
 

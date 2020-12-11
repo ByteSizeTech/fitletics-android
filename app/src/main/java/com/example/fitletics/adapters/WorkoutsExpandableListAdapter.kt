@@ -29,13 +29,25 @@ class WorkoutsExpandableListAdapter internal constructor
     override fun getChildView(listPosition: Int, expandedListPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
         val expandedListWorkout = getChild(listPosition, expandedListPosition) as Workout
-        val expandedListText = expandedListWorkout.name
+        var workoutName: String = expandedListWorkout?.name!!
+
+        if (workoutName == "FullBody")
+            workoutName = "Full Body"
+
+        else if (workoutName == "Upper")
+            workoutName = "Upper Body"
+
+        else if (workoutName == "Lower")
+            workoutName = "Lower Body"
+
+        else if (workoutName == "Lower")
+            workoutName = "Lower Body"
         if (convertView == null) {
             val layoutInflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             convertView = layoutInflater.inflate(R.layout.expandable_list_item, null)
         }
         val expandedListTextView = convertView!!.findViewById<TextView>(R.id.expandedListItem)
-        expandedListTextView.text = expandedListText
+        expandedListTextView.text = workoutName
         exp?.setDividerHeight(0);
 
         if (isLastChild && (listPosition == groupCount - 1)) {

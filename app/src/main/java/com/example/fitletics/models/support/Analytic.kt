@@ -13,6 +13,12 @@ class Analytic {
         this.value = value
     }
 
+    constructor(date: String?, time: String?, value: String?) {
+        this.date = date
+        this.time = time
+        this.value = value
+    }
+
     constructor() {
         this.date = "NO DATE"
         this.time = "NO TIME"

@@ -20,6 +20,12 @@ class Muscle : Serializable {
         this.femaleIntensity = muscle.femaleIntensity
     }
 
+    constructor(muscleObject: Map<String, Any?>){
+        this.name = muscleObject["name"].toString()
+        this.femaleIntensity = muscleObject["femaleIntensity"].toString().toIntOrNull()
+        this.maleIntensity = muscleObject["maleIntensity"].toString().toIntOrNull()
+    }
+
     public fun firebaseFriendlyMuscle(): Map<String, Any?>{
         return mapOf<String, Any?>(
             "name" to this.name,

@@ -305,7 +305,9 @@ class ActiveSessionActivity : AppCompatActivity() {
 
     private fun endActivity() {
         sessionTracker.remove()
-        finish()
+//        finish()
+//        startActivity(Intent(this, BTestCompleteActivity::class.java))
+//        finish()
     }
 
 }

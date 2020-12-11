@@ -22,18 +22,22 @@ import com.example.fitletics.fragments.homepage.DashboardFragment
 import com.example.fitletics.fragments.homepage.SettingsFragment
 import com.example.fitletics.fragments.homepage.WorkoutFragment
 import com.example.fitletics.models.support.Constants
+import com.example.fitletics.models.support.Session
+import com.example.fitletics.models.support.Workout
 import com.example.fitletics.models.utils.RecEngine
 import com.example.fitletics.models.utils.WebsiteSession
 import com.example.fitletics.models.utils.WorkoutPriority
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_main.*
 import net.sourceforge.jFuzzyLogic.FIS
 import okhttp3.*
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
@@ -120,57 +124,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         Log.d("MyWorker", "Launching periodic func")
         MyWorker.WorkManagerScheduler.refreshPeriodicWork(this)
 
-//        val result = URL("https://fitletics-120620.firebaseio.com/Exercises/exaski01.json").readText()
-//
-//        Log.d("PLEZ_WORK", "$result")
-
-
-        Log.d("TEST!", "started")
-
-//        TasksUtil.call{
-//            await(FirebaseFirestore.getInstance()
-//                .collection("Users")
-//                .document(Constants.CURRENT_USER.toString())
-//                .collection("WorkoutSessions")
-//                .get());
-//
-//            Log.d("TEST!", "running..")
-//
-//        }.addOnFailureListener{e ->
-//            Log.w(TAG, "ERROR", e);
-//        }
-
-        val id = FirebaseAuth
-            .getInstance()
-            .getCurrentUser()
-            ?.getIdToken(true)
-            ?.addOnCompleteListener { task ->
-                Log.d("TEST", "token: $task")
-            }
-        run("https://fitletics-120620.firebaseio.com/Exercises.json?orderBy=\"name\"&startAt=\"crunch\"&auth=AnnF5Vp7Ngs5D48sa9DWwCDGcW1SEm7PCNdxKim4")
-
-        var result = RecEngine.run("https://fitletics-120620.firebaseio.com/Exercises.json?orderBy=\"name\"&startAt=\"crunch\"&auth=AnnF5Vp7Ngs5D48sa9DWwCDGcW1SEm7PCNdxKim4")
-
-
-        Log.d("TEST!", "$result")
-
 
         setupTabs()
         setupFab()
         startPedometer()
-    }
-
-    private val client = OkHttpClient()
-
-    fun run(url: String) {
-        val request = Request.Builder()
-            .url(url)
-            .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {}
-            override fun onResponse(call: Call, response: Response) = println(response.body()?.string())
-        })
     }
 
     private var sensorManager: SensorManager? = null;
@@ -272,7 +229,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                     .get()
                     .addOnSuccessListener { document ->
                         if (document != null) {
-                            if (document.data?.get("active_task") == "AS" && document.data?.get("task_state") == "ongoing") {
+                            if ((document.data?.get("active_task") == "SD") && document.data?.get("task_state") == "ongoing") {
                                 Log.d(TAG, "document: ${document.data?.get("active_task")}")
                                 Log.d(TAG, "document: ${document.data?.get("task_state")}")
 
@@ -283,66 +240,83 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                                 );
                             }
                             else{
-//                                FirebaseFirestore.getInstance()
-//                                    .collection("Users")
-//                                    .document(Constants.CURRENT_FIREBASE_USER!!.uid)
-//                                    .get()
-//                                    .addOnSuccessListener { document ->
-//                                        if (document != null) {
-//                                            val bodyType = document.data?.get("bodyType").toString()
-//                                            val upperBodyScore = document.data?.get("upperScore").toString().toDouble()
-//                                            val coreScore = document.data?.get("coreScore").toString().toDouble()
-//                                            val lowerBodyScore = document.data?.get("lowerScore").toString().toDouble()
-//
-////                            getWorkoutPriorities(this, bodyType, upperBodyScore, lowerBodyScore, coreScore)
-//                                            Log.d("TEST_DB CALL", "${getWorkoutPriorities(this, bodyType, upperBodyScore, lowerBodyScore, coreScore)}")
-//
-//                                        }
-//                                    }
+                                callWorkoutPriority()
+                            }
                         }
+
                     }
-
+            }else{
+                callWorkoutPriority()
             }
 
-
-            }
-//            val intent = Intent(this, StartCustomWorkoutActivity::class.java)
-//            startActivity(intent)
         }
     }
 
+    lateinit var workoutPriority : Array<WorkoutPriority>
+    private fun callWorkoutPriority() {
+        FirebaseFirestore.getInstance()
+            .collection("Users")
+            .document(Constants.CURRENT_FIREBASE_USER!!.uid)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val bodyType = document.data?.get("bodyType").toString()
+                    val upperBodyScore = document.data?.get("upperScore").toString().toDouble()
+                    val coreScore = document.data?.get("coreScore").toString().toDouble()
+                    val lowerBodyScore = document.data?.get("lowerScore").toString().toDouble()
+                    Log.d("TEST_DB CALL", "${RecEngine.getWorkoutPriorities(this, bodyType, upperBodyScore, lowerBodyScore, coreScore)}")
+                    workoutPriority = RecEngine.getWorkoutPriorities(this, bodyType, upperBodyScore, lowerBodyScore, coreScore)
+                    Log.d(TAG, "workout Prioriy: ${workoutPriority.toString()}")
+                    getLastTwoWorkouts();
+                }
+            }
+    }
 
-    fun getWorkoutPriorities(
-        ctx: Context,
-        bodyType: String,
-        upperBodyScore: Double,
-        lowerBodyScore: Double,
-        coreScore: Double
-    ): Array<WorkoutPriority> {
+    lateinit var lastTwoWorkouts : Array<String>
+    private fun getLastTwoWorkouts() {
+        FirebaseFirestore
+            .getInstance()
+            .collection("Users")
+            .document(Constants?.CURRENT_FIREBASE_USER!!.uid)
+            .collection("WorkoutSession")
+            .orderBy("dateCompleted", Query.Direction.DESCENDING).limit(2)
+            .get()
+            .addOnCompleteListener {
 
-        //bodyType should be Ectomorph, Endomorph or Mesomorph (exact same spelling)
-        val filename = "fcl/$bodyType.fcl"
-        val `is` = ctx.applicationContext.assets.open(filename)
-        val fis = FIS.load(`is`, true)
-        if (fis == null) {
-            System.err.println("Can't load file: '$filename'")
-            System.exit(1)
-        }
-        val fb = fis!!.getFunctionBlock(null)
-        fb.setVariable("UpperBodyScore", upperBodyScore)
-        fb.setVariable("LowerBodyScore", lowerBodyScore)
-        fb.setVariable("CoreScore", coreScore)
-        fb.evaluate()
-        val workoutPriorities = arrayOf(
-            WorkoutPriority("Upper"),
-            WorkoutPriority("Lower"),
-            WorkoutPriority("Core"),
-            WorkoutPriority("FullBody")
-        )
-        for (workoutPriority in workoutPriorities) workoutPriority.workoutPriority =
-            fb.getVariable(workoutPriority.workoutCategory + "Priority").value
-        Arrays.sort(workoutPriorities)
-        return workoutPriorities
+                if (it.result?.documents?.size == 0){
+                    lastTwoWorkouts = arrayOf("", "")
+                }else {
+                    if (it.result?.documents == null) {
+                        lastTwoWorkouts = arrayOf("", "")
+                    } else {
+                        val workout1 = (it.result?.documents?.get(0)
+                            ?.get("workout") as Map<String, Any?>)["name"] as String?
+                        val workout2 = (it.result?.documents?.get(1)
+                            ?.get("workout") as Map<String, Any?>)["name"] as String?
+
+                        if (workout1 == null && workout2 == null) {
+                            lastTwoWorkouts = arrayOf("", "")
+                        }
+                        if (workout2 == null) {
+                            lastTwoWorkouts = arrayOf(workout1!!, "")
+                        } else {
+                            lastTwoWorkouts = arrayOf(workout1!!, workout2!!)
+                            Log.d(
+                                TAG,
+                                "lastTwoWorkouts: ${lastTwoWorkouts.get(0)}, ${lastTwoWorkouts.get(1)}"
+                            )
+                        }
+                    }
+                }
+                launchStandardWorkout()
+            }
+    }
+
+    private fun launchStandardWorkout() {
+        Log.d(TAG, RecEngine.recommendWorkoutCategory(workoutPriority, lastTwoWorkouts))
+        val tempWorkout: Workout = Workout()
+        tempWorkout.name = RecEngine.recommendWorkoutCategory(workoutPriority, lastTwoWorkouts)
+        WebsiteSession(this, StartStandardWorkoutActivity::class.java, tempWorkout)
     }
 
     private fun setupTabs(){

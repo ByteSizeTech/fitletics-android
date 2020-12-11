@@ -59,7 +59,7 @@ class WebsiteSession(context: Context, intentClass: Class<*>, workout: Workout?)
             .get()
             .addOnSuccessListener { document ->
                 if (document != null){
-                    if (document.data?.get("active_task") == "AS" && document.data?.get("task_state") == "ongoing")
+                    if (document.data?.get("active_task") == "SD" && document.data?.get("task_state") == "ongoing")
                  Log.d(TAG, "document: ${document.data?.get("active_task")}")
                 }
             }

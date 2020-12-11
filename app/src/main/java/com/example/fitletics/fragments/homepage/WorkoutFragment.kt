@@ -78,41 +78,21 @@ class WorkoutFragment : Fragment() {
 //            pendingWorkouts.add(Workout("Try this", tempList, "Medium", "80 mins"))
 //            getWorkouts()
 
-            val savedWorkouts = ArrayList<Workout>()
-            savedWorkouts.add(
-                Workout(
-                    "Full Body",
-                    tempList,
-                    "Hard",
-                    "120 mins"
-                )
-            )
-            savedWorkouts.add(
-                Workout(
-                    "Upper Body",
-                    tempList,
-                    "Easy",
-                    "20 mins"
-                )
-            )
-            savedWorkouts.add(
-                Workout(
-                    "Core",
-                    tempList,
-                    "Hard",
-                    "120 mins"
-                )
-            )
-            savedWorkouts.add(
-                Workout(
-                    "Lower Body",
-                    tempList,
-                    "Hard",
-                    "120 mins"
-                )
-            )
+            val standardWorkouts = ArrayList<Workout>()
+            val fullBodyWorkout: Workout = Workout()
+            fullBodyWorkout.name = "FullBody"
+            val UpperWorkout: Workout = Workout()
+            UpperWorkout.name = "Upper"
+            val LowerWorkout: Workout = Workout()
+            LowerWorkout.name = "Lower"
+            val CoreWorkout: Workout = Workout()
+            CoreWorkout.name = "Core"
+            standardWorkouts.add(fullBodyWorkout)
+            standardWorkouts.add(UpperWorkout)
+            standardWorkouts.add(LowerWorkout)
+            standardWorkouts.add(CoreWorkout)
 
-            listData["Standard"] = savedWorkouts
+            listData["Standard"] = standardWorkouts
             listData["Custom"] = customWorkouts
             listData["Pending"] = pendingWorkouts
 
@@ -340,6 +320,7 @@ class WorkoutFragment : Fragment() {
 
         Log.d("DEBUG", "Reached here!")
         expandableListViewCode = rootView.findViewById(R.id.expandableListViewFragmentWorkouts)
+
         if (expandableListViewCode != null) {
             val listData = data
             titleList = ArrayList(listData.keys)
@@ -364,8 +345,22 @@ class WorkoutFragment : Fragment() {
 //                Toast.makeText(this.activity?.applicationContext, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<Workout>)[groupPosition]]!!.get(childPosition),
 //                    Toast.LENGTH_SHORT).show()
 
+                if ((titleList as ArrayList<String>)[groupPosition] == "Pending"){
+                    val tempWorkout =
+                        Workout(
+                            id = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].id,
+                            name = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].name,
+                            exerciseList = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].exerciseList!!,
+                            difficulty = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].difficulty,
+                            time = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].time
+                        )
+                    val intent = Intent(this.activity!!, SharedWorkoutActivity::class.java)
+                    intent.putExtra("Workout_object", tempWorkout)
+                    startActivity(intent)
+                }
 
-                if (!sessionUID.isNullOrEmpty()) {
+
+                else if (!sessionUID.isNullOrEmpty()) {
                     Log.d(TAG, "checking active session...")
                     FirebaseFirestore.getInstance()
                         .collection("Sessions")
@@ -373,7 +368,7 @@ class WorkoutFragment : Fragment() {
                         .get()
                         .addOnSuccessListener { document ->
                             if (document != null) {
-                                if (document.data?.get("active_task") == "AS" && document.data?.get("task_state") == "ongoing") {
+                                if (document.data?.get("active_task") == "SD" && document.data?.get("task_state") == "ongoing") {
                                     Log.d(TAG, "document: ${document.data?.get("active_task")}")
                                     Log.d(TAG, "document: ${document.data?.get("task_state")}")
 
@@ -397,19 +392,6 @@ class WorkoutFragment : Fragment() {
                 else{
                     launchWorkoutDescription(groupPosition, childPosition)
                 }
-
-
-
-//                Log.d(TAG, "It is: ${(titleList as ArrayList<String>)[groupPosition]}")
-
-
-
-
-
-//                intent.putExtra("Workout_object", tempWorkout)
-
-
-//                startActivity(intent)
                 false
             }
         }
@@ -417,22 +399,27 @@ class WorkoutFragment : Fragment() {
     }
 
     private fun launchWorkoutDescription(groupPosition: Int, childPosition: Int) {
-        Log.d(TAG, "Reached else..")
+        Log.d(TAG, "The_position_is: ${(titleList as ArrayList<String>)[groupPosition]}")
 
-        val tempWorkout =
-            Workout(
-                id = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].id,
-                name = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].name,
-                exerciseList = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].exerciseList!!,
-                difficulty = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].difficulty,
-                time = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].time
-            )
-        if ((titleList as ArrayList<String>)[groupPosition] == "Pending"){
-            val intent = Intent(this.activity!!, SharedWorkoutActivity::class.java)
-            intent.putExtra("Workout_object", tempWorkout)
-            startActivity(intent)
+
+        if((titleList as ArrayList<String>)[groupPosition] == "Standard"){
+            val intentClass = StartStandardWorkoutActivity::class.java
+            val tempStandardWorkoutWorkout = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition]
+            WebsiteSession(
+                this.activity!!,
+                intentClass,
+                tempStandardWorkoutWorkout
+            );
         }
         else{
+            val tempWorkout =
+                Workout(
+                    id = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].id,
+                    name = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].name,
+                    exerciseList = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].exerciseList!!,
+                    difficulty = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].difficulty,
+                    time = data[(this.titleList as ArrayList<String>)[groupPosition]]!![childPosition].time
+                )
             val intentClass = StartCustomWorkoutActivity::class.java
             tempWorkout.calculateDifficulty()
             tempWorkout.calculateDuration()

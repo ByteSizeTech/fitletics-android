@@ -51,7 +51,6 @@ class ConnectPCQRActivity : AppCompatActivity() {
         }
     }
 
-
     //function that sets up the activity provided the permissions were granted
     private fun setupControls()
     {

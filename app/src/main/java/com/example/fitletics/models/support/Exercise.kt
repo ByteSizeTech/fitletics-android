@@ -13,6 +13,7 @@ class Exercise: Serializable, Comparable<Exercise>, Cloneable {
     //and depending on the unit, it would be reps or a time value
     //this is done because some exercises (push ups, lunges) are done through reps,
     // while as others (planks) require the user to hold the pose for a set time
+    var id: String? = null
     var name: String? = null //
     var unit: Unit? = null  //
     var value: Int? = null  //
@@ -75,6 +76,30 @@ class Exercise: Serializable, Comparable<Exercise>, Cloneable {
         this.link = link
         this.difficulty = difficulty
         this.unit = unit
+    }
+
+    constructor(exerciseObject: Map<String, Any?>){
+        this.name = exerciseObject["name"].toString()
+        this.difficulty = exerciseObject["difficulty"].toString()
+        this.link = exerciseObject["link"].toString()
+        this.timePerRep = exerciseObject["timePerRep"].toString().toDoubleOrNull()
+        if (exerciseObject["unit"].toString() == "REPS") {
+            this.unit = Unit.REPS
+        }else if (exerciseObject["unit"].toString() == "SECS"){
+            this.unit = Unit.SECS
+        }
+        this.value = exerciseObject["value"].toString().toIntOrNull()
+        this.targetMuscles = makeArrayListTargetMusclesFromMap(exerciseObject["targetMuscles"] as Map<String, Any?>)
+    }
+
+    fun makeArrayListTargetMusclesFromMap(muscleObject: Map<String, Any?>) : ArrayList<Muscle>?{
+        val tempMuscleArray = ArrayList<Muscle>()
+
+        for (muscleInterator in muscleObject){
+            val muscle = Muscle(muscleInterator.value as Map<String, Any?>)
+            tempMuscleArray.add(muscle)
+        }
+        return tempMuscleArray
     }
 
     override fun equals(other: Any?): Boolean {

@@ -2,6 +2,7 @@ package com.example.fitletics.models.support
 
 import java.io.Serializable
 import java.util.*
+import kotlin.collections.ArrayList
 
 class Workout : Serializable {
 
@@ -47,6 +48,24 @@ class Workout : Serializable {
     constructor(name: String?, exerciseList: ArrayList<Exercise>?) {
         this.name = name
         this.exerciseList = exerciseList
+    }
+
+    constructor(workoutObject: Map<String, Any?>){
+        this.name = workoutObject["name"].toString()
+        this.time = workoutObject["time"].toString()
+        this.level = workoutObject["level"].toString()
+        this.difficulty = workoutObject["difficulty"].toString()
+        this.exerciseList = makeArrayListExercisesFromMap(workoutObject["exerciseList"] as Map<String, Any?>)
+    }
+
+    fun makeArrayListExercisesFromMap(exerciseObject: Map<String, Any?>) : ArrayList<Exercise>?{
+        val tempMuscleArray = ArrayList<Exercise>()
+
+        for (exerciseInterator in exerciseObject){
+            val exercise = Exercise(exerciseInterator.value as Map<String, Any?>)
+            tempMuscleArray.add(exercise)
+        }
+        return tempMuscleArray
     }
 
     fun calculateDifficulty(){ //MAKE SURE EXERCISE LIST IS NOT NULL BEFORE CALLING THIS
