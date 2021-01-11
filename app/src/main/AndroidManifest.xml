@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.fitletics">
-    <!-- asks permission for camera access -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- QR SCANNING PERMISSIONS -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permssion.CAMERA" />
+    <uses-permission android:name="android.permssion.CAMERA" /> <!-- PEDOMETER PERMISSIONS -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
     <application
         android:allowBackup="true"
@@ -11,18 +17,35 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".DashboardActivity"></activity>
-        <activity android:name=".BAnalysisCompleteActivity" />
-        <activity android:name=".BAnalysisOngoingActivity" />
-        <activity android:name=".BTestCompleteActivity" />
-        <activity android:name=".BTestOngoingActivity" />
-        <activity android:name=".ConnectPCQRActivity">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activities.web.workouts.StartStandardWorkoutActivity"></activity>
+        <activity android:name=".activities.web.sessions.ActiveSessionActivity" />
+        <activity android:name=".activities.workout.CreateWorkoutActivity" />
+        <activity android:name=".activities.workout.SharedWorkoutActivity" />
+        <activity android:name=".activities.analytics.DetailedAnalyticsActivity" />
+        <activity android:name=".activities.appentry.SignUpActivity" />
+        <activity android:name=".activities.appentry.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".activities.web.workouts.StartCustomWorkoutActivity" />
+        <activity android:name=".activities.main.MainActivity" />
+        <activity android:name=".activities.bodyanalysis.BAnalysisCompleteActivity" />
+        <activity android:name=".activities.bodyanalysis.BAnalysisOngoingActivity" />
+        <activity android:name=".activities.baselinetest.BTestCompleteActivity" />
+        <activity android:name=".activities.baselinetest.BTestOngoingActivity" />
+        <activity android:name=".activities.web.connect.ConnectPCQRActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
 

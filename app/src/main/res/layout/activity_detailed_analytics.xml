@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorSecondary"
+    android:orientation="vertical"
+    tools:context=".activities.analytics.DetailedAnalyticsActivity">
+
+    <RelativeLayout
+        android:id="@+id/headerLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <View
+            android:id="@+id/myRectangleView1"
+            android:layout_width="56dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/orange_box" />
+
+        <TextView
+            android:id="@+id/analytics_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="PUSH UP"
+            android:layout_toRightOf="@+id/myRectangleView1"
+            android:textColor="@color/fontWhite"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ToggleButton
+            android:id="@+id/favorite_toggle"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="32dp"
+            android:textOff=""
+            android:textOn=""
+            android:background="@drawable/toggle_button"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/graphViewButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp">
+
+
+        <Button
+            android:id="@+id/valsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Value" />
+
+        <Button
+            android:id="@+id/timeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Time" />
+    </LinearLayout>
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_height="200dip" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Recent"
+        android:textColor="@color/fontWhite"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/recent_exercise_stat_list"
+        android:layout_width="match_parent"
+        android:padding="20dp"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

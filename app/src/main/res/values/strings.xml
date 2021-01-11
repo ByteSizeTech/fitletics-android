@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Fitletics</string>
+
+    <string-array name="gender_list">
+        <item>--Pick a Gender--</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
 </resources>

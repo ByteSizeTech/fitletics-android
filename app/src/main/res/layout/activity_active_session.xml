@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorSecondary"
+    android:orientation="vertical"
+    tools:context=".activities.web.sessions.ActiveSessionActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/session_workout_name_tv_ll"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/session_workout_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/grey_box"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="5dp"
+            android:text="ABS"
+            android:textColor="@color/colorSecondary"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/session_current_exercise_name_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_below="@+id/session_workout_name_tv_ll"
+        android:layout_marginTop="25dp"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="Establishing connection to website..."
+        android:textColor="@color/fontWhite"
+        android:textSize="54sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/exercise_progress_linear_layout"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_below="@id/session_current_exercise_name_tv"
+        android:layout_above="@id/session_end_button_ll"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:id="@+id/session_rep_ll"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/session_current_rep_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:fontFamily="sans-serif-black"
+                android:gravity="center"
+                android:text="5"
+                android:textColor="@color/colorPrimary"
+                android:textSize="215sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/session_rep_divider_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="72dp"
+                android:layout_marginBottom="24dp"
+                android:background="#ffffff" />
+
+            <TextView
+                android:id="@+id/session_total_rep_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:text="12"
+                android:textColor="#717171"
+                android:textSize="56sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/session_progress_bar_ll"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/session_exercise_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/circular_progress_bar_background"
+                android:indeterminateOnly="false"
+                android:progressDrawable="@drawable/circular_progress_bar" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/session_end_button_ll"
+        android:layout_above="@+id/session_end_button"
+        android:layout_marginBottom="12dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/session_skip_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="32dp"
+            android:background="@drawable/grey_box_rounded"
+            android:fontFamily="sans-serif-black"
+            android:paddingVertical="32dp"
+            android:text="Skip"
+            android:textColor="@color/fontWhite"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/session_end_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/cancel_box_rounded"
+        android:gravity="center"
+        android:layout_marginHorizontal="32dp"
+        android:text="End Session"
+        android:textColor="@color/fontWhite" />
+</RelativeLayout>
