@@ -1,17 +1,15 @@
-package com.example.fitletics.activities
+package com.example.fitletics.activities.web.sessions
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import com.example.fitletics.R
-import com.example.fitletics.models.support.Workout
+import com.example.fitletics.activities.web.connect.ConnectPCQRActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
@@ -26,37 +24,12 @@ class ActiveSessionActivity : AppCompatActivity() {
     var sessionUID: String? = null
     lateinit var sharedPref: SharedPreferences
 
-    private var workoutObject: Workout? = null
-
-    var handler = Handler()
-    var progress = 0.0
-    var secsgoal = 0.0
-    var canRunRunnable = false
-    val runnable = object: Runnable {
-        override fun run() {
-            if (progress < secsgoal) {
-                Log.d(
-                    "PROGRESS_BAR",
-                    "progress var: $progress, goal var: $secsgoal, progress_bar prog: ${session_exercise_progress.progress} and prog_bar goal: ${session_exercise_progress.max}"
-                )
-                progress++
-                session_exercise_progress.progress = progress.roundToInt()
-                handler.postDelayed(this, 1000)
-            }
-            else{
-                Log.d("PROGRESS_BAR", "Removed callback -> exceeded goal")
-                handler.removeCallbacks(this)
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_active_session)
 
         session_rep_ll.visibility = View.GONE
         session_progress_bar_ll.visibility = View.GONE
-
 
         sharedPref = getSharedPreferences("session_uid_data", Context.MODE_PRIVATE)
         sessionUID = sharedPref.getString("UID", null)
@@ -68,7 +41,6 @@ class ActiveSessionActivity : AppCompatActivity() {
         session_end_button.setOnClickListener {
             requestSessionEnd()
         }
-
 
         startSession()
 
@@ -103,10 +75,10 @@ class ActiveSessionActivity : AppCompatActivity() {
             }
     }
 
-    lateinit var rootView: ViewGroup
-    lateinit var repView: View
-    lateinit var secView: View
     private lateinit var sessionTracker: ListenerRegistration
+    var progress = 0.0
+    var secsgoal = 0.0
+    var canRunRunnable = false
     private fun startSession() {
         FirebaseFirestore.getInstance()
             .collection("Sessions")

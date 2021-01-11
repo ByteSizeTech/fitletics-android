@@ -1,4 +1,4 @@
-package com.example.fitletics.activities
+package com.example.fitletics.activities.web.workouts
 
 import android.content.Context
 import android.content.DialogInterface
@@ -13,8 +13,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fitletics.R
+import com.example.fitletics.activities.web.sessions.ActiveSessionActivity
+import com.example.fitletics.activities.web.connect.ConnectPCQRActivity
 import com.example.fitletics.adapters.WorkoutExerciseListAdapter
-import com.example.fitletics.fragments.homepage.dialogs.ExerciseDescriptionDialog
+import com.example.fitletics.fragments.dialogs.ExerciseDescriptionDialog
 import com.example.fitletics.models.support.Constants
 import com.example.fitletics.models.support.Exercise
 import com.example.fitletics.models.utils.WebsiteSession

@@ -1,4 +1,4 @@
-package com.example.fitletics.fragments.homepage.dialogs
+package com.example.fitletics.fragments.dialogs
 
 import android.content.Context
 import android.os.Bundle
@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.fitletics.R
-import com.example.fitletics.activities.ActiveSessionActivity
+import com.example.fitletics.activities.web.sessions.ActiveSessionActivity
 import com.example.fitletics.models.utils.WebsiteSession
 import kotlinx.android.synthetic.main.exercise_description_dialog.view.*
 

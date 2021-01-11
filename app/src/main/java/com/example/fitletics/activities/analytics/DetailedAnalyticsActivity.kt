@@ -1,4 +1,4 @@
-package com.example.fitletics.activities
+package com.example.fitletics.activities.analytics
 
 import android.graphics.Color
 import android.os.Bundle
@@ -15,7 +15,6 @@ import com.google.firebase.firestore.Query
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.android.synthetic.main.activity_detailed_analytics.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 

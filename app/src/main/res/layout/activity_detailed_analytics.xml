@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorSecondary"
     android:orientation="vertical"
-    tools:context=".activities.DetailedAnalyticsActivity">
+    tools:context=".activities.analytics.DetailedAnalyticsActivity">
 
     <RelativeLayout
         android:id="@+id/headerLinearLayout"

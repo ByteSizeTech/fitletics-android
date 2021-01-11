@@ -1,4 +1,4 @@
-package com.example.fitletics.activities
+package com.example.fitletics.activities.appentry
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fitletics.R
-import com.example.fitletics.models.support.Analytic
+import com.example.fitletics.activities.main.MainActivity
 import com.example.fitletics.models.support.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

@@ -9,16 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ExpandableListView
 import com.example.fitletics.R
-import com.example.fitletics.activities.DetailedAnalyticsActivity
+import com.example.fitletics.activities.analytics.DetailedAnalyticsActivity
 import com.example.fitletics.adapters.AnalyticsExpandableListAdapter
-import com.example.fitletics.models.support.Constants
 import com.example.fitletics.models.support.Exercise
-import com.example.fitletics.models.support.Muscle
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.firestore.FirebaseFirestore
 
 
 class AnalyticsFragment : Fragment() {

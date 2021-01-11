@@ -1,4 +1,4 @@
-package com.example.fitletics.activities
+package com.example.fitletics.activities.bodyanalysis
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fitletics.R
+import com.example.fitletics.activities.web.connect.ConnectPCQRActivity
+import com.example.fitletics.activities.main.MainActivity
 import com.example.fitletics.models.support.Constants
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration

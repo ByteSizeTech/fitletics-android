@@ -1,4 +1,4 @@
-package com.example.fitletics.activities
+package com.example.fitletics.activities.workout
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.ListView
 import android.widget.TextView
 import com.example.fitletics.R
+import com.example.fitletics.activities.main.MainActivity
 import com.example.fitletics.adapters.WorkoutExerciseListAdapter
 import com.example.fitletics.fragments.homepage.dialogs.ExerciseDescriptionDialog
 import com.example.fitletics.models.support.Constants

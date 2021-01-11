@@ -1,4 +1,4 @@
-package com.example.fitletics.activities
+package com.example.fitletics.activities.main
 
 import android.Manifest
 import android.content.Context
@@ -16,28 +16,24 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.work.*
 import com.example.fitletics.R
+import com.example.fitletics.activities.web.sessions.ActiveSessionActivity
+import com.example.fitletics.activities.web.workouts.StartStandardWorkoutActivity
 import com.example.fitletics.adapters.ViewPagerAdapter
 import com.example.fitletics.fragments.homepage.AnalyticsFragment
 import com.example.fitletics.fragments.homepage.DashboardFragment
 import com.example.fitletics.fragments.homepage.SettingsFragment
 import com.example.fitletics.fragments.homepage.WorkoutFragment
 import com.example.fitletics.models.support.Constants
-import com.example.fitletics.models.support.Session
 import com.example.fitletics.models.support.Workout
 import com.example.fitletics.models.utils.RecEngine
 import com.example.fitletics.models.utils.WebsiteSession
 import com.example.fitletics.models.utils.WorkoutPriority
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_main.*
-import net.sourceforge.jFuzzyLogic.FIS
-import okhttp3.*
-import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
@@ -122,7 +118,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
         Log.d("MyWorker", "Launching periodic func")
-        MyWorker.WorkManagerScheduler.refreshPeriodicWork(this)
+        MyWorker.WorkManagerScheduler.refreshPeriodicWork(
+            this
+        )
 
 
         setupTabs()

@@ -1,10 +1,11 @@
-package com.example.fitletics.activities
+package com.example.fitletics.activities.bodyanalysis
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.fitletics.R
+import com.example.fitletics.activities.baselinetest.BTestOngoingActivity
 import com.example.fitletics.models.support.Constants
 import com.example.fitletics.models.support.Exercise
 import com.example.fitletics.models.support.Muscle

@@ -9,11 +9,10 @@ import android.view.ViewGroup
 import android.widget.GridView
 import androidx.fragment.app.Fragment
 import com.example.fitletics.R
-import com.example.fitletics.activities.DetailedAnalyticsActivity
+import com.example.fitletics.activities.analytics.DetailedAnalyticsActivity
 import com.example.fitletics.adapters.DashboardAnalyticsAdapter
 import com.example.fitletics.models.support.Constants
 import com.example.fitletics.models.misc.DashboardAnalyticsItem
-import com.example.fitletics.models.support.Analytic
 import com.example.fitletics.models.support.User
 import com.example.fitletics.models.utils.UserXP
 import com.google.firebase.firestore.FirebaseFirestore

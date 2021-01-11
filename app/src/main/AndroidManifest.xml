@@ -19,26 +19,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.StartStandardWorkoutActivity"></activity>
-        <activity android:name=".activities.ActiveSessionActivity" />
-        <activity android:name=".activities.CreateWorkoutActivity" />
-        <activity android:name=".activities.SharedWorkoutActivity" />
-        <activity android:name=".activities.DetailedAnalyticsActivity" />
-        <activity android:name=".activities.SignUpActivity" />
-        <activity android:name=".activities.LoginActivity">
+        <activity android:name=".activities.web.workouts.StartStandardWorkoutActivity"></activity>
+        <activity android:name=".activities.web.sessions.ActiveSessionActivity" />
+        <activity android:name=".activities.workout.CreateWorkoutActivity" />
+        <activity android:name=".activities.workout.SharedWorkoutActivity" />
+        <activity android:name=".activities.analytics.DetailedAnalyticsActivity" />
+        <activity android:name=".activities.appentry.SignUpActivity" />
+        <activity android:name=".activities.appentry.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.StartCustomWorkoutActivity" />
-        <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.BAnalysisCompleteActivity" />
-        <activity android:name=".activities.BAnalysisOngoingActivity" />
-        <activity android:name=".activities.BTestCompleteActivity" />
-        <activity android:name=".activities.BTestOngoingActivity" />
-        <activity android:name=".activities.ConnectPCQRActivity">
+        <activity android:name=".activities.web.workouts.StartCustomWorkoutActivity" />
+        <activity android:name=".activities.main.MainActivity" />
+        <activity android:name=".activities.bodyanalysis.BAnalysisCompleteActivity" />
+        <activity android:name=".activities.bodyanalysis.BAnalysisOngoingActivity" />
+        <activity android:name=".activities.baselinetest.BTestCompleteActivity" />
+        <activity android:name=".activities.baselinetest.BTestOngoingActivity" />
+        <activity android:name=".activities.web.connect.ConnectPCQRActivity">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->

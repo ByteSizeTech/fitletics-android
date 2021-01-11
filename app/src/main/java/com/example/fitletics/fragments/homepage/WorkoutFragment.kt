@@ -13,7 +13,10 @@ import android.widget.Button
 import android.widget.ExpandableListView
 import com.example.fitletics.adapters.WorkoutsExpandableListAdapter
 import com.example.fitletics.R
-import com.example.fitletics.activities.*
+import com.example.fitletics.activities.web.workouts.StartCustomWorkoutActivity
+import com.example.fitletics.activities.web.workouts.StartStandardWorkoutActivity
+import com.example.fitletics.activities.workout.CreateWorkoutActivity
+import com.example.fitletics.activities.workout.SharedWorkoutActivity
 import com.example.fitletics.fragments.homepage.dialogs.ExerciseDescriptionDialog
 import com.example.fitletics.models.support.Constants
 import com.example.fitletics.models.support.Exercise

@@ -1,4 +1,4 @@
-package com.example.fitletics.activities
+package com.example.fitletics.activities.web.workouts
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -10,7 +10,7 @@ import android.widget.ListView
 import androidx.annotation.RequiresApi
 import com.example.fitletics.R
 import com.example.fitletics.adapters.WorkoutExerciseListAdapter
-import com.example.fitletics.fragments.homepage.dialogs.ExerciseDescriptionDialog
+import com.example.fitletics.fragments.dialogs.ExerciseDescriptionDialog
 import com.example.fitletics.models.support.*
 import com.example.fitletics.models.utils.RecEngine
 import com.google.firebase.database.DataSnapshot

@@ -1,4 +1,4 @@
-package com.example.fitletics.activities
+package com.example.fitletics.activities.web.connect
 
 import android.Manifest
 import android.annotation.SuppressLint

@@ -4,10 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
-import com.example.fitletics.activities.ConnectPCQRActivity
+import com.example.fitletics.activities.web.connect.ConnectPCQRActivity
 import com.example.fitletics.models.support.Constants
 import com.example.fitletics.models.support.Workout
-import com.google.firebase.firestore.FirebaseFirestore
 
 class WebsiteSession(context: Context, intentClass: Class<*>, workout: Workout?) {
     private val TAG = "WEB_SESH"

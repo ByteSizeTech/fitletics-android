@@ -1,7 +1,6 @@
-package com.example.fitletics.activities
+package com.example.fitletics.activities.appentry
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +9,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import com.example.fitletics.R
+import com.example.fitletics.activities.bodyanalysis.BAnalysisOngoingActivity
 import com.example.fitletics.models.support.Constants
 import com.example.fitletics.models.support.User
 import com.example.fitletics.models.utils.WebsiteSession

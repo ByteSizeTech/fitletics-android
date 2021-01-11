@@ -11,8 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.example.fitletics.R
-import com.example.fitletics.activities.BAnalysisOngoingActivity
-import com.example.fitletics.activities.LoginActivity
+import com.example.fitletics.activities.bodyanalysis.BAnalysisOngoingActivity
+import com.example.fitletics.activities.appentry.LoginActivity
 import com.example.fitletics.models.utils.WebsiteSession
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
