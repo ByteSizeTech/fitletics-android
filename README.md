@@ -22,7 +22,7 @@ git clone https://github.com/ByteSizeTech/fitletics-android.git
     ...
     ├── activities                  
         ├── analytics				# Contains analytics activities
-        ├── appentry         			# Loggin/SignUp
+        ├── appentry         			# Login/SignUp
         ├── baselinetest         		# Activities related to the BLT
         ├── bodyanalysis         		# Activities related to the BA
         ├── main         			# Main activity
