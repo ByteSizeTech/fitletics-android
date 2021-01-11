@@ -22,22 +22,22 @@ git clone https://github.com/ByteSizeTech/fitletics-android.git
     ...
     ├── activities                  
         ├── analytics				# Contains analytics activities
-        ├── appentry         		# Loggin/SignUp
-        ├── baselinetest         	# Activities related to the BLT
-        ├── bodyanalysis         	# Activities related to the BA
+        ├── appentry         			# Loggin/SignUp
+        ├── baselinetest         		# Activities related to the BLT
+        ├── bodyanalysis         		# Activities related to the BA
         ├── main         			# Main activity
         └── web         			# Activities that connect to the website
             ├── connect				# Activity that establishes connection
             ├── session				# Activities that have ongoing sessions
             └── workouts			# Pre-session activities that go through a workout
     ├── workout         			# App standalone workout activities
-    ├── adapters                    # Adapter classes
+    ├── adapters                    		# Adapter classes
     ├── fragments                   
-        ├── dialogs					# app dialog classes
+        ├── dialogs				# app dialog classes
         └── homepage				# homescreen fragments used by MainActivity
     └── models
-        ├── misc					# Contains miscellaneous support files 
-        ├── support					# Contains classes
-        └── utils					# utility classes                             	
+        ├── misc				# Contains miscellaneous support files 
+        ├── support				# Contains classes
+        └── utils				# utility classes                             	
     ...
 ```	
